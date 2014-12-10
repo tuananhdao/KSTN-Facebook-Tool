@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnLogin = new System.Windows.Forms.Button();
@@ -55,7 +55,7 @@
             this.lblProgress = new System.Windows.Forms.Label();
             this.lblTick = new System.Windows.Forms.Label();
             this.cbMethods = new System.Windows.Forms.ComboBox();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
             this.btnPost = new System.Windows.Forms.Button();
             this.txtDelay = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -70,6 +70,30 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtContent = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtJoinDelay = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lblJoinTick = new System.Windows.Forms.Label();
+            this.btnGroupJoin = new System.Windows.Forms.Button();
+            this.dgGroupSearch = new System.Windows.Forms.DataGridView();
+            this.group_search_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_search_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_search_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnGroupSearchFr = new System.Windows.Forms.Button();
+            this.txtGroupSearchFr = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.lblSearching = new System.Windows.Forms.Label();
+            this.btnGroupSearch = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtGroupSearchMin = new System.Windows.Forms.TextBox();
+            this.txtGroupSearch = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.tabPageInvite = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.dgInvitedGroups = new System.Windows.Forms.DataGridView();
@@ -93,27 +117,11 @@
             this.lblViewProfile = new System.Windows.Forms.LinkLabel();
             this.lblUsername = new System.Windows.Forms.Label();
             this.pbAvatar = new System.Windows.Forms.PictureBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtGroupSearch = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtGroupSearchMin = new System.Windows.Forms.TextBox();
-            this.btnGroupSearch = new System.Windows.Forms.Button();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.txtGroupSearchFr = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnGroupSearchFr = new System.Windows.Forms.Button();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.dgGroupSearch = new System.Windows.Forms.DataGridView();
-            this.group_search_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_search_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_search_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.btnGroupJoin = new System.Windows.Forms.Button();
-            this.lblJoinTick = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.imgStatus = new System.Windows.Forms.PictureBox();
+            this.miniTimer_ControlBox1 = new MiniTimer_Theme.MiniTimer_ControlBox();
+            this.miniTimer_Label1 = new MiniTimer_Theme.MiniTimer_Label();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -123,6 +131,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgPostResult)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).BeginInit();
+            this.groupBox9.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.tabPageInvite.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgInvitedGroups)).BeginInit();
@@ -130,11 +143,8 @@
             this.GroupBoxInvite.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).BeginInit();
-            this.groupBox11.SuspendLayout();
+            this.miniTimer_ThemeContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -144,7 +154,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtPass);
             this.groupBox1.Controls.Add(this.txtUser);
-            this.groupBox1.Location = new System.Drawing.Point(4, 3);
+            this.groupBox1.Location = new System.Drawing.Point(13, 44);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(639, 48);
             this.groupBox1.TabIndex = 0;
@@ -200,7 +210,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPageInvite);
-            this.tabControl1.Location = new System.Drawing.Point(4, 57);
+            this.tabControl1.Location = new System.Drawing.Point(12, 102);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(977, 402);
@@ -262,22 +272,21 @@
             this.group_name,
             this.group_link,
             this.group_mem});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgGroups.Location = new System.Drawing.Point(9, 18);
-            this.dgGroups.MultiSelect = false;
             this.dgGroups.Name = "dgGroups";
             this.dgGroups.ReadOnly = true;
             this.dgGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgGroups.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgGroups.ShowCellToolTips = false;
             this.dgGroups.ShowEditingIcon = false;
@@ -352,7 +361,7 @@
             this.groupBox2.Controls.Add(this.lblProgress);
             this.groupBox2.Controls.Add(this.lblTick);
             this.groupBox2.Controls.Add(this.cbMethods);
-            this.groupBox2.Controls.Add(this.btnCancel);
+            this.groupBox2.Controls.Add(this.btnPause);
             this.groupBox2.Controls.Add(this.btnPost);
             this.groupBox2.Controls.Add(this.txtDelay);
             this.groupBox2.Controls.Add(this.label6);
@@ -415,16 +424,16 @@
             this.cbMethods.Size = new System.Drawing.Size(180, 21);
             this.cbMethods.TabIndex = 8;
             // 
-            // btnCancel
+            // btnPause
             // 
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnCancel.Location = new System.Drawing.Point(114, 331);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(57, 24);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Hủy";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnPause.Location = new System.Drawing.Point(114, 331);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(57, 24);
+            this.btnPause.TabIndex = 7;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnPost
             // 
@@ -562,6 +571,245 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Auto join Group";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.button1);
+            this.groupBox11.Controls.Add(this.textBox1);
+            this.groupBox11.Location = new System.Drawing.Point(9, 246);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(404, 60);
+            this.groupBox11.TabIndex = 3;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Nhập danh sách nhóm từ File";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(313, 22);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(72, 24);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Browse";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(19, 24);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(292, 20);
+            this.textBox1.TabIndex = 0;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label17);
+            this.groupBox10.Controls.Add(this.txtJoinDelay);
+            this.groupBox10.Controls.Add(this.label16);
+            this.groupBox10.Controls.Add(this.lblJoinTick);
+            this.groupBox10.Controls.Add(this.btnGroupJoin);
+            this.groupBox10.Controls.Add(this.dgGroupSearch);
+            this.groupBox10.Location = new System.Drawing.Point(431, 9);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(525, 361);
+            this.groupBox10.TabIndex = 2;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Kết quả tìm kiếm";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label17.Location = new System.Drawing.Point(9, 338);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(140, 13);
+            this.label17.TabIndex = 7;
+            this.label17.Text = "* Xóa Nhóm: Phím DELETE";
+            // 
+            // txtJoinDelay
+            // 
+            this.txtJoinDelay.Location = new System.Drawing.Point(288, 335);
+            this.txtJoinDelay.Name = "txtJoinDelay";
+            this.txtJoinDelay.Size = new System.Drawing.Size(52, 20);
+            this.txtJoinDelay.TabIndex = 6;
+            this.txtJoinDelay.Text = "30";
+            this.txtJoinDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(247, 338);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(37, 13);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "Delay:";
+            // 
+            // lblJoinTick
+            // 
+            this.lblJoinTick.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblJoinTick.Location = new System.Drawing.Point(360, 338);
+            this.lblJoinTick.Name = "lblJoinTick";
+            this.lblJoinTick.Size = new System.Drawing.Size(40, 15);
+            this.lblJoinTick.TabIndex = 4;
+            this.lblJoinTick.Text = "Ready";
+            this.lblJoinTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnGroupJoin
+            // 
+            this.btnGroupJoin.Location = new System.Drawing.Point(406, 333);
+            this.btnGroupJoin.Name = "btnGroupJoin";
+            this.btnGroupJoin.Size = new System.Drawing.Size(112, 24);
+            this.btnGroupJoin.TabIndex = 3;
+            this.btnGroupJoin.Text = "Gia nhập toàn bộ";
+            this.btnGroupJoin.UseVisualStyleBackColor = true;
+            this.btnGroupJoin.Click += new System.EventHandler(this.btnGroupJoin_Click);
+            // 
+            // dgGroupSearch
+            // 
+            this.dgGroupSearch.AllowUserToAddRows = false;
+            this.dgGroupSearch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgGroupSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgGroupSearch.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.group_search_name,
+            this.group_search_link,
+            this.group_search_mem});
+            this.dgGroupSearch.Location = new System.Drawing.Point(9, 18);
+            this.dgGroupSearch.Name = "dgGroupSearch";
+            this.dgGroupSearch.ReadOnly = true;
+            this.dgGroupSearch.ShowCellToolTips = false;
+            this.dgGroupSearch.ShowEditingIcon = false;
+            this.dgGroupSearch.Size = new System.Drawing.Size(507, 310);
+            this.dgGroupSearch.TabIndex = 0;
+            // 
+            // group_search_name
+            // 
+            this.group_search_name.DataPropertyName = "group_search_name";
+            this.group_search_name.HeaderText = "Tên Group";
+            this.group_search_name.Name = "group_search_name";
+            this.group_search_name.ReadOnly = true;
+            // 
+            // group_search_link
+            // 
+            this.group_search_link.DataPropertyName = "group_search_link";
+            this.group_search_link.FillWeight = 80F;
+            this.group_search_link.HeaderText = "Link";
+            this.group_search_link.Name = "group_search_link";
+            this.group_search_link.ReadOnly = true;
+            // 
+            // group_search_mem
+            // 
+            this.group_search_mem.DataPropertyName = "group_search_mem";
+            this.group_search_mem.FillWeight = 30F;
+            this.group_search_mem.HeaderText = "Thành viên";
+            this.group_search_mem.Name = "group_search_mem";
+            this.group_search_mem.ReadOnly = true;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.btnGroupSearchFr);
+            this.groupBox9.Controls.Add(this.txtGroupSearchFr);
+            this.groupBox9.Controls.Add(this.label15);
+            this.groupBox9.Location = new System.Drawing.Point(9, 146);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(404, 94);
+            this.groupBox9.TabIndex = 1;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Lấy danh sách nhóm từ bạn bè";
+            // 
+            // btnGroupSearchFr
+            // 
+            this.btnGroupSearchFr.Enabled = false;
+            this.btnGroupSearchFr.Location = new System.Drawing.Point(253, 61);
+            this.btnGroupSearchFr.Name = "btnGroupSearchFr";
+            this.btnGroupSearchFr.Size = new System.Drawing.Size(133, 24);
+            this.btnGroupSearchFr.TabIndex = 3;
+            this.btnGroupSearchFr.Text = "Lấy danh sách nhóm";
+            this.btnGroupSearchFr.UseVisualStyleBackColor = true;
+            // 
+            // txtGroupSearchFr
+            // 
+            this.txtGroupSearchFr.Location = new System.Drawing.Point(18, 35);
+            this.txtGroupSearchFr.Name = "txtGroupSearchFr";
+            this.txtGroupSearchFr.Size = new System.Drawing.Size(367, 20);
+            this.txtGroupSearchFr.TabIndex = 0;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(16, 20);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(119, 13);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "Tên hoặc email bạn bè:";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.lblSearching);
+            this.groupBox8.Controls.Add(this.btnGroupSearch);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.txtGroupSearchMin);
+            this.groupBox8.Controls.Add(this.txtGroupSearch);
+            this.groupBox8.Controls.Add(this.label13);
+            this.groupBox8.Location = new System.Drawing.Point(9, 9);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(404, 131);
+            this.groupBox8.TabIndex = 0;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Tìm kiếm nhóm";
+            // 
+            // lblSearching
+            // 
+            this.lblSearching.AutoEllipsis = true;
+            this.lblSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblSearching.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblSearching.Location = new System.Drawing.Point(16, 105);
+            this.lblSearching.Name = "lblSearching";
+            this.lblSearching.Size = new System.Drawing.Size(268, 20);
+            this.lblSearching.TabIndex = 4;
+            this.lblSearching.Text = "Ready";
+            // 
+            // btnGroupSearch
+            // 
+            this.btnGroupSearch.Enabled = false;
+            this.btnGroupSearch.Location = new System.Drawing.Point(309, 99);
+            this.btnGroupSearch.Name = "btnGroupSearch";
+            this.btnGroupSearch.Size = new System.Drawing.Size(78, 24);
+            this.btnGroupSearch.TabIndex = 3;
+            this.btnGroupSearch.Text = "Tìm kiếm";
+            this.btnGroupSearch.UseVisualStyleBackColor = true;
+            this.btnGroupSearch.Click += new System.EventHandler(this.btnGroupSearch_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(16, 57);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(145, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Số lượng thành viên tối thiểu:";
+            // 
+            // txtGroupSearchMin
+            // 
+            this.txtGroupSearchMin.Location = new System.Drawing.Point(19, 73);
+            this.txtGroupSearchMin.Name = "txtGroupSearchMin";
+            this.txtGroupSearchMin.Size = new System.Drawing.Size(367, 20);
+            this.txtGroupSearchMin.TabIndex = 1;
+            this.txtGroupSearchMin.Text = "1000";
+            // 
+            // txtGroupSearch
+            // 
+            this.txtGroupSearch.Location = new System.Drawing.Point(19, 33);
+            this.txtGroupSearch.Name = "txtGroupSearch";
+            this.txtGroupSearch.Size = new System.Drawing.Size(367, 20);
+            this.txtGroupSearch.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(15, 18);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(91, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Từ khóa tìm kiếm:";
             // 
             // tabPageInvite
             // 
@@ -757,7 +1005,7 @@
             this.groupBox5.Controls.Add(this.lblViewProfile);
             this.groupBox5.Controls.Add(this.lblUsername);
             this.groupBox5.Controls.Add(this.pbAvatar);
-            this.groupBox5.Location = new System.Drawing.Point(653, 3);
+            this.groupBox5.Location = new System.Drawing.Point(663, 44);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(324, 70);
             this.groupBox5.TabIndex = 2;
@@ -799,226 +1047,89 @@
             this.pbAvatar.TabIndex = 0;
             this.pbAvatar.TabStop = false;
             // 
-            // groupBox8
+            // miniTimer_ThemeContainer1
             // 
-            this.groupBox8.Controls.Add(this.btnGroupSearch);
-            this.groupBox8.Controls.Add(this.label14);
-            this.groupBox8.Controls.Add(this.txtGroupSearchMin);
-            this.groupBox8.Controls.Add(this.txtGroupSearch);
-            this.groupBox8.Controls.Add(this.label13);
-            this.groupBox8.Location = new System.Drawing.Point(9, 9);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(404, 131);
-            this.groupBox8.TabIndex = 0;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Tìm kiếm nhóm";
+            this.miniTimer_ThemeContainer1.BackColor = System.Drawing.Color.White;
+            this.miniTimer_ThemeContainer1.Controls.Add(this.lblStatus);
+            this.miniTimer_ThemeContainer1.Controls.Add(this.imgStatus);
+            this.miniTimer_ThemeContainer1.Controls.Add(this.miniTimer_ControlBox1);
+            this.miniTimer_ThemeContainer1.Controls.Add(this.miniTimer_Label1);
+            this.miniTimer_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.miniTimer_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.miniTimer_ThemeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.miniTimer_ThemeContainer1.MaximumSize = new System.Drawing.Size(1000, 550);
+            this.miniTimer_ThemeContainer1.MinimumSize = new System.Drawing.Size(1000, 550);
+            this.miniTimer_ThemeContainer1.Name = "miniTimer_ThemeContainer1";
+            this.miniTimer_ThemeContainer1.Padding = new System.Windows.Forms.Padding(20, 56, 20, 16);
+            this.miniTimer_ThemeContainer1.Sizable = false;
+            this.miniTimer_ThemeContainer1.Size = new System.Drawing.Size(1000, 550);
+            this.miniTimer_ThemeContainer1.SmartBounds = true;
+            this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
+            this.miniTimer_ThemeContainer1.TabIndex = 3;
+            this.miniTimer_ThemeContainer1.Text = "iOne Facebook Auto Tools";
             // 
-            // label13
+            // lblStatus
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 18);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(91, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Từ khóa tìm kiếm:";
+            this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.lblStatus.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblStatus.Location = new System.Drawing.Point(543, 520);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(426, 15);
+            this.lblStatus.TabIndex = 3;
+            this.lblStatus.Text = "Sẵn sàng";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtGroupSearch
+            // imgStatus
             // 
-            this.txtGroupSearch.Location = new System.Drawing.Point(19, 33);
-            this.txtGroupSearch.Name = "txtGroupSearch";
-            this.txtGroupSearch.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearch.TabIndex = 1;
+            this.imgStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.imgStatus.Image = ((System.Drawing.Image)(resources.GetObject("imgStatus.Image")));
+            this.imgStatus.Location = new System.Drawing.Point(975, 523);
+            this.imgStatus.Name = "imgStatus";
+            this.imgStatus.Size = new System.Drawing.Size(10, 10);
+            this.imgStatus.TabIndex = 2;
+            this.imgStatus.TabStop = false;
             // 
-            // label14
+            // miniTimer_ControlBox1
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(16, 57);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(145, 13);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "Số lượng thành viên tối thiểu:";
+            this.miniTimer_ControlBox1.BackColor = System.Drawing.Color.Transparent;
+            this.miniTimer_ControlBox1.EnableMaximize = false;
+            this.miniTimer_ControlBox1.Font = new System.Drawing.Font("Marlett", 7F);
+            this.miniTimer_ControlBox1.Location = new System.Drawing.Point(15, 13);
+            this.miniTimer_ControlBox1.Name = "miniTimer_ControlBox1";
+            this.miniTimer_ControlBox1.Size = new System.Drawing.Size(40, 16);
+            this.miniTimer_ControlBox1.TabIndex = 1;
+            this.miniTimer_ControlBox1.Text = "miniTimer_ControlBox1";
             // 
-            // txtGroupSearchMin
+            // miniTimer_Label1
             // 
-            this.txtGroupSearchMin.Location = new System.Drawing.Point(19, 73);
-            this.txtGroupSearchMin.Name = "txtGroupSearchMin";
-            this.txtGroupSearchMin.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearchMin.TabIndex = 1;
-            // 
-            // btnGroupSearch
-            // 
-            this.btnGroupSearch.Enabled = false;
-            this.btnGroupSearch.Location = new System.Drawing.Point(309, 99);
-            this.btnGroupSearch.Name = "btnGroupSearch";
-            this.btnGroupSearch.Size = new System.Drawing.Size(78, 24);
-            this.btnGroupSearch.TabIndex = 3;
-            this.btnGroupSearch.Text = "Tìm kiếm";
-            this.btnGroupSearch.UseVisualStyleBackColor = true;
-            this.btnGroupSearch.Click += new System.EventHandler(this.btnGroupSearch_Click);
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnGroupSearchFr);
-            this.groupBox9.Controls.Add(this.txtGroupSearchFr);
-            this.groupBox9.Controls.Add(this.label15);
-            this.groupBox9.Location = new System.Drawing.Point(9, 146);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(404, 94);
-            this.groupBox9.TabIndex = 1;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Lấy danh sách nhóm từ bạn bè";
-            // 
-            // txtGroupSearchFr
-            // 
-            this.txtGroupSearchFr.Location = new System.Drawing.Point(18, 35);
-            this.txtGroupSearchFr.Name = "txtGroupSearchFr";
-            this.txtGroupSearchFr.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearchFr.TabIndex = 0;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(16, 20);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(65, 13);
-            this.label15.TabIndex = 0;
-            this.label15.Text = "Tên bạn bè:";
-            // 
-            // btnGroupSearchFr
-            // 
-            this.btnGroupSearchFr.Enabled = false;
-            this.btnGroupSearchFr.Location = new System.Drawing.Point(253, 61);
-            this.btnGroupSearchFr.Name = "btnGroupSearchFr";
-            this.btnGroupSearchFr.Size = new System.Drawing.Size(133, 24);
-            this.btnGroupSearchFr.TabIndex = 3;
-            this.btnGroupSearchFr.Text = "Lấy danh sách nhóm";
-            this.btnGroupSearchFr.UseVisualStyleBackColor = true;
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.lblJoinTick);
-            this.groupBox10.Controls.Add(this.btnGroupJoin);
-            this.groupBox10.Controls.Add(this.label16);
-            this.groupBox10.Controls.Add(this.dgGroupSearch);
-            this.groupBox10.Location = new System.Drawing.Point(431, 9);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(525, 361);
-            this.groupBox10.TabIndex = 2;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Kết quả tìm kiếm";
-            // 
-            // dgGroupSearch
-            // 
-            this.dgGroupSearch.AllowUserToAddRows = false;
-            this.dgGroupSearch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgGroupSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgGroupSearch.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.group_search_name,
-            this.group_search_link,
-            this.group_search_mem});
-            this.dgGroupSearch.Location = new System.Drawing.Point(9, 18);
-            this.dgGroupSearch.Name = "dgGroupSearch";
-            this.dgGroupSearch.ReadOnly = true;
-            this.dgGroupSearch.ShowCellToolTips = false;
-            this.dgGroupSearch.ShowEditingIcon = false;
-            this.dgGroupSearch.Size = new System.Drawing.Size(507, 310);
-            this.dgGroupSearch.TabIndex = 0;
-            // 
-            // group_search_name
-            // 
-            this.group_search_name.DataPropertyName = "group_search_name";
-            this.group_search_name.HeaderText = "Tên Group";
-            this.group_search_name.Name = "group_search_name";
-            this.group_search_name.ReadOnly = true;
-            // 
-            // group_search_link
-            // 
-            this.group_search_link.DataPropertyName = "group_search_link";
-            this.group_search_link.FillWeight = 80F;
-            this.group_search_link.HeaderText = "Link";
-            this.group_search_link.Name = "group_search_link";
-            this.group_search_link.ReadOnly = true;
-            // 
-            // group_search_mem
-            // 
-            this.group_search_mem.DataPropertyName = "group_search_mem";
-            this.group_search_mem.FillWeight = 30F;
-            this.group_search_mem.HeaderText = "Thành viên";
-            this.group_search_mem.Name = "group_search_mem";
-            this.group_search_mem.ReadOnly = true;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.Controls.Add(this.button1);
-            this.groupBox11.Controls.Add(this.textBox1);
-            this.groupBox11.Location = new System.Drawing.Point(9, 246);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(404, 60);
-            this.groupBox11.TabIndex = 3;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "Nhập danh sách nhóm từ File";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label16.Location = new System.Drawing.Point(7, 339);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(347, 13);
-            this.label16.TabIndex = 2;
-            this.label16.Text = "* Xóa nhóm trong danh sách AUTO: Mũi tên chọn dòng => Phím Delete";
-            // 
-            // btnGroupJoin
-            // 
-            this.btnGroupJoin.Location = new System.Drawing.Point(406, 333);
-            this.btnGroupJoin.Name = "btnGroupJoin";
-            this.btnGroupJoin.Size = new System.Drawing.Size(112, 24);
-            this.btnGroupJoin.TabIndex = 3;
-            this.btnGroupJoin.Text = "Gia nhập toàn bộ";
-            this.btnGroupJoin.UseVisualStyleBackColor = true;
-            // 
-            // lblJoinTick
-            // 
-            this.lblJoinTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblJoinTick.Location = new System.Drawing.Point(360, 338);
-            this.lblJoinTick.Name = "lblJoinTick";
-            this.lblJoinTick.Size = new System.Drawing.Size(40, 15);
-            this.lblJoinTick.TabIndex = 4;
-            this.lblJoinTick.Text = "Ready";
-            this.lblJoinTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(19, 24);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(292, 20);
-            this.textBox1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(313, 22);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 24);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Browse";
-            this.button1.UseVisualStyleBackColor = true;
+            this.miniTimer_Label1.AutoSize = true;
+            this.miniTimer_Label1.BackColor = System.Drawing.Color.Transparent;
+            this.miniTimer_Label1.Font = new System.Drawing.Font("Tahoma", 9.75F);
+            this.miniTimer_Label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.miniTimer_Label1.Location = new System.Drawing.Point(12, 518);
+            this.miniTimer_Label1.Name = "miniTimer_Label1";
+            this.miniTimer_Label1.Size = new System.Drawing.Size(89, 16);
+            this.miniTimer_Label1.TabIndex = 0;
+            this.miniTimer_Label1.Text = "Version: 2.0.1";
             // 
             // MainForm
             // 
             this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 462);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1000, 550);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Controls.Add(this.miniTimer_ThemeContainer1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1000, 550);
             this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "iOne Facebook Tools";
+            this.Text = "iOne Facebook Auto Tools";
+            this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.groupBox1.ResumeLayout(false);
@@ -1033,6 +1144,15 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).EndInit();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.tabPageInvite.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgInvitedGroups)).EndInit();
@@ -1042,15 +1162,9 @@
             this.GroupBoxInvite.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).EndInit();
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox11.PerformLayout();
+            this.miniTimer_ThemeContainer1.ResumeLayout(false);
+            this.miniTimer_ThemeContainer1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgStatus)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1076,7 +1190,7 @@
         public System.Windows.Forms.DataGridView dgGroups;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.Button btnPost;
-        public System.Windows.Forms.Button btnCancel;
+        public System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Label label7;
         public System.Windows.Forms.TextBox txtDelay;
         public System.Windows.Forms.Label lblTick;
@@ -1125,7 +1239,6 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.DataGridView dgGroupSearch;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_link;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_mem;
@@ -1135,11 +1248,20 @@
         public System.Windows.Forms.TextBox txtGroupSearchMin;
         public System.Windows.Forms.TextBox txtGroupSearch;
         private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.Label lblJoinTick;
         public System.Windows.Forms.Button btnGroupJoin;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.DataGridView dgGroupSearch;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        public System.Windows.Forms.TextBox txtJoinDelay;
+        public System.Windows.Forms.Label lblJoinTick;
+        public System.Windows.Forms.Label lblSearching;
+        private MiniTimer_Theme.MiniTimer_ThemeContainer miniTimer_ThemeContainer1;
+        private MiniTimer_Theme.MiniTimer_Label miniTimer_Label1;
+        private MiniTimer_Theme.MiniTimer_ControlBox miniTimer_ControlBox1;
+        public System.Windows.Forms.Label lblStatus;
+        public System.Windows.Forms.PictureBox imgStatus;
 
     }
 }

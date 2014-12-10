@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using OpenQA.Selenium;
 using System.Threading;
+using System.Reflection;
 using AutoItX3Lib;
 
 namespace KSTN_Facebook_Tool
@@ -37,6 +38,21 @@ namespace KSTN_Facebook_Tool
                 true);
         }
 
+        
+        private const int CS_DROPSHADOW = 0x00020000;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams parameters = base.CreateParams;
+                if (OSFeature.IsPresent(SystemParameter.DropShadow))
+                {
+                    parameters.ClassStyle = parameters.ClassStyle | CS_DROPSHADOW;
+                }
+                return parameters;
+            }
+        }
+
         SeleniumControl SE;
         // public DataTable dt;
         //public System.Threading.Thread t;
@@ -48,7 +64,7 @@ namespace KSTN_Facebook_Tool
             DisableClickSounds();
 
             autoIt.AutoItSetOption("WinTitleMatchMode", 2);
-
+            
             //dt = new DataTable();
             //dt.Columns.Add("group_name");
             //dt.Columns.Add("group_link");
@@ -67,7 +83,6 @@ namespace KSTN_Facebook_Tool
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Program.mainForm.autoIt.WinSetState("Mozilla Firefox", "", 1);
             SE.quit();
         }
 
@@ -120,7 +135,37 @@ namespace KSTN_Facebook_Tool
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Process.GetCurrentProcess().Kill();
+            if (SE.pause == false)
+            {
+                SE.pause = true;
+                btnPause.Text = "Continue";
+                lblTick.Text = "Dừng";
+
+                txtContent.Enabled = true;
+                txtDelay.Enabled = true;
+                cbMethods.Enabled = true;
+                txtBrowse1.Enabled = true;
+                txtBrowse2.Enabled = true;
+                txtBrowse3.Enabled = true;
+                btnBrowse1.Enabled = true;
+                btnBrowse2.Enabled = true;
+                btnBrowse3.Enabled = true;
+            }
+            else
+            {
+                SE.pause = false;
+                btnPause.Text = "Pause";
+
+                txtContent.Enabled = false;
+                txtDelay.Enabled = false;
+                cbMethods.Enabled = false;
+                txtBrowse1.Enabled = false;
+                txtBrowse2.Enabled = false;
+                txtBrowse3.Enabled = false;
+                btnBrowse1.Enabled = false;
+                btnBrowse2.Enabled = false;
+                btnBrowse3.Enabled = false;
+            }
         }
 
         private void btnPost_Click(object sender, EventArgs e)
@@ -133,9 +178,9 @@ namespace KSTN_Facebook_Tool
 
             int delay;
 
-            if (!int.TryParse(txtDelay.Text, out delay) || delay < 10)
+            if (!int.TryParse(txtDelay.Text, out delay) || delay < 0)
             {
-                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 10");
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
                 return;
             }
 
@@ -211,9 +256,9 @@ namespace KSTN_Facebook_Tool
 
             int delay;
 
-            if (!int.TryParse(txtInviteDelay.Text, out delay) || delay < 10)
+            if (!int.TryParse(txtInviteDelay.Text, out delay) || delay < 0)
             {
-                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 10");
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
                 return;
             }
 
@@ -254,7 +299,43 @@ namespace KSTN_Facebook_Tool
             txtGroupSearchMin.Enabled = false;
             btnGroupSearch.Enabled = false;
 
+            dgGroupSearch.Rows.Clear();
+
             SE.GroupSearch();
+        }
+
+        private void btnGroupJoin_Click(object sender, EventArgs e)
+        {
+            if (dgGroupSearch.Rows.Count == 0)
+            {
+                MessageBox.Show("Chưa có nhóm nào trong List!");
+                return;
+            }
+
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            int delay;
+
+            if (!int.TryParse(txtJoinDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            btnGroupJoin.Enabled = false;
+            txtJoinDelay.Enabled = false;
+
+            SE.AutoJoin();
+        }
+
+        public void addGroup2Grid(IWebElement k)
+        {
+            //dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), "");
+            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
+            t.Start();
         }
     }
 }
