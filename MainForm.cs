@@ -13,6 +13,8 @@ using OpenQA.Selenium;
 using System.Threading;
 using System.Reflection;
 using AutoItX3Lib;
+using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace KSTN_Facebook_Tool
 {
@@ -38,7 +40,7 @@ namespace KSTN_Facebook_Tool
                 true);
         }
 
-        
+
         private const int CS_DROPSHADOW = 0x00020000;
         protected override CreateParams CreateParams
         {
@@ -64,7 +66,7 @@ namespace KSTN_Facebook_Tool
             DisableClickSounds();
 
             autoIt.AutoItSetOption("WinTitleMatchMode", 2);
-            
+
             //dt = new DataTable();
             //dt.Columns.Add("group_name");
             //dt.Columns.Add("group_link");
@@ -76,8 +78,8 @@ namespace KSTN_Facebook_Tool
             Program.loadingForm = new LoadingForm();
             //new Thread(() => new LoadingForm().Show()).Start();
             // t = new System.Threading.Thread(new System.Threading.ThreadStart(() => Program.loadingForm.ShowDialog()));
-
             SE = new SeleniumControl();
+            txtUser.Focus();
             cbMethods.SelectedIndex = 0;
         }
 
@@ -88,7 +90,14 @@ namespace KSTN_Facebook_Tool
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            SE.FBLogin(txtUser.Text, txtPass.Text);
+            if (btnLogin.Text == "Đăng nhập")
+            {
+                SE.FBLogin(txtUser.Text, txtPass.Text);
+            }
+            else
+            {
+                SE.Logout();
+            }
         }
 
         private void btnBrowse1_Click(object sender, EventArgs e)
@@ -133,7 +142,7 @@ namespace KSTN_Facebook_Tool
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnPause_Click(object sender, EventArgs e)
         {
             if (SE.pause == false)
             {
@@ -156,6 +165,7 @@ namespace KSTN_Facebook_Tool
                 SE.pause = false;
                 btnPause.Text = "Pause";
 
+                lblTick.Text = "Resume";
                 txtContent.Enabled = false;
                 txtDelay.Enabled = false;
                 cbMethods.Enabled = false;
@@ -200,6 +210,8 @@ namespace KSTN_Facebook_Tool
             btnBrowse1.Enabled = false;
             btnBrowse2.Enabled = false;
             btnBrowse3.Enabled = false;
+            dgGroups.Enabled = false;
+            btnPause.Enabled = true;
 
             SE.AutoPost();
         }
@@ -234,7 +246,7 @@ namespace KSTN_Facebook_Tool
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabControl1.TabPages["tabPageInvite"])
+            if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageInvite"])
             {
                 dgGroups.Parent = GroupBoxInvite;
                 dgGroups.Height = 310;
@@ -244,6 +256,41 @@ namespace KSTN_Facebook_Tool
                 dgGroups.Parent = groupBox4;
                 dgGroups.Height = 160;
             }
+            if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageLicense"] && txtLicense.Text == "")
+                CalculateLicense();
+        }
+
+        private async Task CalculateLicense()
+        {
+            txtLicense.Text = FingerPrint.Value();
+            CalculateMD5Hash(txtLicense.Text + DateTime.Today.Month);
+        }
+
+        public void CalculateMD5Hash(string input)
+        {
+            // To calculate MD5 hash from an input string
+
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            // convert byte array to hex string
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+
+            {
+
+              //to make hex string use lower case instead of uppercase add parameter “X2″
+
+                sb.Append(hash[i].ToString("X2"));
+
+            }
+
+            txtKey.Text = sb.ToString();
         }
 
         private void btnInvite_Click(object sender, EventArgs e)
@@ -334,8 +381,86 @@ namespace KSTN_Facebook_Tool
         public void addGroup2Grid(IWebElement k)
         {
             //dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), "");
-            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
+            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Insert(0, k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
             t.Start();
+        }
+
+        private void btnToggle_Click(object sender, EventArgs e)
+        {
+            if (SE.driver == null)
+            {
+                MessageBox.Show("Trình duyệt chưa được khởi tạo!");
+                btnToggle.Checked = false;
+            }
+            else
+            {
+                SE.Toggle();
+            }
+        }
+
+        private void btnComment_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            int delay;
+
+            if (!int.TryParse(txtCommentDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            if (txtComment.Text == "")
+            {
+                MessageBox.Show("Không được bỏ trống nội dung bình luận");
+                return;
+            }
+
+            if (!cbCommentToday.Checked && !cbCommentYesterday.Checked && !cbCommentBefore.Checked)
+            {
+                MessageBox.Show("Chọn thời gian bình luận!");
+                return;
+            }
+
+            cbCommentBefore.Enabled = false;
+            cbCommentToday.Enabled = false;
+            cbCommentYesterday.Enabled = false;
+            txtComment.Enabled = false;
+            txtCommentDelay.Enabled = false;
+            btnComment.Enabled = false;
+            btnCommentPause.Enabled = true;
+
+            SE.AutoComment();
+        }
+
+        private void btnCommentPause_Click(object sender, EventArgs e)
+        {
+            if (SE.pause == false)
+            {
+                SE.pause = true;
+                btnCommentPause.Text = "Continue";
+                lblCommentTick.Text = "Dừng";
+
+                cbCommentBefore.Enabled = true;
+                cbCommentToday.Enabled = true;
+                cbCommentYesterday.Enabled = true;
+                txtComment.Enabled = true;
+                txtCommentDelay.Enabled = true;
+            }
+            else
+            {
+                SE.pause = false;
+                btnCommentPause.Text = "Pause";
+
+                cbCommentBefore.Enabled = false;
+                cbCommentToday.Enabled = false;
+                cbCommentYesterday.Enabled = false;
+                txtComment.Enabled = false;
+                txtCommentDelay.Enabled = false;
+            }
         }
     }
 }

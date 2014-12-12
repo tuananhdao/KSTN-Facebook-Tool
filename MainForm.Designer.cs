@@ -37,7 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtPass = new System.Windows.Forms.TextBox();
             this.txtUser = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnGroupExport = new System.Windows.Forms.Button();
@@ -112,18 +112,46 @@
             this.btnGroupInviteCount = new System.Windows.Forms.Button();
             this.btnExport2 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabPageComment = new System.Windows.Forms.TabPage();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.dgComment = new System.Windows.Forms.DataGridView();
+            this.group_comment_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_comment_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.btnCommentPause = new System.Windows.Forms.Button();
+            this.lblCommenting = new System.Windows.Forms.Label();
+            this.lblCommentTick = new System.Windows.Forms.Label();
+            this.txtCommentDelay = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.btnComment = new System.Windows.Forms.Button();
+            this.txtComment = new System.Windows.Forms.TextBox();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.cbCommentBefore = new System.Windows.Forms.CheckBox();
+            this.cbCommentYesterday = new System.Windows.Forms.CheckBox();
+            this.cbCommentToday = new System.Windows.Forms.CheckBox();
+            this.tabPageLicense = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.btnLicense = new System.Windows.Forms.Button();
+            this.txtKey = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtLicense = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.lblViewProfile = new System.Windows.Forms.LinkLabel();
             this.lblUsername = new System.Windows.Forms.Label();
             this.pbAvatar = new System.Windows.Forms.PictureBox();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
+            this.btnToggle = new System.Windows.Forms.CheckBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.imgStatus = new System.Windows.Forms.PictureBox();
             this.miniTimer_ControlBox1 = new MiniTimer_Theme.MiniTimer_ControlBox();
-            this.miniTimer_Label1 = new MiniTimer_Theme.MiniTimer_Label();
+            this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
             this.groupBox1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.TabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGroups)).BeginInit();
@@ -141,6 +169,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgInvitedGroups)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.GroupBoxInvite.SuspendLayout();
+            this.tabPageComment.SuspendLayout();
+            this.groupBox15.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgComment)).BeginInit();
+            this.groupBox14.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            this.tabPageLicense.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).BeginInit();
             this.miniTimer_ThemeContainer1.SuspendLayout();
@@ -154,9 +189,9 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtPass);
             this.groupBox1.Controls.Add(this.txtUser);
-            this.groupBox1.Location = new System.Drawing.Point(13, 44);
+            this.groupBox1.Location = new System.Drawing.Point(12, 43);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(639, 48);
+            this.groupBox1.Size = new System.Drawing.Size(640, 48);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tài khoản Facebook";
@@ -205,17 +240,19 @@
             this.txtUser.Size = new System.Drawing.Size(150, 20);
             this.txtUser.TabIndex = 0;
             // 
-            // tabControl1
+            // TabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPageInvite);
-            this.tabControl1.Location = new System.Drawing.Point(12, 102);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(977, 402);
-            this.tabControl1.TabIndex = 1;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.TabControl1.Controls.Add(this.tabPage1);
+            this.TabControl1.Controls.Add(this.tabPage2);
+            this.TabControl1.Controls.Add(this.tabPageInvite);
+            this.TabControl1.Controls.Add(this.tabPageComment);
+            this.TabControl1.Controls.Add(this.tabPageLicense);
+            this.TabControl1.Location = new System.Drawing.Point(12, 98);
+            this.TabControl1.Name = "TabControl1";
+            this.TabControl1.SelectedIndex = 0;
+            this.TabControl1.Size = new System.Drawing.Size(977, 402);
+            this.TabControl1.TabIndex = 1;
+            this.TabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -227,7 +264,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(969, 376);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Auto đăng bài";
+            this.tabPage1.Text = "Group Auto Post";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox4
@@ -248,7 +285,7 @@
             this.btnGroupExport.Location = new System.Drawing.Point(416, 181);
             this.btnGroupExport.Name = "btnGroupExport";
             this.btnGroupExport.Size = new System.Drawing.Size(101, 20);
-            this.btnGroupExport.TabIndex = 2;
+            this.btnGroupExport.TabIndex = 10;
             this.btnGroupExport.Text = "Export Groups";
             this.btnGroupExport.UseVisualStyleBackColor = true;
             this.btnGroupExport.Click += new System.EventHandler(this.btnGroupExport_Click);
@@ -292,6 +329,7 @@
             this.dgGroups.ShowEditingIcon = false;
             this.dgGroups.Size = new System.Drawing.Size(507, 160);
             this.dgGroups.TabIndex = 0;
+            this.dgGroups.TabStop = false;
             // 
             // group_name
             // 
@@ -340,6 +378,7 @@
             this.dgPostResult.ReadOnly = true;
             this.dgPostResult.Size = new System.Drawing.Size(506, 130);
             this.dgPostResult.TabIndex = 0;
+            this.dgPostResult.TabStop = false;
             // 
             // posted_group
             // 
@@ -422,18 +461,19 @@
             this.cbMethods.Location = new System.Drawing.Point(206, 301);
             this.cbMethods.Name = "cbMethods";
             this.cbMethods.Size = new System.Drawing.Size(180, 21);
-            this.cbMethods.TabIndex = 8;
+            this.cbMethods.TabIndex = 7;
             // 
             // btnPause
             // 
+            this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.btnPause.Location = new System.Drawing.Point(114, 331);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(57, 24);
-            this.btnPause.TabIndex = 7;
+            this.btnPause.TabIndex = 9;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // btnPost
             // 
@@ -442,7 +482,7 @@
             this.btnPost.Location = new System.Drawing.Point(15, 331);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(93, 24);
-            this.btnPost.TabIndex = 7;
+            this.btnPost.TabIndex = 8;
             this.btnPost.Text = "ĐĂNG BÀI";
             this.btnPost.UseVisualStyleBackColor = true;
             this.btnPost.Click += new System.EventHandler(this.btnPost_Click);
@@ -479,7 +519,7 @@
             this.btnBrowse3.Location = new System.Drawing.Point(305, 257);
             this.btnBrowse3.Name = "btnBrowse3";
             this.btnBrowse3.Size = new System.Drawing.Size(81, 25);
-            this.btnBrowse3.TabIndex = 4;
+            this.btnBrowse3.TabIndex = 5;
             this.btnBrowse3.Text = "Browse";
             this.btnBrowse3.UseVisualStyleBackColor = true;
             this.btnBrowse3.Click += new System.EventHandler(this.btnBrowse3_Click);
@@ -499,7 +539,7 @@
             this.btnBrowse1.Location = new System.Drawing.Point(305, 205);
             this.btnBrowse1.Name = "btnBrowse1";
             this.btnBrowse1.Size = new System.Drawing.Size(81, 25);
-            this.btnBrowse1.TabIndex = 4;
+            this.btnBrowse1.TabIndex = 3;
             this.btnBrowse1.Text = "Browse";
             this.btnBrowse1.UseVisualStyleBackColor = true;
             this.btnBrowse1.Click += new System.EventHandler(this.btnBrowse1_Click);
@@ -511,6 +551,7 @@
             this.txtBrowse3.ReadOnly = true;
             this.txtBrowse3.Size = new System.Drawing.Size(284, 20);
             this.txtBrowse3.TabIndex = 3;
+            this.txtBrowse3.TabStop = false;
             this.txtBrowse3.Click += new System.EventHandler(this.btnBrowse3_Click);
             // 
             // txtBrowse2
@@ -520,6 +561,7 @@
             this.txtBrowse2.ReadOnly = true;
             this.txtBrowse2.Size = new System.Drawing.Size(284, 20);
             this.txtBrowse2.TabIndex = 3;
+            this.txtBrowse2.TabStop = false;
             this.txtBrowse2.Click += new System.EventHandler(this.btnBrowse2_Click);
             // 
             // txtBrowse1
@@ -529,6 +571,7 @@
             this.txtBrowse1.ReadOnly = true;
             this.txtBrowse1.Size = new System.Drawing.Size(284, 20);
             this.txtBrowse1.TabIndex = 3;
+            this.txtBrowse1.TabStop = false;
             this.txtBrowse1.Click += new System.EventHandler(this.btnBrowse1_Click);
             // 
             // label4
@@ -569,7 +612,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(969, 376);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Auto join Group";
+            this.tabPage2.Text = "Group Auto Join";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox11
@@ -588,7 +631,7 @@
             this.button1.Location = new System.Drawing.Point(313, 22);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(72, 24);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 8;
             this.button1.Text = "Browse";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -599,6 +642,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(292, 20);
             this.textBox1.TabIndex = 0;
+            this.textBox1.TabStop = false;
             // 
             // groupBox10
             // 
@@ -630,7 +674,7 @@
             this.txtJoinDelay.Location = new System.Drawing.Point(288, 335);
             this.txtJoinDelay.Name = "txtJoinDelay";
             this.txtJoinDelay.Size = new System.Drawing.Size(52, 20);
-            this.txtJoinDelay.TabIndex = 6;
+            this.txtJoinDelay.TabIndex = 9;
             this.txtJoinDelay.Text = "30";
             this.txtJoinDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -655,10 +699,11 @@
             // 
             // btnGroupJoin
             // 
+            this.btnGroupJoin.Enabled = false;
             this.btnGroupJoin.Location = new System.Drawing.Point(406, 333);
             this.btnGroupJoin.Name = "btnGroupJoin";
             this.btnGroupJoin.Size = new System.Drawing.Size(112, 24);
-            this.btnGroupJoin.TabIndex = 3;
+            this.btnGroupJoin.TabIndex = 10;
             this.btnGroupJoin.Text = "Gia nhập toàn bộ";
             this.btnGroupJoin.UseVisualStyleBackColor = true;
             this.btnGroupJoin.Click += new System.EventHandler(this.btnGroupJoin_Click);
@@ -679,6 +724,7 @@
             this.dgGroupSearch.ShowEditingIcon = false;
             this.dgGroupSearch.Size = new System.Drawing.Size(507, 310);
             this.dgGroupSearch.TabIndex = 0;
+            this.dgGroupSearch.TabStop = false;
             // 
             // group_search_name
             // 
@@ -721,7 +767,7 @@
             this.btnGroupSearchFr.Location = new System.Drawing.Point(253, 61);
             this.btnGroupSearchFr.Name = "btnGroupSearchFr";
             this.btnGroupSearchFr.Size = new System.Drawing.Size(133, 24);
-            this.btnGroupSearchFr.TabIndex = 3;
+            this.btnGroupSearchFr.TabIndex = 7;
             this.btnGroupSearchFr.Text = "Lấy danh sách nhóm";
             this.btnGroupSearchFr.UseVisualStyleBackColor = true;
             // 
@@ -730,7 +776,7 @@
             this.txtGroupSearchFr.Location = new System.Drawing.Point(18, 35);
             this.txtGroupSearchFr.Name = "txtGroupSearchFr";
             this.txtGroupSearchFr.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearchFr.TabIndex = 0;
+            this.txtGroupSearchFr.TabIndex = 6;
             // 
             // label15
             // 
@@ -773,7 +819,7 @@
             this.btnGroupSearch.Location = new System.Drawing.Point(309, 99);
             this.btnGroupSearch.Name = "btnGroupSearch";
             this.btnGroupSearch.Size = new System.Drawing.Size(78, 24);
-            this.btnGroupSearch.TabIndex = 3;
+            this.btnGroupSearch.TabIndex = 5;
             this.btnGroupSearch.Text = "Tìm kiếm";
             this.btnGroupSearch.UseVisualStyleBackColor = true;
             this.btnGroupSearch.Click += new System.EventHandler(this.btnGroupSearch_Click);
@@ -792,7 +838,7 @@
             this.txtGroupSearchMin.Location = new System.Drawing.Point(19, 73);
             this.txtGroupSearchMin.Name = "txtGroupSearchMin";
             this.txtGroupSearchMin.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearchMin.TabIndex = 1;
+            this.txtGroupSearchMin.TabIndex = 4;
             this.txtGroupSearchMin.Text = "1000";
             // 
             // txtGroupSearch
@@ -800,7 +846,7 @@
             this.txtGroupSearch.Location = new System.Drawing.Point(19, 33);
             this.txtGroupSearch.Name = "txtGroupSearch";
             this.txtGroupSearch.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearch.TabIndex = 1;
+            this.txtGroupSearch.TabIndex = 3;
             // 
             // label13
             // 
@@ -821,7 +867,7 @@
             this.tabPageInvite.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageInvite.Size = new System.Drawing.Size(969, 376);
             this.tabPageInvite.TabIndex = 2;
-            this.tabPageInvite.Text = "Auto invite Group";
+            this.tabPageInvite.Text = "Group Auto Invite";
             this.tabPageInvite.UseVisualStyleBackColor = true;
             // 
             // groupBox7
@@ -847,6 +893,7 @@
             this.dgInvitedGroups.ReadOnly = true;
             this.dgInvitedGroups.Size = new System.Drawing.Size(386, 206);
             this.dgInvitedGroups.TabIndex = 0;
+            this.dgInvitedGroups.TabStop = false;
             // 
             // invited_group
             // 
@@ -918,7 +965,7 @@
             this.btnInvite.Location = new System.Drawing.Point(254, 69);
             this.btnInvite.Name = "btnInvite";
             this.btnInvite.Size = new System.Drawing.Size(132, 25);
-            this.btnInvite.TabIndex = 4;
+            this.btnInvite.TabIndex = 5;
             this.btnInvite.Text = "Mời tham gia nhóm";
             this.btnInvite.UseVisualStyleBackColor = true;
             this.btnInvite.Click += new System.EventHandler(this.btnInvite_Click);
@@ -928,7 +975,7 @@
             this.txtInviteDelay.Location = new System.Drawing.Point(108, 45);
             this.txtInviteDelay.Name = "txtInviteDelay";
             this.txtInviteDelay.Size = new System.Drawing.Size(277, 20);
-            this.txtInviteDelay.TabIndex = 3;
+            this.txtInviteDelay.TabIndex = 4;
             this.txtInviteDelay.Text = "30";
             // 
             // label11
@@ -945,7 +992,7 @@
             this.txtInviteName.Location = new System.Drawing.Point(108, 18);
             this.txtInviteName.Name = "txtInviteName";
             this.txtInviteName.Size = new System.Drawing.Size(277, 20);
-            this.txtInviteName.TabIndex = 1;
+            this.txtInviteName.TabIndex = 3;
             // 
             // label10
             // 
@@ -999,13 +1046,294 @@
             this.label9.TabIndex = 1;
             this.label9.Text = "* Xóa nhóm trong danh sách AUTO: Mũi tên chọn dòng => Phím Delete";
             // 
+            // tabPageComment
+            // 
+            this.tabPageComment.Controls.Add(this.groupBox15);
+            this.tabPageComment.Controls.Add(this.groupBox14);
+            this.tabPageComment.Controls.Add(this.groupBox13);
+            this.tabPageComment.Location = new System.Drawing.Point(4, 22);
+            this.tabPageComment.Name = "tabPageComment";
+            this.tabPageComment.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageComment.Size = new System.Drawing.Size(969, 376);
+            this.tabPageComment.TabIndex = 4;
+            this.tabPageComment.Text = "Group Auto Comment";
+            this.tabPageComment.UseVisualStyleBackColor = true;
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.dgComment);
+            this.groupBox15.Location = new System.Drawing.Point(445, 8);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(518, 365);
+            this.groupBox15.TabIndex = 2;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Danh sách bài đăng bình luận thành công";
+            // 
+            // dgComment
+            // 
+            this.dgComment.AllowUserToAddRows = false;
+            this.dgComment.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgComment.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgComment.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.group_comment_name,
+            this.group_comment_link});
+            this.dgComment.Location = new System.Drawing.Point(8, 18);
+            this.dgComment.Name = "dgComment";
+            this.dgComment.ReadOnly = true;
+            this.dgComment.Size = new System.Drawing.Size(500, 341);
+            this.dgComment.TabIndex = 0;
+            // 
+            // group_comment_name
+            // 
+            this.group_comment_name.DataPropertyName = "group_comment_name";
+            this.group_comment_name.HeaderText = "Tên nhóm";
+            this.group_comment_name.Name = "group_comment_name";
+            this.group_comment_name.ReadOnly = true;
+            // 
+            // group_comment_link
+            // 
+            this.group_comment_link.DataPropertyName = "group_comment_link";
+            this.group_comment_link.HeaderText = "Link";
+            this.group_comment_link.Name = "group_comment_link";
+            this.group_comment_link.ReadOnly = true;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.btnCommentPause);
+            this.groupBox14.Controls.Add(this.lblCommenting);
+            this.groupBox14.Controls.Add(this.lblCommentTick);
+            this.groupBox14.Controls.Add(this.txtCommentDelay);
+            this.groupBox14.Controls.Add(this.label23);
+            this.groupBox14.Controls.Add(this.btnComment);
+            this.groupBox14.Controls.Add(this.txtComment);
+            this.groupBox14.Location = new System.Drawing.Point(8, 83);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(431, 104);
+            this.groupBox14.TabIndex = 1;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Nội dung";
+            // 
+            // btnCommentPause
+            // 
+            this.btnCommentPause.Enabled = false;
+            this.btnCommentPause.Location = new System.Drawing.Point(351, 72);
+            this.btnCommentPause.Name = "btnCommentPause";
+            this.btnCommentPause.Size = new System.Drawing.Size(75, 23);
+            this.btnCommentPause.TabIndex = 6;
+            this.btnCommentPause.Text = "Pause";
+            this.btnCommentPause.UseVisualStyleBackColor = true;
+            this.btnCommentPause.Click += new System.EventHandler(this.btnCommentPause_Click);
+            // 
+            // lblCommenting
+            // 
+            this.lblCommenting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblCommenting.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblCommenting.Location = new System.Drawing.Point(7, 77);
+            this.lblCommenting.Name = "lblCommenting";
+            this.lblCommenting.Size = new System.Drawing.Size(328, 12);
+            this.lblCommenting.TabIndex = 5;
+            // 
+            // lblCommentTick
+            // 
+            this.lblCommentTick.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblCommentTick.Location = new System.Drawing.Point(210, 49);
+            this.lblCommentTick.Name = "lblCommentTick";
+            this.lblCommentTick.Size = new System.Drawing.Size(100, 20);
+            this.lblCommentTick.TabIndex = 4;
+            this.lblCommentTick.Text = "Ready";
+            this.lblCommentTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtCommentDelay
+            // 
+            this.txtCommentDelay.Location = new System.Drawing.Point(49, 50);
+            this.txtCommentDelay.Name = "txtCommentDelay";
+            this.txtCommentDelay.Size = new System.Drawing.Size(154, 20);
+            this.txtCommentDelay.TabIndex = 3;
+            this.txtCommentDelay.Text = "30";
+            this.txtCommentDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 53);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(37, 13);
+            this.label23.TabIndex = 2;
+            this.label23.Text = "Delay:";
+            // 
+            // btnComment
+            // 
+            this.btnComment.Enabled = false;
+            this.btnComment.Location = new System.Drawing.Point(313, 47);
+            this.btnComment.Name = "btnComment";
+            this.btnComment.Size = new System.Drawing.Size(113, 24);
+            this.btnComment.TabIndex = 1;
+            this.btnComment.Text = "Bắt đầu bình luận";
+            this.btnComment.UseVisualStyleBackColor = true;
+            this.btnComment.Click += new System.EventHandler(this.btnComment_Click);
+            // 
+            // txtComment
+            // 
+            this.txtComment.Location = new System.Drawing.Point(6, 24);
+            this.txtComment.Name = "txtComment";
+            this.txtComment.Size = new System.Drawing.Size(419, 20);
+            this.txtComment.TabIndex = 0;
+            this.txtComment.Text = "...";
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.Controls.Add(this.label22);
+            this.groupBox13.Controls.Add(this.cbCommentBefore);
+            this.groupBox13.Controls.Add(this.cbCommentYesterday);
+            this.groupBox13.Controls.Add(this.cbCommentToday);
+            this.groupBox13.Location = new System.Drawing.Point(8, 8);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(431, 69);
+            this.groupBox13.TabIndex = 0;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "Bộ lọc thời gian";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(15, 21);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(320, 13);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "Bạn muốn Comment các bài đăng Groups trong khoảng thời gian?";
+            // 
+            // cbCommentBefore
+            // 
+            this.cbCommentBefore.AutoSize = true;
+            this.cbCommentBefore.Checked = true;
+            this.cbCommentBefore.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCommentBefore.Location = new System.Drawing.Point(311, 43);
+            this.cbCommentBefore.Name = "cbCommentBefore";
+            this.cbCommentBefore.Size = new System.Drawing.Size(65, 17);
+            this.cbCommentBefore.TabIndex = 0;
+            this.cbCommentBefore.Text = "Hôm kia";
+            this.cbCommentBefore.UseVisualStyleBackColor = true;
+            // 
+            // cbCommentYesterday
+            // 
+            this.cbCommentYesterday.AutoSize = true;
+            this.cbCommentYesterday.Checked = true;
+            this.cbCommentYesterday.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCommentYesterday.Location = new System.Drawing.Point(167, 43);
+            this.cbCommentYesterday.Name = "cbCommentYesterday";
+            this.cbCommentYesterday.Size = new System.Drawing.Size(69, 17);
+            this.cbCommentYesterday.TabIndex = 0;
+            this.cbCommentYesterday.Text = "Hôm qua";
+            this.cbCommentYesterday.UseVisualStyleBackColor = true;
+            // 
+            // cbCommentToday
+            // 
+            this.cbCommentToday.AutoSize = true;
+            this.cbCommentToday.Checked = true;
+            this.cbCommentToday.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCommentToday.Location = new System.Drawing.Point(32, 43);
+            this.cbCommentToday.Name = "cbCommentToday";
+            this.cbCommentToday.Size = new System.Drawing.Size(68, 17);
+            this.cbCommentToday.TabIndex = 0;
+            this.cbCommentToday.Text = "Hôm nay";
+            this.cbCommentToday.UseVisualStyleBackColor = true;
+            // 
+            // tabPageLicense
+            // 
+            this.tabPageLicense.Controls.Add(this.groupBox12);
+            this.tabPageLicense.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLicense.Name = "tabPageLicense";
+            this.tabPageLicense.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLicense.Size = new System.Drawing.Size(969, 376);
+            this.tabPageLicense.TabIndex = 3;
+            this.tabPageLicense.Text = "License";
+            this.tabPageLicense.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.label21);
+            this.groupBox12.Controls.Add(this.label20);
+            this.groupBox12.Controls.Add(this.btnLicense);
+            this.groupBox12.Controls.Add(this.txtKey);
+            this.groupBox12.Controls.Add(this.label19);
+            this.groupBox12.Controls.Add(this.txtLicense);
+            this.groupBox12.Controls.Add(this.label18);
+            this.groupBox12.Location = new System.Drawing.Point(262, 48);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(399, 163);
+            this.groupBox12.TabIndex = 0;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Thông tin bản quyền";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.label21.Location = new System.Drawing.Point(85, 39);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(165, 13);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Phiên bản đầy đủ (30 ngày)";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(13, 39);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(58, 13);
+            this.label20.TabIndex = 5;
+            this.label20.Text = "Trạng thái:";
+            // 
+            // btnLicense
+            // 
+            this.btnLicense.Enabled = false;
+            this.btnLicense.Location = new System.Drawing.Point(282, 114);
+            this.btnLicense.Name = "btnLicense";
+            this.btnLicense.Size = new System.Drawing.Size(96, 24);
+            this.btnLicense.TabIndex = 4;
+            this.btnLicense.Text = "Nhập KEY";
+            this.btnLicense.UseVisualStyleBackColor = true;
+            // 
+            // txtKey
+            // 
+            this.txtKey.Location = new System.Drawing.Point(85, 88);
+            this.txtKey.Name = "txtKey";
+            this.txtKey.Size = new System.Drawing.Size(293, 20);
+            this.txtKey.TabIndex = 3;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(13, 90);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(31, 13);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "KEY:";
+            // 
+            // txtLicense
+            // 
+            this.txtLicense.Location = new System.Drawing.Point(85, 62);
+            this.txtLicense.Name = "txtLicense";
+            this.txtLicense.ReadOnly = true;
+            this.txtLicense.Size = new System.Drawing.Size(293, 20);
+            this.txtLicense.TabIndex = 1;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(13, 65);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(65, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Machine ID:";
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.lblViewProfile);
             this.groupBox5.Controls.Add(this.lblUsername);
             this.groupBox5.Controls.Add(this.pbAvatar);
-            this.groupBox5.Location = new System.Drawing.Point(663, 44);
+            this.groupBox5.Location = new System.Drawing.Point(663, 43);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(324, 70);
             this.groupBox5.TabIndex = 2;
@@ -1050,10 +1378,11 @@
             // miniTimer_ThemeContainer1
             // 
             this.miniTimer_ThemeContainer1.BackColor = System.Drawing.Color.White;
+            this.miniTimer_ThemeContainer1.Controls.Add(this.btnToggle);
             this.miniTimer_ThemeContainer1.Controls.Add(this.lblStatus);
             this.miniTimer_ThemeContainer1.Controls.Add(this.imgStatus);
             this.miniTimer_ThemeContainer1.Controls.Add(this.miniTimer_ControlBox1);
-            this.miniTimer_ThemeContainer1.Controls.Add(this.miniTimer_Label1);
+            this.miniTimer_ThemeContainer1.Controls.Add(this.lblVer);
             this.miniTimer_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.miniTimer_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.miniTimer_ThemeContainer1.Location = new System.Drawing.Point(0, 0);
@@ -1067,6 +1396,18 @@
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
             this.miniTimer_ThemeContainer1.Text = "iOne Facebook Auto Tools";
+            // 
+            // btnToggle
+            // 
+            this.btnToggle.Appearance = System.Windows.Forms.Appearance.Button;
+            this.btnToggle.AutoSize = true;
+            this.btnToggle.Location = new System.Drawing.Point(440, 516);
+            this.btnToggle.Name = "btnToggle";
+            this.btnToggle.Size = new System.Drawing.Size(120, 25);
+            this.btnToggle.TabIndex = 11;
+            this.btnToggle.Text = "Hiển thị trình duyệt";
+            this.btnToggle.UseVisualStyleBackColor = true;
+            this.btnToggle.Click += new System.EventHandler(this.btnToggle_Click);
             // 
             // lblStatus
             // 
@@ -1100,17 +1441,17 @@
             this.miniTimer_ControlBox1.TabIndex = 1;
             this.miniTimer_ControlBox1.Text = "miniTimer_ControlBox1";
             // 
-            // miniTimer_Label1
+            // lblVer
             // 
-            this.miniTimer_Label1.AutoSize = true;
-            this.miniTimer_Label1.BackColor = System.Drawing.Color.Transparent;
-            this.miniTimer_Label1.Font = new System.Drawing.Font("Tahoma", 9.75F);
-            this.miniTimer_Label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.miniTimer_Label1.Location = new System.Drawing.Point(12, 518);
-            this.miniTimer_Label1.Name = "miniTimer_Label1";
-            this.miniTimer_Label1.Size = new System.Drawing.Size(89, 16);
-            this.miniTimer_Label1.TabIndex = 0;
-            this.miniTimer_Label1.Text = "Version: 2.0.1";
+            this.lblVer.AutoSize = true;
+            this.lblVer.BackColor = System.Drawing.Color.Transparent;
+            this.lblVer.Font = new System.Drawing.Font("Tahoma", 9.75F);
+            this.lblVer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.lblVer.Location = new System.Drawing.Point(12, 520);
+            this.lblVer.Name = "lblVer";
+            this.lblVer.Size = new System.Drawing.Size(298, 16);
+            this.lblVer.TabIndex = 0;
+            this.lblVer.Text = "Version: 2.0.1. ©Bản quyền thuộc về IONE FAMILY";
             // 
             // MainForm
             // 
@@ -1120,13 +1461,13 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1000, 550);
             this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabControl1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.miniTimer_ThemeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1000, 550);
+            this.MinimumSize = new System.Drawing.Size(261, 65);
             this.Name = "MainForm";
             this.Text = "iOne Facebook Auto Tools";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
@@ -1134,7 +1475,7 @@
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.TabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -1160,6 +1501,16 @@
             this.groupBox6.PerformLayout();
             this.GroupBoxInvite.ResumeLayout(false);
             this.GroupBoxInvite.PerformLayout();
+            this.tabPageComment.ResumeLayout(false);
+            this.groupBox15.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgComment)).EndInit();
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
+            this.tabPageLicense.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).EndInit();
             this.miniTimer_ThemeContainer1.ResumeLayout(false);
@@ -1174,7 +1525,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         public System.Windows.Forms.Button btnLogin;
@@ -1258,10 +1609,38 @@
         public System.Windows.Forms.Label lblJoinTick;
         public System.Windows.Forms.Label lblSearching;
         private MiniTimer_Theme.MiniTimer_ThemeContainer miniTimer_ThemeContainer1;
-        private MiniTimer_Theme.MiniTimer_Label miniTimer_Label1;
+        private MiniTimer_Theme.MiniTimer_Label lblVer;
         private MiniTimer_Theme.MiniTimer_ControlBox miniTimer_ControlBox1;
         public System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.PictureBox imgStatus;
+        public System.Windows.Forms.CheckBox btnToggle;
+        private System.Windows.Forms.TabPage tabPageLicense;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.Button btnLicense;
+        private System.Windows.Forms.TextBox txtKey;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtLicense;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TabPage tabPageComment;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_comment_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_comment_link;
+        public System.Windows.Forms.Button btnComment;
+        public System.Windows.Forms.Label lblCommentTick;
+        public System.Windows.Forms.TextBox txtCommentDelay;
+        public System.Windows.Forms.TextBox txtComment;
+        public System.Windows.Forms.CheckBox cbCommentBefore;
+        public System.Windows.Forms.CheckBox cbCommentYesterday;
+        public System.Windows.Forms.CheckBox cbCommentToday;
+        public System.Windows.Forms.Label lblCommenting;
+        public System.Windows.Forms.DataGridView dgComment;
+        public System.Windows.Forms.Button btnCommentPause;
 
     }
 }

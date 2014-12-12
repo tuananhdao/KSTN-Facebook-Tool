@@ -17,22 +17,10 @@ namespace KSTN_Facebook_Tool
         [STAThread]
         static void Main()
         {
-            bool successAquisition;
-            Mutex programMutex = new Mutex(true,
-                AppDomain.CurrentDomain.SetupInformation.ApplicationName,
-                out successAquisition);
-
-            if (successAquisition)
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                mainForm = new MainForm();
-                Application.Run(mainForm);
-            }
-            else
-            {
-                MessageBox.Show("Ứng dụng đang được chạy! Bạn chỉ có thể mở 01 cửa sổ chương trình!", "Ứng dụng đang chạy");
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            mainForm = new MainForm();
+            Application.Run(mainForm);
         }
     }
 }
