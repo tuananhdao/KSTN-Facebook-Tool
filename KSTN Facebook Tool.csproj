@@ -98,8 +98,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncInvoke.cs" />
     <Compile Include="FingerPrint.cs" />
+    <Compile Include="License.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="License.Designer.cs">
+      <DependentUpon>License.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +113,6 @@
     </Compile>
     <Compile Include="MiniTimer Theme.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PerPixelAlphaForm.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="SeleniumControl.cs" />
     <Compile Include="MainForm.cs">
@@ -121,6 +123,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="License.resx">
+      <DependentUpon>License.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>

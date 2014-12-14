@@ -80,3 +80,4 @@ C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Facebook Tool.exe
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Facebook Tool.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.exe
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.pdb
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.License.resources

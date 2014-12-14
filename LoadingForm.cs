@@ -38,7 +38,7 @@ namespace KSTN_Facebook_Tool
             check();
         }
 
-        private async Task check()
+        private async void check()
         {
             while (true)
             {

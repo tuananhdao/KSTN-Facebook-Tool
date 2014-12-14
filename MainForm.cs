@@ -14,12 +14,13 @@ using System.Threading;
 using System.Reflection;
 using AutoItX3Lib;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace KSTN_Facebook_Tool
 {
     public partial class MainForm : Form
     {
+        #region SMALL STUFFS
         // Disable WebBrowser Sounds
         const int FEATURE_DISABLE_NAVIGATION_SOUNDS = 21;
         const int SET_FEATURE_ON_PROCESS = 0x00000002;
@@ -54,30 +55,23 @@ namespace KSTN_Facebook_Tool
                 return parameters;
             }
         }
+        #endregion
 
         SeleniumControl SE;
-        // public DataTable dt;
-        //public System.Threading.Thread t;
         public AutoItX3 autoIt = new AutoItX3();
 
+        #region GENERAL MAINFORM
         public MainForm()
         {
             InitializeComponent();
             DisableClickSounds();
 
             autoIt.AutoItSetOption("WinTitleMatchMode", 2);
-
-            //dt = new DataTable();
-            //dt.Columns.Add("group_name");
-            //dt.Columns.Add("group_link");
-            //dt.Columns.Add("group_mem");
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
             Program.loadingForm = new LoadingForm();
-            //new Thread(() => new LoadingForm().Show()).Start();
-            // t = new System.Threading.Thread(new System.Threading.ThreadStart(() => Program.loadingForm.ShowDialog()));
             SE = new SeleniumControl();
             txtUser.Focus();
             cbMethods.SelectedIndex = 0;
@@ -96,16 +90,55 @@ namespace KSTN_Facebook_Tool
             }
             else
             {
+                if (!SE.ready)
+                {
+                    MessageBox.Show("Chương trình đang thực hiện 1 tác vụ, không thể đăng xuất!");
+                    return;
+                }
                 SE.Logout();
             }
         }
 
+        private void lblViewProfile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(lblViewProfile.Text);
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageInvite"])
+            {
+                dgGroups.Parent = GroupBoxInvite;
+                dgGroups.Height = 310;
+            }
+            else
+            {
+                dgGroups.Parent = groupBox4;
+                dgGroups.Height = 160;
+            }
+        }
+
+        private void btnToggle_Click(object sender, EventArgs e)
+        {
+            if (SE.driver == null)
+            {
+                MessageBox.Show("Trình duyệt chưa được khởi tạo!");
+                btnToggle.Checked = false;
+            }
+            else
+            {
+                SE.Toggle();
+            }
+        }
+        #endregion
+
+        #region TAB AUTOPOST
         private void btnBrowse1_Click(object sender, EventArgs e)
         {
             var fDialog = new System.Windows.Forms.OpenFileDialog();
             fDialog.Title = "Open Arial Bitmap File";
             fDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-            fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             DialogResult result = fDialog.ShowDialog(); // Show the dialog.
             if (result == DialogResult.OK) // Test result.
             {
@@ -119,7 +152,7 @@ namespace KSTN_Facebook_Tool
             var fDialog = new System.Windows.Forms.OpenFileDialog();
             fDialog.Title = "Open Arial Bitmap File";
             fDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-            fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             DialogResult result = fDialog.ShowDialog(); // Show the dialog.
             if (result == DialogResult.OK) // Test result.
             {
@@ -133,7 +166,7 @@ namespace KSTN_Facebook_Tool
             var fDialog = new System.Windows.Forms.OpenFileDialog();
             fDialog.Title = "Open Arial Bitmap File";
             fDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-            fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             DialogResult result = fDialog.ShowDialog(); // Show the dialog.
             if (result == DialogResult.OK) // Test result.
             {
@@ -216,11 +249,6 @@ namespace KSTN_Facebook_Tool
             SE.AutoPost();
         }
 
-        private void lblViewProfile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(lblViewProfile.Text);
-        }
-
         private void btnGroupExport_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
@@ -243,69 +271,14 @@ namespace KSTN_Facebook_Tool
                 sw.Close();
             }
         }
+        #endregion
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        #region TAB AUTOJOIN
+        private void btnGroupJoin_Click(object sender, EventArgs e)
         {
-            if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageInvite"])
+            if (dgGroupSearch.Rows.Count == 0)
             {
-                dgGroups.Parent = GroupBoxInvite;
-                dgGroups.Height = 310;
-            }
-            else
-            {
-                dgGroups.Parent = groupBox4;
-                dgGroups.Height = 160;
-            }
-            if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageLicense"] && txtLicense.Text == "")
-                CalculateLicense();
-        }
-
-        private async Task CalculateLicense()
-        {
-            txtLicense.Text = FingerPrint.Value();
-            CalculateMD5Hash(txtLicense.Text + DateTime.Today.Month);
-        }
-
-        public void CalculateMD5Hash(string input)
-        {
-            // To calculate MD5 hash from an input string
-
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            // convert byte array to hex string
-
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < hash.Length; i++)
-
-            {
-
-              //to make hex string use lower case instead of uppercase add parameter “X2″
-
-                sb.Append(hash[i].ToString("X2"));
-
-            }
-
-            txtKey.Text = sb.ToString();
-        }
-
-        private void btnInvite_Click(object sender, EventArgs e)
-        {
-            if (txtInviteName.Text == "")
-            {
-                MessageBox.Show("Điền tên muốn mời trước khi bắt đầu Auto!");
-                return;
-            }
-
-            int delay;
-
-            if (!int.TryParse(txtInviteDelay.Text, out delay) || delay < 0)
-            {
-                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                MessageBox.Show("Chưa có nhóm nào trong List!");
                 return;
             }
 
@@ -314,12 +287,18 @@ namespace KSTN_Facebook_Tool
                 MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
+            int delay;
 
-            txtInviteDelay.Enabled = false;
-            txtInviteName.Enabled = false;
-            btnInvite.Enabled = false;
+            if (!int.TryParse(txtJoinDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
 
-            SE.AutoInvite();
+            btnGroupJoin.Enabled = false;
+            txtJoinDelay.Enabled = false;
+
+            SE.AutoJoin();
         }
 
         private void btnGroupSearch_Click(object sender, EventArgs e)
@@ -350,12 +329,22 @@ namespace KSTN_Facebook_Tool
 
             SE.GroupSearch();
         }
+        #endregion
 
-        private void btnGroupJoin_Click(object sender, EventArgs e)
+        #region TAB AUTOINVITE
+        private void btnInvite_Click(object sender, EventArgs e)
         {
-            if (dgGroupSearch.Rows.Count == 0)
+            if (txtInviteName.Text == "")
             {
-                MessageBox.Show("Chưa có nhóm nào trong List!");
+                MessageBox.Show("Điền tên muốn mời trước khi bắt đầu Auto!");
+                return;
+            }
+
+            int delay;
+
+            if (!int.TryParse(txtInviteDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
                 return;
             }
 
@@ -364,40 +353,16 @@ namespace KSTN_Facebook_Tool
                 MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
-            int delay;
 
-            if (!int.TryParse(txtJoinDelay.Text, out delay) || delay < 0)
-            {
-                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
-                return;
-            }
+            txtInviteDelay.Enabled = false;
+            txtInviteName.Enabled = false;
+            btnInvite.Enabled = false;
 
-            btnGroupJoin.Enabled = false;
-            txtJoinDelay.Enabled = false;
-
-            SE.AutoJoin();
+            SE.AutoInvite();
         }
+        #endregion
 
-        public void addGroup2Grid(IWebElement k)
-        {
-            //dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), "");
-            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Insert(0, k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
-            t.Start();
-        }
-
-        private void btnToggle_Click(object sender, EventArgs e)
-        {
-            if (SE.driver == null)
-            {
-                MessageBox.Show("Trình duyệt chưa được khởi tạo!");
-                btnToggle.Checked = false;
-            }
-            else
-            {
-                SE.Toggle();
-            }
-        }
-
+        #region TAB AUTOCOMMENT
         private void btnComment_Click(object sender, EventArgs e)
         {
             if (SE.ready == false)
@@ -462,5 +427,92 @@ namespace KSTN_Facebook_Tool
                 txtCommentDelay.Enabled = false;
             }
         }
+        #endregion
+
+        #region TAB AUTOTAG
+        private void btnTag_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (txtTagUrl.Text == "")
+            {
+                MessageBox.Show("Thêm đường dẫn ảnh hoặc bài viết trước khi Tag");
+                return;
+            }
+
+            String tag_url = "";
+
+            Match match = Regex.Match(txtTagUrl.Text, @"^https\:\/\/www\.facebook\.com\/(.*)", RegexOptions.None);
+
+            if (match.Success)
+            {
+                tag_url = "https://m.facebook.com/" + match.Groups[1].Value;
+            }
+            else
+            {
+                match = Regex.Match(txtTagUrl.Text, @"^https\:\/\/m\.facebook\.com\/(.*)", RegexOptions.None);
+                if (match.Success)
+                {
+                    tag_url = txtTagUrl.Text;
+                }
+                else
+                {
+                    MessageBox.Show("Đường dẫn bài viết/ảnh sai định dạng!\nVí dụ:\nhttps://www.facebook.com/photo.php?fbid=########\nhoặc\nhttps://m.facebook.com/photo.php?fbid=########");
+                    return;
+                }
+            }
+
+            btnTag.Enabled = false;
+            txtTagUrl.Enabled = false;
+
+            SE.AutoTag(tag_url);
+        }
+        #endregion
+
+        #region TAB PM
+        private void btnPMImportFriends_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác!");
+                return;
+            }
+
+            btnPMImportFriends.Enabled = false;
+
+            SE.ImportFriendList();
+        }
+        #endregion
+
+        #region OTHER HELPERS
+        public void addGroup2Grid(IWebElement k)
+        {
+            //dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), "");
+            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Insert(0, k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
+            t.Start();
+        }
+
+        private void lblVer_Click(object sender, EventArgs e)
+        {
+            if (!btnToggle.Enabled)
+            {
+                Random rnd = new Random();
+                if (rnd.Next(10) == 0)
+                {
+                    btnToggle.Enabled = true;
+                }
+            }
+        }
+
+        private void btnLicense_Click(object sender, EventArgs e)
+        {
+            License licForm = new License();
+            licForm.ShowDialog();
+        }
+        #endregion
     }
 }

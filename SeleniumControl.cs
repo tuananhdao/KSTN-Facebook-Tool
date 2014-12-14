@@ -17,7 +17,7 @@ namespace KSTN_Facebook_Tool
     class SeleniumControl
     {
         public OpenQA.Selenium.Firefox.FirefoxDriver driver;
-        //OpenQA.Selenium.PhantomJS.PhantomJSDriver driver;
+
         Dictionary<String, String> links = new Dictionary<string, string>();
         Thread t;
         public bool ready = true;
@@ -36,7 +36,10 @@ namespace KSTN_Facebook_Tool
             links["fb_group_add"] = "https://m.facebook.com/groups/members/search/?group_id=";
             links["fb_photo_id"] = "https://www.facebook.com/photo.php?fbid=";
             links["fb_group_search_query"] = "https://m.facebook.com/search/?search=group&ssid=0&o=69&refid=46&pn=2&query="; // + &s=25 #skip
+            links["friend_list"] = "https://m.facebook.com/USER_ID?v=friends&mutual&startindex=0";
         }
+
+        #region GENERAL CONTROLS
 
         public void quit()
         {
@@ -106,7 +109,10 @@ namespace KSTN_Facebook_Tool
             catch { }
         }
 
-        public async Task FBLogin(String user, String pass)
+        #endregion
+
+        #region LOGIN_LOGOUT
+        public async void FBLogin(String user, String pass)
         {
             Program.mainForm.btnLogin.Enabled = false;
 
@@ -136,7 +142,7 @@ namespace KSTN_Facebook_Tool
                 //profile.SetPreference("dom.ipc.plugins.enabled.libflashplayer.so", "false");
                 this.driver = new OpenQA.Selenium.Firefox.FirefoxDriver(profile);
                 Program.mainForm.autoIt.WinSetState("Mozilla Firefox", "", 0);
-                driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(30));
+                driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
                 driver.Manage().Timeouts().SetScriptTimeout(TimeSpan.FromSeconds(10));
                 driver.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(30));
                 setReady(true);
@@ -182,6 +188,12 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnGroupSearchFr.Enabled = true;
                 Program.mainForm.btnGroupJoin.Enabled = true;
                 Program.mainForm.btnComment.Enabled = true;
+                Program.mainForm.btnTag.Enabled = true;
+                Program.mainForm.btnPMImportFriends.Enabled = true;
+                Program.mainForm.btnPM.Enabled = true;
+                Program.mainForm.btnPMSendFrRequests.Enabled = true;
+                Program.mainForm.btnPMImportProfile.Enabled = true;
+                Program.mainForm.btnPMImportGroup.Enabled = true;
 
                 //Program.mainForm.Focus();
                 Program.loadingForm.setText("ĐĂNG NHẬP THÀNH CÔNG! ĐANG TẢI DANH SÁCH NHÓM...");
@@ -255,7 +267,43 @@ namespace KSTN_Facebook_Tool
             Program.mainForm.addGroup2Grid(k);
         }
 
-        public async Task AutoPost()
+        public async void Logout()
+        {
+            setReady(false, "Đang đăng xuất");
+            var nodes = driver.FindElementsByXPath("//td[@style]//a");
+            if (nodes.Count == 5)
+            {
+                await Task.Factory.StartNew(() => nodes[4].Click());
+            }
+            var login = driver.FindElementsByName("login");
+            if (login.Count == 0)
+            {
+                Exceptions_Handler();
+            }
+            else
+            {
+                Program.mainForm.btnLogin.Text = "Đăng nhập";
+                Program.mainForm.dgGroups.Rows.Clear();
+                Program.mainForm.AcceptButton = Program.mainForm.btnLogin;
+
+                Program.mainForm.txtUser.Enabled = true;
+                Program.mainForm.txtPass.Enabled = true;
+                Program.mainForm.btnPost.Enabled = false;
+                Program.mainForm.btnInvite.Enabled = false;
+                Program.mainForm.btnGroupSearch.Enabled = false;
+                Program.mainForm.btnGroupSearchFr.Enabled = false;
+                Program.mainForm.btnGroupJoin.Enabled = false;
+                Program.mainForm.btnComment.Enabled = false;
+                Program.mainForm.btnTag.Enabled = false;
+                Program.mainForm.btnPMImportFriends.Enabled = false;
+                Program.mainForm.btnPM.Enabled = false;
+                Program.mainForm.btnPMSendFrRequests.Enabled = false;
+            }
+            setReady(true, "Đăng xuất thành công | Ready");
+        }
+        #endregion
+
+        public async void AutoPost()
         {
             if (!pause)
                 Program.mainForm.lblTick.Text = "POSTING";
@@ -275,37 +323,11 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
                 Program.mainForm.lblPostingGroup.Text = row.Cells[0].Value.ToString();
 
-                /*
-                if (pause)
-                {
-                    Program.mainForm.txtContent.Enabled = true;
-                    Program.mainForm.txtDelay.Enabled = true;
-                    Program.mainForm.cbMethods.Enabled = true;
-                    Program.mainForm.txtBrowse1.Enabled = true;
-                    Program.mainForm.txtBrowse2.Enabled = true;
-                    Program.mainForm.txtBrowse3.Enabled = true;
-                    Program.mainForm.btnBrowse1.Enabled = true;
-                    Program.mainForm.btnBrowse2.Enabled = true;
-                    Program.mainForm.btnBrowse3.Enabled = true;
-                }*/
-
                 while (pause)
                 {
                     await TaskEx.Delay(1000);
                 }
 
-                /*
-                Program.mainForm.txtContent.Enabled = false;
-                Program.mainForm.txtDelay.Enabled = false;
-                Program.mainForm.cbMethods.Enabled = false;
-                Program.mainForm.txtBrowse1.Enabled = false;
-                Program.mainForm.txtBrowse2.Enabled = false;
-                Program.mainForm.txtBrowse3.Enabled = false;
-                Program.mainForm.btnBrowse1.Enabled = false;
-                Program.mainForm.btnBrowse2.Enabled = false;
-                Program.mainForm.btnBrowse3.Enabled = false;*/
-
-                //Navigate(row.Cells[1].Value.ToString());
                 await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
                 while (true)
                 {
@@ -417,7 +439,7 @@ namespace KSTN_Facebook_Tool
             setReady(true);
         }
 
-        public async Task AutoInvite()
+        public async void AutoInvite()
         {
             setReady(false, "Đang tự động mời nhóm");
             Program.mainForm.lblInviteTick.Text = "Đang mời";
@@ -493,7 +515,7 @@ namespace KSTN_Facebook_Tool
             setReady(true);
         }
 
-        public async Task GroupSearch()
+        public async void GroupSearch()
         {
             setReady(false, "Đang tự động tìm nhóm");
             int success = 0;
@@ -560,7 +582,7 @@ namespace KSTN_Facebook_Tool
             setReady(true, "Tự động tìm nhóm: " + success + "| Ready");
         }
 
-        public async Task AutoJoin()
+        public async void AutoJoin()
         {
             setReady(false, "Đang tự động gia nhập nhóm");
             int delay;
@@ -613,7 +635,7 @@ namespace KSTN_Facebook_Tool
             setReady(true, "Hoàn thành gia nhập nhóm | Ready");
         }
 
-        public async Task AutoComment()
+        public async void AutoComment()
         {
             setReady(false, "Đang tự động bình luận nhóm");
             int delay;
@@ -655,12 +677,13 @@ namespace KSTN_Facebook_Tool
                 await Task.Factory.StartNew(() => Navigate(post_url));
                 Program.mainForm.lblCommenting.Text = driver.Title;
 
-
+                if (driver.FindElementsByName("comment_text").Count == 0)
+                    continue;
                 InputValueAdd("comment_text", Program.mainForm.txtComment.Text);
 
                 IWebElement btnSubmit = driver.FindElementByXPath("//form[@method='post']//input[@type='submit']");
                 await Task.Factory.StartNew(() => btnSubmit.Click());
-                Program.mainForm.dgComment.Rows.Add(driver.Title, driver.Url);
+                Program.mainForm.dgComment.Rows.Insert(0, driver.Title, driver.Url);
 
                 for (int i = 0; i < delay + 1; i++)
                 {
@@ -687,6 +710,111 @@ namespace KSTN_Facebook_Tool
             setReady(true, "Bình luận nhóm hoàn thành! | Ready");
         }
 
+        public async void AutoTag(String tag_url)
+        {
+            setReady(false, "Đang tự động tag");
+
+            await Task.Factory.StartNew(() => Navigate(tag_url));
+            int paged = 0;
+
+            while (true)
+            {
+                var iTags = driver.FindElementsByXPath("//form[@method='post']//span//a");
+
+                if (iTags.Count != 2)
+                {
+                    MessageBox.Show("Xem lại URL bài viết/ảnh!");
+                    Program.mainForm.btnTag.Enabled = true;
+                    Program.mainForm.txtTagUrl.Enabled = true;
+                    setReady(true, "Tag thất bại | Ready");
+                    return;
+                }
+
+                iTags[1].Click();
+
+                for (int i = 0; i < paged; i++)
+                {
+                    if (driver.FindElementsByName("show_more").Count != 0)
+                    {
+                        await Task.Factory.StartNew(() => driver.FindElementByName("show_more").Click());
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                var checkboxes = driver.FindElementsByXPath("//fieldset//table//tr");
+
+                foreach (IWebElement checkbox in checkboxes)
+                {
+                    checkbox.Click();
+                    Program.mainForm.dgTag.Rows.Insert(0, checkbox.Text);
+                }
+
+                if (driver.FindElementsByName("done").Count == 0)
+                {
+                    MessageBox.Show("Xem lại URL bài viết/ảnh!");
+                    Program.mainForm.btnTag.Enabled = true;
+                    Program.mainForm.txtTagUrl.Enabled = true;
+                    setReady(true, "Tag thất bại | Ready");
+                    return;
+                }
+
+                await Task.Factory.StartNew(() => Click("done"));
+
+                if (driver.FindElementsByName("post").Count == 0)
+                {
+                    MessageBox.Show("Xem lại URL bài viết/ảnh!");
+                    Program.mainForm.btnTag.Enabled = true;
+                    Program.mainForm.txtTagUrl.Enabled = true;
+                    setReady(true, "Tag thất bại | Ready");
+                    return;
+                }
+
+                await Task.Factory.StartNew(() => Click("post"));
+
+                paged++;
+
+                if (checkboxes.Count < 15)
+                    break;
+            }
+
+            MessageBox.Show("Tag hoàn thành!");
+            Program.mainForm.btnTag.Enabled = true;
+            Program.mainForm.txtTagUrl.Enabled = true;
+            setReady(true, "Tag thành công | Ready");
+        }
+
+        public async void ImportFriendList()
+        {
+            setReady(false, "Đang nhập danh sách bạn bè");
+
+            await Task.Factory.StartNew(() => Navigate("https://m.facebook.com/" + user_id + "?v=friends&refid=17"));
+
+            while (true)
+            {
+                var profiles = driver.FindElementsByXPath("//a[contains(@href, 'profile.php')]");
+
+                foreach (IWebElement profile in profiles)
+                {
+                    Program.mainForm.dgUID.Rows.Insert(0, profile.Text, profile.GetAttribute("href"));
+                    await TaskEx.Delay(10);
+                }
+
+                var m_more_friends = await Task.Factory.StartNew(() => driver.FindElementsById("m_more_friends"));
+                if (m_more_friends.Count == 0)
+                    break;
+                else
+                    await Task.Factory.StartNew(() => m_more_friends[0].FindElement(By.TagName("a")).Click());
+            }
+            
+            MessageBox.Show("Nhập danh sách bạn bè thành công!");
+            Program.mainForm.btnPMImportFriends.Enabled = true;
+            setReady(true, "Nhập thành công danh sách bạn bè | Ready");
+        }
+
+        #region OTHER HELPERS
         public void setReady(bool status, String message = "Ready")
         {
             this.ready = status;
@@ -700,34 +828,6 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.imgStatus.Image = System.Drawing.Bitmap.FromFile("red.gif");
             }
         }
-
-        public async Task Logout()
-        {
-            var nodes = driver.FindElementsByXPath("//td[@style]//a");
-            if (nodes.Count == 5)
-            {
-                await Task.Factory.StartNew(() => nodes[4].Click());
-            }
-            var login = driver.FindElementsByName("login");
-            if (login.Count == 0)
-            {
-                Exceptions_Handler();
-            }
-            else
-            {
-                Program.mainForm.btnLogin.Text = "Đăng nhập";
-                Program.mainForm.dgGroups.Rows.Clear();
-                Program.mainForm.AcceptButton = Program.mainForm.btnLogin;
-
-                Program.mainForm.txtUser.Enabled = true;
-                Program.mainForm.txtPass.Enabled = true;
-                Program.mainForm.btnPost.Enabled = false;
-                Program.mainForm.btnInvite.Enabled = false;
-                Program.mainForm.btnGroupSearch.Enabled = false;
-                Program.mainForm.btnGroupSearchFr.Enabled = false;
-                Program.mainForm.btnGroupJoin.Enabled = false;
-                Program.mainForm.btnComment.Enabled = false;
-            }
-        }
+        #endregion
     }
 }
