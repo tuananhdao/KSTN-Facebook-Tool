@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
@@ -12,9 +13,10 @@ using System.IO;
 using OpenQA.Selenium;
 using System.Threading;
 using System.Reflection;
-using AutoItX3Lib;
+//using AutoItX3Lib;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Excel_12 = Microsoft.Office.Interop.Excel;
 
 namespace KSTN_Facebook_Tool
 {
@@ -58,7 +60,9 @@ namespace KSTN_Facebook_Tool
         #endregion
 
         SeleniumControl SE;
-        public AutoItX3 autoIt = new AutoItX3();
+        //public AutoItX3 autoIt = new AutoItX3();
+
+        private String CHAT_URL = "http://fb.bietoncuocsong.com/chatlog.php";
 
         #region GENERAL MAINFORM
         public MainForm()
@@ -66,7 +70,7 @@ namespace KSTN_Facebook_Tool
             InitializeComponent();
             DisableClickSounds();
 
-            autoIt.AutoItSetOption("WinTitleMatchMode", 2);
+            //autoIt.AutoItSetOption("WinTitleMatchMode", 2);
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -75,6 +79,9 @@ namespace KSTN_Facebook_Tool
             SE = new SeleniumControl();
             txtUser.Focus();
             cbMethods.SelectedIndex = 0;
+            txtUser.Text = Properties.Settings.Default.user;
+            txtPass.Text = Properties.Settings.Default.pass;
+            ChatRefresh();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -87,6 +94,20 @@ namespace KSTN_Facebook_Tool
             if (btnLogin.Text == "Đăng nhập")
             {
                 SE.FBLogin(txtUser.Text, txtPass.Text);
+                if (cbRemember.Checked)
+                {
+                    Properties.Settings.Default.user = txtUser.Text;
+                    Properties.Settings.Default.Save();
+                    Properties.Settings.Default.pass = txtPass.Text;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    Properties.Settings.Default.user = "";
+                    Properties.Settings.Default.Save();
+                    Properties.Settings.Default.pass = "";
+                    Properties.Settings.Default.Save();
+                }
             }
             else
             {
@@ -145,6 +166,10 @@ namespace KSTN_Facebook_Tool
                 string file = fDialog.FileName;
                 txtBrowse1.Text = file;
             }
+            else
+            {
+                txtBrowse1.Text = "";
+            }
         }
 
         private void btnBrowse2_Click(object sender, EventArgs e)
@@ -158,6 +183,10 @@ namespace KSTN_Facebook_Tool
             {
                 string file = fDialog.FileName;
                 txtBrowse2.Text = file;
+            }
+            else
+            {
+                txtBrowse2.Text = "";
             }
         }
 
@@ -173,6 +202,10 @@ namespace KSTN_Facebook_Tool
                 string file = fDialog.FileName;
                 txtBrowse3.Text = file;
             }
+            else
+            {
+                txtBrowse3.Text = "";
+            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -181,7 +214,7 @@ namespace KSTN_Facebook_Tool
             {
                 SE.pause = true;
                 btnPause.Text = "Continue";
-                lblTick.Text = "Dừng";
+                lblTick.Text = "Đang dừng";
 
                 txtContent.Enabled = true;
                 txtDelay.Enabled = true;
@@ -252,6 +285,7 @@ namespace KSTN_Facebook_Tool
         private void btnGroupExport_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "TXT files (*.txt)|*.txt";
             saveFile.FileName = "GROUPS.txt";
             saveFile.ShowDialog();
 
@@ -267,6 +301,30 @@ namespace KSTN_Facebook_Tool
                 else
                 {
                     sw.WriteLine("No group found.");
+                }
+                sw.Close();
+            }
+        }
+
+        private void btnPostResultExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "TXT files (*.txt)|*.txt";
+            saveFile.FileName = "POSTS.txt";
+            saveFile.ShowDialog();
+
+            using (StreamWriter sw = new StreamWriter(saveFile.FileName, false))
+            {
+                if (dgPostResult.Rows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in dgPostResult.Rows)
+                    {
+                        sw.WriteLine(row.Cells[1].Value + "");
+                    }
+                }
+                else
+                {
+                    sw.WriteLine("Không tìm thấy bài đăng nào cả.");
                 }
                 sw.Close();
             }
@@ -363,7 +421,70 @@ namespace KSTN_Facebook_Tool
         #endregion
 
         #region TAB AUTOCOMMENT
-        private void btnComment_Click(object sender, EventArgs e)
+        private void btnCommentPause_Click(object sender, EventArgs e)
+        {
+            if (SE.pause == false)
+            {
+                SE.pause = true;
+                btnCommentPause.Text = "Continue";
+                lblCommentTick.Text = "Dừng";
+
+                btnCommentBrowse.Enabled = true;
+                btnCommentImportComment.Enabled = true;
+                dgCommentBrowse.Enabled = true;
+                txtComment.Enabled = true;
+                txtCommentDelay.Enabled = true;
+            }
+            else
+            {
+                SE.pause = false;
+                btnCommentPause.Text = "Pause";
+                lblCommentTick.Text = "Đang Resume";
+
+                btnCommentBrowse.Enabled = false;
+                btnCommentImportComment.Enabled = false;
+                dgCommentBrowse.Enabled = false;
+                txtComment.Enabled = false;
+                txtCommentDelay.Enabled = false;
+            }
+        }
+
+        private void btnCommentBrowse_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Post IDS File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtCommentBrowse.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    dgCommentBrowse.Rows.Insert(0, line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " bài đăng");
+            }
+            else
+            {
+                txtCommentBrowse.Text = "";
+            }
+        }
+
+        private void btnCommentImportComment_Click(object sender, EventArgs e)
         {
             if (SE.ready == false)
             {
@@ -384,48 +505,14 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            if (!cbCommentToday.Checked && !cbCommentYesterday.Checked && !cbCommentBefore.Checked)
-            {
-                MessageBox.Show("Chọn thời gian bình luận!");
-                return;
-            }
-
-            cbCommentBefore.Enabled = false;
-            cbCommentToday.Enabled = false;
-            cbCommentYesterday.Enabled = false;
             txtComment.Enabled = false;
             txtCommentDelay.Enabled = false;
-            btnComment.Enabled = false;
             btnCommentPause.Enabled = true;
+            btnCommentBrowse.Enabled = false;
+            btnCommentImportComment.Enabled = false;
+            dgCommentBrowse.Enabled = false;
 
-            SE.AutoComment();
-        }
-
-        private void btnCommentPause_Click(object sender, EventArgs e)
-        {
-            if (SE.pause == false)
-            {
-                SE.pause = true;
-                btnCommentPause.Text = "Continue";
-                lblCommentTick.Text = "Dừng";
-
-                cbCommentBefore.Enabled = true;
-                cbCommentToday.Enabled = true;
-                cbCommentYesterday.Enabled = true;
-                txtComment.Enabled = true;
-                txtCommentDelay.Enabled = true;
-            }
-            else
-            {
-                SE.pause = false;
-                btnCommentPause.Text = "Pause";
-
-                cbCommentBefore.Enabled = false;
-                cbCommentToday.Enabled = false;
-                cbCommentYesterday.Enabled = false;
-                txtComment.Enabled = false;
-                txtCommentDelay.Enabled = false;
-            }
+            SE.AutoComment2();
         }
         #endregion
 
@@ -486,6 +573,240 @@ namespace KSTN_Facebook_Tool
 
             SE.ImportFriendList();
         }
+
+        private void btnPMImportGroup_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác!");
+                return;
+            }
+
+            if (txtPMImportGroup.Text == "")
+            {
+                MessageBox.Show("Điền URL nhóm!");
+                return;
+            }
+
+            if (txtPMImportGroup.Text.Contains("/"))
+            {
+                MessageBox.Show("Xem lại Group ID\nVí dụ: https://facebook.com/groups/saletour/ hoăc https://facebook.com/groups/123/\nThì điền saletour hoặc 123 là Group ID");
+                return;
+            }
+
+            txtPMImportGroup.Enabled = false;
+            btnPMImportGroup.Enabled = false;
+
+            SE.ImportGroupMembers("https://m.facebook.com/groups/" + txtPMImportGroup.Text + "/?view=members&refid=18");
+        }
+
+        private void btnPMImportProfile_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác!");
+                return;
+            }
+
+            if (txtPMImportProfile.Text == "")
+            {
+                MessageBox.Show("Điền URL Profile!");
+                return;
+            }
+
+            if (txtPMImportProfile.Text.Contains("/"))
+            {
+                MessageBox.Show("Xem lại Profile ID\nVí dụ: https://facebook.com/a3graphic/ \nthì điền a3graphic là profile ID");
+                return;
+            }
+
+            txtPMImportProfile.Enabled = false;
+            btnPMImportProfile.Enabled = false;
+
+            SE.ImportProfileFriends("https://m.facebook.com/" + txtPMImportProfile.Text + "/?v=friends");
+        }
+
+        private void btnPMImportFile_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open UID File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+            //fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtPMImportFile.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    dgUID.Rows.Insert(0, "", line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " Profile");
+            }
+            else
+            {
+                txtPMImportFile.Text = "";
+            }
+        }
+
+        private void btnPMClear_Click(object sender, EventArgs e)
+        {
+            dgUID.Rows.Clear();
+        }
+
+        private void btnPMExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "TXT files (*.txt)|*.txt";
+            saveFile.FileName = "MEMBERS.txt";
+            saveFile.ShowDialog();
+
+            using (StreamWriter sw = new StreamWriter(saveFile.FileName, false))
+            {
+                if (dgUID.Rows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in dgUID.Rows)
+                    {
+                        sw.WriteLine(row.Cells[1].Value + "");
+                    }
+                }
+                else
+                {
+                    sw.WriteLine("No group found.");
+                }
+                sw.Close();
+            }
+        }
+
+        private void btnPMExportXLS_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Xuất file Exel có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+            ExportDataGridViewTo_Excel12(dgUID);
+        }
+
+        public static void ExportDataGridViewTo_Excel12(DataGridView myDataGridViewQuantity)
+        {
+
+            Excel_12.Application oExcel_12 = null; //Excel_12 Application 
+
+            Excel_12.Workbook oBook = null; // Excel_12 Workbook 
+
+            Excel_12.Sheets oSheetsColl = null; // Excel_12 Worksheets collection 
+
+            Excel_12.Worksheet oSheet = null; // Excel_12 Worksheet 
+
+            Excel_12.Range oRange = null; // Cell or Range in worksheet 
+
+            Object oMissing = System.Reflection.Missing.Value;
+
+
+            // Create an instance of Excel_12. 
+
+            oExcel_12 = new Excel_12.Application();
+
+
+            // Make Excel_12 visible to the user. 
+
+            oExcel_12.Visible = true;
+
+
+            // Set the UserControl property so Excel_12 won't shut down. 
+
+            oExcel_12.UserControl = true;
+
+            // System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-US"); 
+
+            //object file = File_Name;
+
+            //object missing = System.Reflection.Missing.Value;
+
+
+
+            // Add a workbook. 
+
+            oBook = oExcel_12.Workbooks.Add(oMissing);
+
+            // Get worksheets collection 
+
+            oSheetsColl = oExcel_12.Worksheets;
+
+            // Get Worksheet "Sheet1" 
+
+            oSheet = (Excel_12.Worksheet)oSheetsColl.get_Item("Sheet1");
+            oSheet.Name = "Danh sách UID";
+
+            // Export titles 
+
+            for (int j = 0; j < myDataGridViewQuantity.Columns.Count; j++)
+            {
+
+                oRange = (Excel_12.Range)oSheet.Cells[1, j + 1];
+
+                oRange.Value2 = myDataGridViewQuantity.Columns[j].HeaderText;
+
+            }
+
+            // Export data 
+
+            for (int i = 0; i < myDataGridViewQuantity.Rows.Count; i++)
+            {
+
+                for (int j = 0; j < myDataGridViewQuantity.Columns.Count; j++)
+                {
+                    oRange = (Excel_12.Range)oSheet.Cells[i + 2, j + 1];
+
+                    oRange.Value2 = myDataGridViewQuantity[j, i].Value;
+
+                }
+
+            }
+            oBook = null;
+            //oExcel_12.Quit();
+            //oExcel_12 = null;
+            GC.Collect();
+        }
+
+        private void btnPM_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác!");
+                return;
+            }
+
+            if (txtPM.Text == "")
+            {
+                MessageBox.Show("Điền nội dung tin nhắn!");
+                return;
+            }
+
+            int delay;
+
+            if (!int.TryParse(txtPMDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            dgUID.Enabled = false;
+            txtPM.Enabled = false;
+            txtPMDelay.Enabled = false;
+            btnPM.Enabled = false;
+
+            SE.AutoPM();
+        }
         #endregion
 
         #region OTHER HELPERS
@@ -512,6 +833,35 @@ namespace KSTN_Facebook_Tool
         {
             License licForm = new License();
             licForm.ShowDialog();
+        }
+
+        private void btnTermsPolicies_Click(object sender, EventArgs e)
+        {
+            TermsPolicies TPForm = new TermsPolicies();
+            TPForm.ShowDialog();
+        }
+        #endregion
+
+        #region CHAT
+        private async void ChatRefresh()
+        {
+            await Chat_Refresh();
+        }
+
+        private async Task Chat_Refresh()
+        {
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL);
+                myRequest.Method = "GET";
+                WebResponse myResponse = await myRequest.GetResponseAsync();
+                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+                string result = sr.ReadToEnd();
+                sr.Close();
+                myResponse.Close();
+                txtChatLog.Text = result;
+            }
+            catch { }
         }
         #endregion
     }

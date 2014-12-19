@@ -72,12 +72,10 @@ C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\System.dll
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\System.Net.dll
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\System.Windows.Forms.dll
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\System.Xml.Linq.dll
-C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Interop.AutoItX3Lib.dll
-C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Interop.AutoItX3Lib.dll
-C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN Facebook Tool.csproj.ResolveComReference.cache
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Facebook Tool.exe.config
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Facebook Tool.exe
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\Facebook Tool.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.exe
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.License.resources
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.TermsPolicies.resources
