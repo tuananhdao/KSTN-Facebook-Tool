@@ -168,8 +168,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bg.png" />
+    <EmbeddedResource Include="close1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="close2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="fb-loading.GIF" />
     <Content Include="H3nktOa7ZMg.ico" />
+    <EmbeddedResource Include="min1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="min2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

@@ -57,6 +57,40 @@ namespace KSTN_Facebook_Tool
                 return parameters;
             }
         }
+
+        private void pbClose_MouseHover(object sender, EventArgs e)
+        {
+            pbClose.Image = System.Drawing.Bitmap.FromFile("close2.png");
+            pbClose.BackColor = Color.OrangeRed;
+        }
+
+        private void pbClose_MouseLeave(object sender, EventArgs e)
+        {
+            pbClose.Image = System.Drawing.Bitmap.FromFile("close1.png");
+            pbClose.BackColor = Color.White;
+        }
+
+        private void pbClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void pbMinimize_MouseHover(object sender, EventArgs e)
+        {
+            pbMinimize.Image = System.Drawing.Bitmap.FromFile("min2.png");
+            pbMinimize.BackColor = Color.Silver;
+        }
+
+        private void pbMinimize_MouseLeave(object sender, EventArgs e)
+        {
+            pbMinimize.Image = System.Drawing.Bitmap.FromFile("min1.png");
+            pbMinimize.BackColor = Color.White;
+        }
+
+        private void pbMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
         #endregion
 
         SeleniumControl SE;
@@ -116,6 +150,7 @@ namespace KSTN_Facebook_Tool
                     MessageBox.Show("Chương trình đang thực hiện 1 tác vụ, không thể đăng xuất!");
                     return;
                 }
+                btnLogin.Enabled = false;
                 SE.Logout();
             }
         }
@@ -210,38 +245,8 @@ namespace KSTN_Facebook_Tool
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (SE.pause == false)
-            {
-                SE.pause = true;
-                btnPause.Text = "Continue";
-                lblTick.Text = "Đang dừng";
-
-                txtContent.Enabled = true;
-                txtDelay.Enabled = true;
-                cbMethods.Enabled = true;
-                txtBrowse1.Enabled = true;
-                txtBrowse2.Enabled = true;
-                txtBrowse3.Enabled = true;
-                btnBrowse1.Enabled = true;
-                btnBrowse2.Enabled = true;
-                btnBrowse3.Enabled = true;
-            }
-            else
-            {
-                SE.pause = false;
-                btnPause.Text = "Pause";
-
-                lblTick.Text = "Resume";
-                txtContent.Enabled = false;
-                txtDelay.Enabled = false;
-                cbMethods.Enabled = false;
-                txtBrowse1.Enabled = false;
-                txtBrowse2.Enabled = false;
-                txtBrowse3.Enabled = false;
-                btnBrowse1.Enabled = false;
-                btnBrowse2.Enabled = false;
-                btnBrowse3.Enabled = false;
-            }
+            btnPause.Enabled = false;
+            SE.pause = true;
         }
 
         private void btnPost_Click(object sender, EventArgs e)
@@ -423,30 +428,8 @@ namespace KSTN_Facebook_Tool
         #region TAB AUTOCOMMENT
         private void btnCommentPause_Click(object sender, EventArgs e)
         {
-            if (SE.pause == false)
-            {
-                SE.pause = true;
-                btnCommentPause.Text = "Continue";
-                lblCommentTick.Text = "Dừng";
-
-                btnCommentBrowse.Enabled = true;
-                btnCommentImportComment.Enabled = true;
-                dgCommentBrowse.Enabled = true;
-                txtComment.Enabled = true;
-                txtCommentDelay.Enabled = true;
-            }
-            else
-            {
-                SE.pause = false;
-                btnCommentPause.Text = "Pause";
-                lblCommentTick.Text = "Đang Resume";
-
-                btnCommentBrowse.Enabled = false;
-                btnCommentImportComment.Enabled = false;
-                dgCommentBrowse.Enabled = false;
-                txtComment.Enabled = false;
-                txtCommentDelay.Enabled = false;
-            }
+            btnCommentPause.Enabled = false;
+            SE.pause = true;
         }
 
         private void btnCommentBrowse_Click(object sender, EventArgs e)
@@ -804,6 +787,7 @@ namespace KSTN_Facebook_Tool
             txtPM.Enabled = false;
             txtPMDelay.Enabled = false;
             btnPM.Enabled = false;
+            btnPMPause.Enabled = true;
 
             SE.AutoPM();
         }

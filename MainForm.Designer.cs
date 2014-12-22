@@ -174,7 +174,10 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.btnPMImportFriends = new System.Windows.Forms.Button();
+            this.btnPMPause = new System.Windows.Forms.Button();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
+            this.pbMinimize = new System.Windows.Forms.PictureBox();
+            this.pbClose = new System.Windows.Forms.PictureBox();
             this.btnTermsPolicies = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -185,7 +188,6 @@
             this.btnToggle = new System.Windows.Forms.CheckBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.imgStatus = new System.Windows.Forms.PictureBox();
-            this.miniTimer_ControlBox1 = new MiniTimer_Theme.MiniTimer_ControlBox();
             this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
             this.groupBox1.SuspendLayout();
             this.TabControl1.SuspendLayout();
@@ -222,6 +224,8 @@
             this.groupBox19.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUID)).BeginInit();
             this.miniTimer_ThemeContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMinimize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClose)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgStatus)).BeginInit();
@@ -560,7 +564,7 @@
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(57, 24);
             this.btnPause.TabIndex = 9;
-            this.btnPause.Text = "Pause";
+            this.btnPause.Text = "Dừng";
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
@@ -1280,7 +1284,7 @@
             this.btnCommentPause.Name = "btnCommentPause";
             this.btnCommentPause.Size = new System.Drawing.Size(75, 23);
             this.btnCommentPause.TabIndex = 6;
-            this.btnCommentPause.Text = "Pause";
+            this.btnCommentPause.Text = "Dừng";
             this.btnCommentPause.UseVisualStyleBackColor = true;
             this.btnCommentPause.Click += new System.EventHandler(this.btnCommentPause_Click);
             // 
@@ -1424,6 +1428,7 @@
             // 
             // groupBox20
             // 
+            this.groupBox20.Controls.Add(this.btnPMPause);
             this.groupBox20.Controls.Add(this.lblPMTick);
             this.groupBox20.Controls.Add(this.txtPMDelay);
             this.groupBox20.Controls.Add(this.label20);
@@ -1444,9 +1449,9 @@
             // lblPMTick
             // 
             this.lblPMTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblPMTick.Location = new System.Drawing.Point(276, 98);
+            this.lblPMTick.Location = new System.Drawing.Point(197, 98);
             this.lblPMTick.Name = "lblPMTick";
-            this.lblPMTick.Size = new System.Drawing.Size(108, 15);
+            this.lblPMTick.Size = new System.Drawing.Size(127, 15);
             this.lblPMTick.TabIndex = 7;
             this.lblPMTick.Text = "Ready";
             this.lblPMTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1732,16 +1737,27 @@
             this.btnPMImportFriends.UseVisualStyleBackColor = true;
             this.btnPMImportFriends.Click += new System.EventHandler(this.btnPMImportFriends_Click);
             // 
+            // btnPMPause
+            // 
+            this.btnPMPause.Enabled = false;
+            this.btnPMPause.Location = new System.Drawing.Point(330, 93);
+            this.btnPMPause.Name = "btnPMPause";
+            this.btnPMPause.Size = new System.Drawing.Size(58, 24);
+            this.btnPMPause.TabIndex = 8;
+            this.btnPMPause.Text = "Dừng";
+            this.btnPMPause.UseVisualStyleBackColor = true;
+            // 
             // miniTimer_ThemeContainer1
             // 
             this.miniTimer_ThemeContainer1.BackColor = System.Drawing.Color.White;
+            this.miniTimer_ThemeContainer1.Controls.Add(this.pbMinimize);
+            this.miniTimer_ThemeContainer1.Controls.Add(this.pbClose);
             this.miniTimer_ThemeContainer1.Controls.Add(this.btnTermsPolicies);
             this.miniTimer_ThemeContainer1.Controls.Add(this.groupBox5);
             this.miniTimer_ThemeContainer1.Controls.Add(this.btnLicense);
             this.miniTimer_ThemeContainer1.Controls.Add(this.btnToggle);
             this.miniTimer_ThemeContainer1.Controls.Add(this.lblStatus);
             this.miniTimer_ThemeContainer1.Controls.Add(this.imgStatus);
-            this.miniTimer_ThemeContainer1.Controls.Add(this.miniTimer_ControlBox1);
             this.miniTimer_ThemeContainer1.Controls.Add(this.lblVer);
             this.miniTimer_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.miniTimer_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -1756,6 +1772,31 @@
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
             this.miniTimer_ThemeContainer1.Text = "iOne Facebook Auto Tools";
+            // 
+            // pbMinimize
+            // 
+            this.pbMinimize.Image = ((System.Drawing.Image)(resources.GetObject("pbMinimize.Image")));
+            this.pbMinimize.Location = new System.Drawing.Point(24, 1);
+            this.pbMinimize.Name = "pbMinimize";
+            this.pbMinimize.Size = new System.Drawing.Size(24, 24);
+            this.pbMinimize.TabIndex = 15;
+            this.pbMinimize.TabStop = false;
+            this.pbMinimize.Click += new System.EventHandler(this.pbMinimize_Click);
+            this.pbMinimize.MouseLeave += new System.EventHandler(this.pbMinimize_MouseLeave);
+            this.pbMinimize.MouseHover += new System.EventHandler(this.pbMinimize_MouseHover);
+            // 
+            // pbClose
+            // 
+            this.pbClose.BackColor = System.Drawing.Color.White;
+            this.pbClose.Image = ((System.Drawing.Image)(resources.GetObject("pbClose.Image")));
+            this.pbClose.Location = new System.Drawing.Point(1, 1);
+            this.pbClose.Name = "pbClose";
+            this.pbClose.Size = new System.Drawing.Size(24, 24);
+            this.pbClose.TabIndex = 15;
+            this.pbClose.TabStop = false;
+            this.pbClose.Click += new System.EventHandler(this.pbClose_Click);
+            this.pbClose.MouseLeave += new System.EventHandler(this.pbClose_MouseLeave);
+            this.pbClose.MouseHover += new System.EventHandler(this.pbClose_MouseHover);
             // 
             // btnTermsPolicies
             // 
@@ -1860,17 +1901,6 @@
             this.imgStatus.TabIndex = 2;
             this.imgStatus.TabStop = false;
             // 
-            // miniTimer_ControlBox1
-            // 
-            this.miniTimer_ControlBox1.BackColor = System.Drawing.Color.Transparent;
-            this.miniTimer_ControlBox1.EnableMaximize = false;
-            this.miniTimer_ControlBox1.Font = new System.Drawing.Font("Marlett", 7F);
-            this.miniTimer_ControlBox1.Location = new System.Drawing.Point(15, 13);
-            this.miniTimer_ControlBox1.Name = "miniTimer_ControlBox1";
-            this.miniTimer_ControlBox1.Size = new System.Drawing.Size(40, 16);
-            this.miniTimer_ControlBox1.TabIndex = 1;
-            this.miniTimer_ControlBox1.Text = "miniTimer_ControlBox1";
-            // 
             // lblVer
             // 
             this.lblVer.AutoSize = true;
@@ -1881,7 +1911,7 @@
             this.lblVer.Name = "lblVer";
             this.lblVer.Size = new System.Drawing.Size(145, 16);
             this.lblVer.TabIndex = 0;
-            this.lblVer.Text = "Version: 2.6.2 Released";
+            this.lblVer.Text = "Version: 2.6.5 Released";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
             // 
             // MainForm
@@ -1953,6 +1983,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgUID)).EndInit();
             this.miniTimer_ThemeContainer1.ResumeLayout(false);
             this.miniTimer_ThemeContainer1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMinimize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClose)).EndInit();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgStatus)).EndInit();
@@ -2047,7 +2079,6 @@
         public System.Windows.Forms.Label lblSearching;
         private MiniTimer_Theme.MiniTimer_ThemeContainer miniTimer_ThemeContainer1;
         private MiniTimer_Theme.MiniTimer_Label lblVer;
-        private MiniTimer_Theme.MiniTimer_ControlBox miniTimer_ControlBox1;
         public System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.PictureBox imgStatus;
         public System.Windows.Forms.CheckBox btnToggle;
@@ -2118,6 +2149,9 @@
         public System.Windows.Forms.TextBox txtPM;
         public System.Windows.Forms.Label lblPMTick;
         public System.Windows.Forms.DataGridView dgPMResult;
+        private System.Windows.Forms.PictureBox pbMinimize;
+        private System.Windows.Forms.PictureBox pbClose;
+        private System.Windows.Forms.Button btnPMPause;
 
     }
 }

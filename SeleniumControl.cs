@@ -368,6 +368,7 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPMSendFrRequests.Enabled = false;
                 Program.mainForm.btnCommentImportComment.Enabled = false;
             }
+            Program.mainForm.btnLogin.Enabled = true;
             setReady(true, "Đăng xuất thành công | Ready");
         }
         #endregion
@@ -386,17 +387,18 @@ namespace KSTN_Facebook_Tool
                 Exceptions_Handler();
             }
 
-            foreach (DataGridViewRow row in Program.mainForm.dgGroups.Rows)
+            while (Program.mainForm.dgGroups.Rows.Count > 0)
             {
-                progress++;
-                Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
-                Program.mainForm.lblPostingGroup.Text = row.Cells[0].Value.ToString();
-
-                while (pause)
+                if (pause)
                 {
-                    Program.mainForm.lblTick.Text = "Dừng";
-                    await TaskEx.Delay(1000);
+                    pause = false;
+                    break;
                 }
+
+                DataGridViewRow row = Program.mainForm.dgGroups.Rows[0];
+                progress++;
+                Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count + Program.mainForm.dgPostResult.Rows.Count;
+                Program.mainForm.lblPostingGroup.Text = row.Cells[0].Value.ToString();
 
                 await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
                 while (true)
@@ -418,20 +420,27 @@ namespace KSTN_Facebook_Tool
                     {
                         if (driver.FindElementsByName("xc_message").Count == 0)
                         {
+                            Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, "Group không cho đăng bài");
+                            Program.mainForm.dgGroups.Rows.RemoveAt(0);
                             continue;
                         }
-                        driver.ExecuteScript(@"document.getElementsByName('xc_message')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtContent.Text) + "';");
+                        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        var rnd = new Random();
+                        string random_tag = " #" + new string(
+                            Enumerable.Repeat(chars, rnd.Next(8) + 1)
+                                      .Select(s => s[rnd.Next(s.Length)])
+                                      .ToArray());
+                        driver.ExecuteScript(@"document.getElementsByName('xc_message')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtContent.Text) + random_tag + "';");
 
                         if (driver.FindElementsByName("view_post").Count == 0)
                         {
+                            Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, "Skip - Không tìm thấy nút đăng bài!");
+                            Program.mainForm.dgGroups.Rows.RemoveAt(0);
                             continue;
                         }
                         await Task.Factory.StartNew(() => Click("view_post"));
-                        try
-                        {
-                            Program.mainForm.dgPostResult.Rows.Add(Program.mainForm.lblPostingGroup.Text, Uri.UnescapeDataString(driver.Url));
-                        }
-                        catch { }
+                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, Uri.UnescapeDataString(driver.Url));
+                        Program.mainForm.dgGroups.Rows.RemoveAt(0);
                     }
                     else
                     {
@@ -444,15 +453,25 @@ namespace KSTN_Facebook_Tool
                     // Có ảnh
                     if (driver.FindElementsByName("lgc_view_photo").Count == 0)
                     {
+                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, "Group không cho đăng bài");
+                        Program.mainForm.dgGroups.Rows.RemoveAt(0);
                         continue;
                     }
                     await Task.Factory.StartNew(() => Click("lgc_view_photo"));
 
                     if (driver.FindElementsByName("xc_message").Count == 0 || driver.FindElementsByName("file1").Count == 0 || driver.FindElementsByName("file2").Count == 0 || driver.FindElementsByName("file3").Count == 0 || driver.FindElementsByName("photo_upload").Count == 0)
                     {
+                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, "Skip - Không tìm thấy nút đăng bài!");
+                        Program.mainForm.dgGroups.Rows.RemoveAt(0);
                         continue;
                     }
-                    await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('xc_message')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtContent.Text) + "';"));
+                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    var rnd = new Random();
+                    string random_tag = " #" + new string(
+                        Enumerable.Repeat(chars, rnd.Next(8) + 1)
+                                  .Select(s => s[rnd.Next(s.Length)])
+                                  .ToArray());
+                    await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('xc_message')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtContent.Text) + random_tag + "';"));
 
                     if (Program.mainForm.txtBrowse1.Text != "")
                     {
@@ -488,6 +507,7 @@ namespace KSTN_Facebook_Tool
                                 result_url = Uri.UnescapeDataString(driver.Url);
                         }
                         Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, result_url);
+                        Program.mainForm.dgGroups.Rows.RemoveAt(0);
                     }
                     catch { }
 
@@ -495,9 +515,10 @@ namespace KSTN_Facebook_Tool
 
                 for (int i = 0; i < delay + 1; i++)
                 {
-                    if (!pause)
-                        Program.mainForm.lblTick.Text = delay - i + "";
-                    if (i == delay && !pause)
+                    if (pause)
+                        break;
+                    Program.mainForm.lblTick.Text = delay - i + "";
+                    if (i == delay)
                     {
                         Program.mainForm.lblTick.Text = "POSTING";
                     }
@@ -519,7 +540,7 @@ namespace KSTN_Facebook_Tool
             Program.mainForm.btnPause.Enabled = false;
             Program.mainForm.lblTick.Text = "Ready";
 
-            MessageBox.Show("Đã hoàn thành đăng bài trong " + progress + " nhóm!");
+            MessageBox.Show("Đã hoàn thành đăng bài trong " + Program.mainForm.dgPostResult.Rows.Count + " nhóm!");
 
             setReady(true);
         }
@@ -735,12 +756,13 @@ namespace KSTN_Facebook_Tool
 
             while (Program.mainForm.dgCommentBrowse.Rows.Count > 0)
             {
-                string post_url = Program.mainForm.dgCommentBrowse.Rows[0].Cells[0].Value.ToString();
-
-                while (pause)
+                if (pause)
                 {
-                    await TaskEx.Delay(1000);
+                    pause = false;
+                    break;
                 }
+
+                string post_url = Program.mainForm.dgCommentBrowse.Rows[0].Cells[0].Value.ToString();
 
                 await Task.Factory.StartNew(() => Navigate(post_url));
 
@@ -766,6 +788,7 @@ namespace KSTN_Facebook_Tool
                 {
                     Program.mainForm.dgCommentBrowse.Rows.RemoveAt(0);
                     Program.mainForm.lblCommentTick.Text = "Skip bài đăng";
+                    Program.mainForm.dgComment.Rows.Insert(0, driver.Title, "Skip - Đang chờ phê duyệt");
                     continue;
                 }
 
@@ -783,9 +806,11 @@ namespace KSTN_Facebook_Tool
 
                 for (int i = 0; i < delay + 1; i++)
                 {
-                    if (!pause)
-                        Program.mainForm.lblCommentTick.Text = delay - i + "";
-                    if (i == delay && !pause)
+                    if (pause)
+                        break;
+
+                    Program.mainForm.lblCommentTick.Text = delay - i + "";
+                    if (i == delay)
                     {
                         Program.mainForm.lblCommentTick.Text = "Đang Comment";
                     }
@@ -818,7 +843,10 @@ namespace KSTN_Facebook_Tool
 
                 if (iTags.Count != 2)
                 {
-                    MessageBox.Show("Xem lại URL bài viết/ảnh!");
+                    if (paged == 0)
+                        MessageBox.Show("Xem lại URL bài viết/ảnh!");
+                    else
+                        MessageBox.Show("Facebook yêu cầu xác nhận hình ảnh!");
                     Program.mainForm.btnTag.Enabled = true;
                     Program.mainForm.txtTagUrl.Enabled = true;
                     setReady(true, "Tag thất bại | Ready");
@@ -884,6 +912,11 @@ namespace KSTN_Facebook_Tool
         public async void ImportFriendList()
         {
             setReady(false, "Đang nhập danh sách bạn bè");
+
+            if (user_id == "")
+            {
+                MessageBox.Show("Ứng dụng không thể lấy được USER ID của bạn!\nQuá trình này sẽ diễn ra không thành công!");
+            }
 
             await Task.Factory.StartNew(() => Navigate("https://m.facebook.com/" + user_id + "?v=friends&refid=17"));
 
@@ -1012,6 +1045,12 @@ namespace KSTN_Facebook_Tool
 
             while (Program.mainForm.dgUID.Rows.Count > 0)
             {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
                 String user_url = Program.mainForm.dgUID.Rows[0].Cells[1].Value.ToString();
 
                 await Task.Factory.StartNew(() => Navigate(user_url));
@@ -1022,6 +1061,7 @@ namespace KSTN_Facebook_Tool
                     try
                     {
                         Program.mainForm.dgUID.Rows.RemoveAt(0);
+                        Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Profile không cho gửi tin nhắn");
                     }
                     catch { }
                     continue;
@@ -1044,8 +1084,14 @@ namespace KSTN_Facebook_Tool
                     catch { }
                     continue;
                 }
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                var rnd = new Random();
+                string random_tag = " #" + new string(
+                    Enumerable.Repeat(chars, rnd.Next(8) + 1)
+                              .Select(s => s[rnd.Next(s.Length)])
+                              .ToArray());
 
-                await Task.Factory.StartNew(() => InputValueAdd("body", Program.mainForm.txtPM.Text));
+                await Task.Factory.StartNew(() => InputValueAdd("body", Program.mainForm.txtPM.Text + random_tag));
 
                 await Task.Factory.StartNew(() => Click("Send"));
 
@@ -1063,6 +1109,8 @@ namespace KSTN_Facebook_Tool
 
                 for (int i = 0; i < delay + 1; i++)
                 {
+                    if (pause)
+                        break;
                     Program.mainForm.lblPMTick.Text = delay - i + "";
                     if (i == delay)
                     {

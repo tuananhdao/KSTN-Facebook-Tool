@@ -79,3 +79,7 @@ C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.exe
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\Facebook Tool.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.License.resources
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.TermsPolicies.resources
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\close2.png
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\min2.png
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\close1.png
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\min1.png
