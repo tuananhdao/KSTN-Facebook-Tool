@@ -181,7 +181,7 @@ namespace KSTN_Facebook_Tool
                 //profile.SetPreference("dom.ipc.plugins.enabled.libflashplayer.so", "false");
                 IEnumerable<int> pidsBefore = Process.GetProcessesByName("firefox").Select(p => p.Id);
 
-                this.driver = new OpenQA.Selenium.Firefox.FirefoxDriver(profile);
+                this.driver = await Task.Factory.StartNew(() => new OpenQA.Selenium.Firefox.FirefoxDriver(profile));
                 IEnumerable<int> pidsAfter = Process.GetProcessesByName("firefox").Select(p => p.Id);
 
                 newFirefoxPids = pidsAfter.Except(pidsBefore);
@@ -246,6 +246,12 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPMImportGroup.Enabled = true;
                 Program.mainForm.btnCommentImportComment.Enabled = true;
 
+                var nodes = driver.FindElementsByName("target");
+                if (nodes.Count > 0)
+                {
+                    user_id = nodes[0].GetAttribute("value");
+                }
+
                 //Program.mainForm.Focus();
                 Program.loadingForm.setText("ĐĂNG NHẬP THÀNH CÔNG! ĐANG TẢI DANH SÁCH NHÓM...");
                 await getGroups();
@@ -271,23 +277,13 @@ namespace KSTN_Facebook_Tool
             await Task.Factory.StartNew(() => Navigate(links["fb_groups"]));
 
             Match match;
-            var nodes = driver.FindElementsByXPath("//div[@id='header']//div//a");
-            if (nodes.Count > 1)
+            try
             {
-                match = Regex.Match(nodes[1].GetAttribute("href"), @"com/(.*)\?ref_component", RegexOptions.None);
-                if (match.Success)
-                {
-                    user_id = match.Groups[1].Value;
-                    try
-                    {
-                        Program.mainForm.pbAvatar.Load(links["facebook_graph"] + "/" + user_id + "/picture");
-                        Program.mainForm.lblViewProfile.Text = "https://facebook.com/" + user_id;
-                    }
-                    catch { }
-                }
+                Program.mainForm.pbAvatar.Load(links["facebook_graph"] + "/" + user_id + "/picture");
+                Program.mainForm.lblViewProfile.Text = "https://facebook.com/" + user_id;
             }
-
-            nodes = driver.FindElementsByXPath("//td[@style]//a");
+            catch { }
+            var nodes = driver.FindElementsByXPath("//td[@style]//a");
             if (nodes.Count == 5)
             {
                 match = Regex.Match(nodes[4].GetAttribute("innerHTML"), @"\((.*)\)$", RegexOptions.None);
@@ -922,7 +918,7 @@ namespace KSTN_Facebook_Tool
 
             while (true)
             {
-                var profiles = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'profile.php')]"));
+                var profiles = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'fref=fr')]"));
                 if (profiles.Count == 0)
                     break;
 
@@ -1095,11 +1091,7 @@ namespace KSTN_Facebook_Tool
 
                 await Task.Factory.StartNew(() => Click("Send"));
 
-                try
-                {
-                    Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Gửi tin nhắn thành công");
-                }
-                catch { }
+                Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Đã gửi tin nhắn");
 
                 try
                 {
@@ -1127,8 +1119,8 @@ namespace KSTN_Facebook_Tool
             Program.mainForm.txtPMDelay.Enabled = true;
             Program.mainForm.btnPM.Enabled = true;
 
-            MessageBox.Show("Hoàn thành gửi tin nhắn");
-            setReady(true);
+            MessageBox.Show("Hoàn thành gửi tin nhắn! Số lượng gửi: " + Program.mainForm.dgPMResult.Rows.Count);
+            setReady(true, "Số lượng gửi: " + Program.mainForm.dgPMResult.Rows.Count + "| Ready");
         }
 
         #region OTHER HELPERS

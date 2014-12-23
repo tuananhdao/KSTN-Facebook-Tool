@@ -609,6 +609,12 @@ namespace KSTN_Facebook_Tool
             SE.ImportProfileFriends("https://m.facebook.com/" + txtPMImportProfile.Text + "/?v=friends");
         }
 
+        private void btnPMPause_Click(object sender, EventArgs e)
+        {
+            btnPMPause.Enabled = false;
+            SE.pause = true;
+        }
+
         private void btnPMImportFile_Click(object sender, EventArgs e)
         {
             var fDialog = new System.Windows.Forms.OpenFileDialog();

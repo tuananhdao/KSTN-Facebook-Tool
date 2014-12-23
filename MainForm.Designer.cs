@@ -144,6 +144,7 @@
             this.txtTagUrl = new System.Windows.Forms.TextBox();
             this.tabPagePM = new System.Windows.Forms.TabPage();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.btnPMPause = new System.Windows.Forms.Button();
             this.lblPMTick = new System.Windows.Forms.Label();
             this.txtPMDelay = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -174,7 +175,6 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.btnPMImportFriends = new System.Windows.Forms.Button();
-            this.btnPMPause = new System.Windows.Forms.Button();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
             this.pbMinimize = new System.Windows.Forms.PictureBox();
             this.pbClose = new System.Windows.Forms.PictureBox();
@@ -1446,6 +1446,17 @@
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Nhắn tin - Kết bạn";
             // 
+            // btnPMPause
+            // 
+            this.btnPMPause.Enabled = false;
+            this.btnPMPause.Location = new System.Drawing.Point(330, 93);
+            this.btnPMPause.Name = "btnPMPause";
+            this.btnPMPause.Size = new System.Drawing.Size(58, 24);
+            this.btnPMPause.TabIndex = 8;
+            this.btnPMPause.Text = "Dừng";
+            this.btnPMPause.UseVisualStyleBackColor = true;
+            this.btnPMPause.Click += new System.EventHandler(this.btnPMPause_Click);
+            // 
             // lblPMTick
             // 
             this.lblPMTick.ForeColor = System.Drawing.Color.DarkRed;
@@ -1736,16 +1747,6 @@
             this.btnPMImportFriends.Text = "Nhập từ danh sách bạn bè";
             this.btnPMImportFriends.UseVisualStyleBackColor = true;
             this.btnPMImportFriends.Click += new System.EventHandler(this.btnPMImportFriends_Click);
-            // 
-            // btnPMPause
-            // 
-            this.btnPMPause.Enabled = false;
-            this.btnPMPause.Location = new System.Drawing.Point(330, 93);
-            this.btnPMPause.Name = "btnPMPause";
-            this.btnPMPause.Size = new System.Drawing.Size(58, 24);
-            this.btnPMPause.TabIndex = 8;
-            this.btnPMPause.Text = "Dừng";
-            this.btnPMPause.UseVisualStyleBackColor = true;
             // 
             // miniTimer_ThemeContainer1
             // 
