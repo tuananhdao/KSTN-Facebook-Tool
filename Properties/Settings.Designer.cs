@@ -46,5 +46,29 @@ namespace KSTN_Facebook_Tool.Properties {
                 this["pass"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string license_id {
+            get {
+                return ((string)(this["license_id"]));
+            }
+            set {
+                this["license_id"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string license_key {
+            get {
+                return ((string)(this["license_key"]));
+            }
+            set {
+                this["license_key"] = value;
+            }
+        }
     }
 }

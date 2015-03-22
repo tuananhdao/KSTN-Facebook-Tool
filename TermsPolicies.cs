@@ -29,7 +29,7 @@ namespace KSTN_Facebook_Tool
             txtMain.SelectionFont = new Font(txtMain.Font, FontStyle.Bold);
             txtMain.AppendText(Environment.NewLine + "2. Điều khoản" + Environment.NewLine + Environment.NewLine);
             txtMain.AppendText("Bằng việc sử dụng ứng dụng này, bạn đã đồng ý các thỏa thuận sau:" + Environment.NewLine);
-            txtMain.AppendText("2.1 Trong khoảng thời gian hoạt động, ứng dụng có toàn quyền điều khiển các dữ liệu và thao tác dựa trên các thông tin bạn cung cấp." + Environment.NewLine);
+            txtMain.AppendText("2.1 Trong khoảng thời gian hoạt động, ứng dụng có toàn quyền điều khiển các dữ liệu và thao tác dựa trên các thông tin bạn cung cấp, tôn trọng tối đa chính sách người dùng cuối." + Environment.NewLine);
             txtMain.AppendText("2.2 Trong trường hợp xảy ra sự cố, nhà phát triển hoàn toàn không chịu trách nhiệm với thiết bị, tài khoản, thông tin cá nhân của bạn." + Environment.NewLine);
             txtMain.AppendText("2.3 Bạn đồng ý tự chịu trách nhiệm về mọi vi phạm nghĩa vụ dựa trên điều khoản và nguyên tắc của các bên thứ 3 liên quan.");
             txtMain.SelectionStart = 0;

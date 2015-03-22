@@ -148,6 +148,17 @@ namespace KSTN_Facebook_Tool
             catch { }
         }
 
+        private int FindHeader()
+        {
+            try
+            {
+                var headers = driver.FindElementsById("root");
+                return headers.Count;
+            }
+            catch {
+                return 0;
+            }
+        }
         #endregion
 
         #region LOGIN_LOGOUT
@@ -180,17 +191,32 @@ namespace KSTN_Facebook_Tool
                 profile.SetPreference("permissions.default.image", 2);
                 //profile.SetPreference("dom.ipc.plugins.enabled.libflashplayer.so", "false");
                 IEnumerable<int> pidsBefore = Process.GetProcessesByName("firefox").Select(p => p.Id);
-
-                this.driver = await Task.Factory.StartNew(() => new OpenQA.Selenium.Firefox.FirefoxDriver(profile));
+                try
+                {
+                    this.driver = await Task.Factory.StartNew(() => new OpenQA.Selenium.Firefox.FirefoxDriver(profile));
+                }
+                catch
+                {
+                    MessageBox.Show("Hãy cài đặt trình duyệt Firefox trước khi sử dụng chương trình!");
+                    Exceptions_Handler();
+                }
                 IEnumerable<int> pidsAfter = Process.GetProcessesByName("firefox").Select(p => p.Id);
 
                 newFirefoxPids = pidsAfter.Except(pidsBefore);
 
-                // do some stuff with PID, if you want to kill them, do the following
-                foreach (int pid in newFirefoxPids)
+                try
                 {
-                    int hWnd = Process.GetProcessById(pid).MainWindowHandle.ToInt32();
-                    ShowWindow(hWnd, SW_HIDE);
+                    foreach (int pid in newFirefoxPids)
+                    {
+                        int hWnd = Process.GetProcessById(pid).MainWindowHandle.ToInt32();
+                        ShowWindow(hWnd, SW_HIDE);
+                    }
+                }
+                catch
+                {
+                    // newFirefoxPids.Count == 0
+                    MessageBox.Show("Không tìm thấy cửa sổ Firefox!");
+                    Exceptions_Handler();
                 }
 
                 //Program.mainForm.autoIt.WinSetState(driver.Title, "", 0);
@@ -199,11 +225,6 @@ namespace KSTN_Facebook_Tool
                 driver.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(30));
                 setReady(true);
             }
-
-            /*
-            var driverService = OpenQA.Selenium.PhantomJS.PhantomJSDriverService.CreateDefaultService();
-            driverService.HideCommandPromptWindow = true;
-            driver = new OpenQA.Selenium.PhantomJS.PhantomJSDriver(driverService);*/
 
             Program.loadingForm.setText("ĐĂNG NHẬP TÀI KHOẢN FACEBOOK...");
             setReady(false, "Đang đăng nhập");
@@ -245,6 +266,8 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPMImportProfile.Enabled = true;
                 Program.mainForm.btnPMImportGroup.Enabled = true;
                 Program.mainForm.btnCommentImportComment.Enabled = true;
+                Program.mainForm.btnReply.Enabled = true;
+                Program.mainForm.btnEdit.Enabled = true;
 
                 var nodes = driver.FindElementsByName("target");
                 if (nodes.Count > 0)
@@ -363,6 +386,8 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPM.Enabled = false;
                 Program.mainForm.btnPMSendFrRequests.Enabled = false;
                 Program.mainForm.btnCommentImportComment.Enabled = false;
+                Program.mainForm.btnReply.Enabled = false;
+                Program.mainForm.btnEdit.Enabled = false;
             }
             Program.mainForm.btnLogin.Enabled = true;
             setReady(true, "Đăng xuất thành công | Ready");
@@ -393,14 +418,15 @@ namespace KSTN_Facebook_Tool
 
                 DataGridViewRow row = Program.mainForm.dgGroups.Rows[0];
                 progress++;
-                Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count + Program.mainForm.dgPostResult.Rows.Count;
-                Program.mainForm.lblPostingGroup.Text = row.Cells[0].Value.ToString();
-
+                Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
+                
                 await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
-                while (true)
+                Program.mainForm.lblPostingGroup.Text = driver.Title;
+
+                while (true && !pause)
                 {
-                    var temp = await Task.Factory.StartNew(() => driver.FindElementsById("header"));
-                    if (temp.Count > 0)
+                    int headers = await Task.Factory.StartNew(() => FindHeader());
+                    if (headers > 0)
                     {
                         break;
                     }
@@ -506,12 +532,11 @@ namespace KSTN_Facebook_Tool
                         Program.mainForm.dgGroups.Rows.RemoveAt(0);
                     }
                     catch { }
-
                 }
 
                 for (int i = 0; i < delay + 1; i++)
                 {
-                    if (pause)
+                    if (pause || Program.mainForm.dgGroups.Rows.Count == 0)
                         break;
                     Program.mainForm.lblTick.Text = delay - i + "";
                     if (i == delay)
@@ -555,8 +580,15 @@ namespace KSTN_Facebook_Tool
 
             int progress = 0;
 
-            foreach (DataGridViewRow row in Program.mainForm.dgGroups.Rows)
+            while (Program.mainForm.dgGroups.Rows.Count > 0)
             {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                DataGridViewRow row = Program.mainForm.dgGroups.Rows[0];
                 progress++;
                 Program.mainForm.lblInviteProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
                 Program.mainForm.lblInvitingGroup.Text = row.Cells[0].Value.ToString();
@@ -575,6 +607,7 @@ namespace KSTN_Facebook_Tool
                 {
                     // Group không cho mời
                     Program.mainForm.dgInvitedGroups.Rows.Insert(0, "Không cho phép gia nhập!");
+                    Program.mainForm.dgGroups.Rows.RemoveAt(0);
                     continue;
                 }
 
@@ -588,16 +621,20 @@ namespace KSTN_Facebook_Tool
                     IWebElement btnSubmit = btnSubmits[btnSubmits.Count - 1];
                     btnSubmit.Click();
                     Program.mainForm.dgInvitedGroups.Rows.Insert(0, row.Cells[0].Value.ToString());
+                    Program.mainForm.dgGroups.Rows.RemoveAt(0);
                 }
                 catch
                 {
                     // Tìm không thấy
                     Program.mainForm.dgInvitedGroups.Rows.Insert(0, "Không tìm thấy: Đã gia nhập hoặc Tên không đúng!");
+                    Program.mainForm.dgGroups.Rows.RemoveAt(0);
                     continue;
                 }
 
                 for (int i = 0; i < delay + 1; i++)
                 {
+                    if (pause)
+                        break;
                     Program.mainForm.lblInviteTick.Text = delay - i + "";
                     if (i == delay)
                     {
@@ -607,9 +644,10 @@ namespace KSTN_Facebook_Tool
                 }
             }
 
-            Program.mainForm.txtInviteDelay.Enabled = false;
-            Program.mainForm.txtInviteName.Enabled = false;
-            Program.mainForm.btnInvite.Enabled = false;
+            Program.mainForm.txtInviteDelay.Enabled = true;
+            Program.mainForm.txtInviteName.Enabled = true;
+            Program.mainForm.btnInvite.Enabled = true;
+            Program.mainForm.btnInvitePause.Enabled = false;
             Program.mainForm.lblInviteTick.Text = "Ready";
 
             MessageBox.Show("Đã hoàn thành mời " + progress + " nhóm!");
@@ -762,10 +800,10 @@ namespace KSTN_Facebook_Tool
 
                 await Task.Factory.StartNew(() => Navigate(post_url));
 
-                while (true)
+                while (true && !pause)
                 {
-                    var temp = await Task.Factory.StartNew(() => driver.FindElementsById("header"));
-                    if (temp.Count > 0)
+                    int headers = await Task.Factory.StartNew(() => FindHeader());
+                    if (headers > 0)
                     {
                         break;
                     }
@@ -774,11 +812,7 @@ namespace KSTN_Facebook_Tool
                     await TaskEx.Delay(1000);
                 }
 
-                try
-                {
-                    Program.mainForm.lblCommenting.Text = driver.Title;
-                }
-                catch { }
+                Program.mainForm.lblCommenting.Text = driver.Title;
 
                 if (await Task.Factory.StartNew(() => driver.FindElementsByName("comment_text").Count) == 0)
                 {
@@ -788,7 +822,8 @@ namespace KSTN_Facebook_Tool
                     continue;
                 }
 
-                InputValueAdd("comment_text", Program.mainForm.txtComment.Text);
+                // InputValueAdd("comment_text", Program.mainForm.txtComment.Text);
+                await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('comment_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtComment.Text) + "';"));
 
                 IWebElement btnSubmit = driver.FindElementByXPath("//form[@method='post']//input[@type='submit']");
                 await Task.Factory.StartNew(() => ClickElement(btnSubmit));
@@ -1121,6 +1156,212 @@ namespace KSTN_Facebook_Tool
 
             MessageBox.Show("Hoàn thành gửi tin nhắn! Số lượng gửi: " + Program.mainForm.dgPMResult.Rows.Count);
             setReady(true, "Số lượng gửi: " + Program.mainForm.dgPMResult.Rows.Count + "| Ready");
+        }
+
+        public async void AutoReplyComment()
+        {
+            setReady(false, "Đang Reply Comment");
+            int delay;
+            if (!int.TryParse(Program.mainForm.txtReplyDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+            int max;
+            if (!int.TryParse(Program.mainForm.txtReplyMAX.Text, out max) || max < 0)
+            {
+                MessageBox.Show("Max Reply/1 URL: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            Program.mainForm.lblReplyTick.Text = "Đang lấy danh sách URL bình luận";
+
+            if (Program.mainForm.dgReplyURLs.Rows.Count == 0)
+            {
+                while(Program.mainForm.dgReplyBrowse.Rows.Count > 0)
+                {
+                    String _txtReplyURL = Program.mainForm.dgReplyBrowse.Rows[0].Cells[0].Value.ToString();
+                    Program.mainForm.dgReplyBrowse.Rows.RemoveAt(0);
+
+                    if (!_txtReplyURL.Contains("facebook.com"))
+                        continue;
+                    await Task.Factory.StartNew(() => Navigate(_txtReplyURL));
+
+                    var comments = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, '/comment/replies/') and contains(@href, 'comment_form')]"));
+                    if (comments.Count > 0)
+                    {
+                        int comment_count = 0;
+                        foreach (IWebElement comment in comments)
+                        {
+                            if (comment_count >= max)
+                                break;
+                            Program.mainForm.dgReplyURLs.Rows.Add(comment.GetAttribute("href"));
+                            comment_count++;
+                        }
+                    }
+                }
+            }
+
+            Program.mainForm.lblReplyTick.Text = "Đang Reply";
+
+            while (Program.mainForm.dgReplyURLs.Rows.Count > 0)
+            {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                await Task.Factory.StartNew(() => Navigate(Program.mainForm.dgReplyURLs.Rows[0].Cells[0].Value.ToString()));
+                await TaskEx.Delay(2000);
+
+                while (true && !pause)
+                {
+                    int headers = await Task.Factory.StartNew(() => FindHeader());
+                    if (headers > 0)
+                    {
+                        break;
+                    }
+                    Program.mainForm.lblReplyTick.Text = "(!) Mạng";
+                    await Task.Factory.StartNew(() => Navigate(Program.mainForm.txtReplyURL.Text));
+                    await TaskEx.Delay(1000);
+                }
+
+                if (await Task.Factory.StartNew(() => driver.FindElementsByName("comment_text").Count) == 0)
+                {
+                    Program.mainForm.dgReplyURLs.Rows.RemoveAt(0);
+                    Program.mainForm.lblReplyTick.Text = "Skip bài Reply";
+                    Program.mainForm.dgReplyResult.Rows.Insert(0, "Skip - Không cho Reply");
+                    continue;
+                }
+
+                string random_tag = "";
+
+                if (Program.mainForm.cbReplyRandomTag.Checked)
+                {
+                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    var rnd = new Random();
+                    random_tag = " #" + new string(
+                        Enumerable.Repeat(chars, rnd.Next(8) + 1)
+                                  .Select(s => s[rnd.Next(s.Length)])
+                                  .ToArray());
+                }
+
+                // await Task.Factory.StartNew(() => InputValueAdd("comment_text", Program.mainForm.txtReplyContent.Text + random_tag));
+                await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('comment_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtReplyContent.Text + random_tag) + "';"));
+                
+                var btnSubmit = driver.FindElementByXPath("//form[@method='post']//input[@type='submit']");
+                await Task.Factory.StartNew(() => ClickElement(btnSubmit));
+
+                IWebElement comment_name = driver.FindElementByTagName("h3");
+                Program.mainForm.dgReplyURLs.Rows.RemoveAt(0);
+                Program.mainForm.dgReplyResult.Rows.Insert(0, comment_name.Text);
+
+                for (int i = 0; i < delay + 1; i++)
+                {
+                    if (pause)
+                        break;
+
+                    Program.mainForm.lblReplyTick.Text = delay - i + "";
+                    if (i == delay)
+                    {
+                        Program.mainForm.lblReplyTick.Text = "Đang Reply";
+                    }
+                    await TaskEx.Delay(1000);
+                }
+            }
+
+            Program.mainForm.lblReplyTick.Text = "Ready";
+
+            Program.mainForm.txtReplyURL.Enabled = true;
+            Program.mainForm.txtReplyContent.Enabled = true;
+            Program.mainForm.txtReplyDelay.Enabled = true;
+            Program.mainForm.btnReply.Enabled = true;
+            Program.mainForm.btnReplyPause.Enabled = false;
+
+            MessageBox.Show("Đã hoàn thành Reply");
+            setReady(true);
+        }
+
+        public async void AutoEdit()
+        {
+            setReady(false, "Đang tự động Edit bài");
+            int delay;
+
+            if (!int.TryParse(Program.mainForm.txtEditDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            Program.mainForm.lblEditTick.Text = "Đang Edit";
+
+            while (Program.mainForm.dgEditBrowse.Rows.Count > 0)
+            {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                string post_url = Program.mainForm.dgEditBrowse.Rows[0].Cells[0].Value.ToString();
+
+                await Task.Factory.StartNew(() => Navigate(post_url));
+
+                while (true && !pause)
+                {
+                    int headers = await Task.Factory.StartNew(() => FindHeader());
+                    if (headers > 0)
+                    {
+                        break;
+                    }
+                    Program.mainForm.lblEditTick.Text = "(!) Mạng";
+                    await Task.Factory.StartNew(() => Navigate(post_url));
+                    await TaskEx.Delay(1000);
+                }
+
+                Program.mainForm.lblEditing.Text = driver.Title;
+
+                if (await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, '/edit/post/')]").Count) == 0)
+                {
+                    Program.mainForm.dgEditBrowse.Rows.RemoveAt(0);
+                    Program.mainForm.lblEditTick.Text = "Skip bài edit";
+                    Program.mainForm.dgEditResult.Rows.Insert(0, driver.Title, "Skip - Không thể edit");
+                    continue;
+                }
+                await Task.Factory.StartNew(() => ClickElement(driver.FindElementByXPath("//a[contains(@href, '/edit/post/')]")));
+
+                await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('p_text')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtEditContent.Text) + "';"));
+
+                IWebElement btnSubmit = driver.FindElementByXPath("//form[@method='post']//input[@type='submit']");
+                await Task.Factory.StartNew(() => ClickElement(btnSubmit));
+                Program.mainForm.dgEditResult.Rows.Insert(0, driver.Title, driver.Url);
+                Program.mainForm.dgEditBrowse.Rows.RemoveAt(0);
+
+                for (int i = 0; i < delay + 1; i++)
+                {
+                    if (pause)
+                        break;
+
+                    Program.mainForm.lblEditTick.Text = delay - i + "";
+                    if (i == delay)
+                    {
+                        Program.mainForm.lblEditTick.Text = "Đang Edit";
+                    }
+                    await TaskEx.Delay(1000);
+                }
+            }
+
+            Program.mainForm.lblEditTick.Text = "Ready";
+            Program.mainForm.txtEditContent.Enabled = true;
+            Program.mainForm.txtEditDelay.Enabled = true;
+            Program.mainForm.btnEditPause.Enabled = false;
+            Program.mainForm.btnEditBrowse.Enabled = true;
+            Program.mainForm.btnEdit.Enabled = true;
+            Program.mainForm.dgEditBrowse.Enabled = true;
+
+            MessageBox.Show("Hoàn thành Edit bài!");
+            setReady(true, "Edit hoàn thành! | Ready");
         }
 
         #region OTHER HELPERS

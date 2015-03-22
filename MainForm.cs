@@ -334,6 +334,11 @@ namespace KSTN_Facebook_Tool
                 sw.Close();
             }
         }
+
+        private void btnPostClearGroups_Click(object sender, EventArgs e)
+        {
+            dgGroups.Rows.Clear();
+        }
         #endregion
 
         #region TAB AUTOJOIN
@@ -420,8 +425,15 @@ namespace KSTN_Facebook_Tool
             txtInviteDelay.Enabled = false;
             txtInviteName.Enabled = false;
             btnInvite.Enabled = false;
+            btnInvitePause.Enabled = true;
 
             SE.AutoInvite();
+        }
+
+        private void btnInvitePause_Click(object sender, EventArgs e)
+        {
+            btnInvitePause.Enabled = false;
+            SE.pause = true;
         }
         #endregion
 
@@ -842,17 +854,235 @@ namespace KSTN_Facebook_Tool
         {
             try
             {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL);
+                String machine_id = "";
+                if (Properties.Settings.Default.license_id == "")
+                {
+                    machine_id = await Task.Factory.StartNew(() => FingerPrint.Value());
+                    Properties.Settings.Default.license_id = machine_id;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    machine_id = Properties.Settings.Default.license_id;
+                }
+
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id);
                 myRequest.Method = "GET";
                 WebResponse myResponse = await myRequest.GetResponseAsync();
                 StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
                 string result = sr.ReadToEnd();
+                txtChatLog.Text = result;
+
+                if (result == "DENIED")
+                {
+                    MessageBox.Show("Vui lòng gia hạn bản quyền!\nGia hạn bản quyền bằng cách Copy lại MACHINE ID, email tới kitsudo1412@gmail.com\nNhấn OK để xem MACHINE ID!");
+                    License licForm = new License();
+                    licForm.ShowDialog();
+                    Process.GetCurrentProcess().Kill();
+                }
+
                 sr.Close();
                 myResponse.Close();
-                txtChatLog.Text = result;
             }
-            catch { }
+            catch
+            {
+                MessageBox.Show("Không thể kiểm tra được bản quyền. Bắt đầu phiên bản dùng thử!\nNhấn OK để tiếp tục!");
+            }
         }
         #endregion
+
+        #region TAB REPLY
+        private void btnReply_Click(object sender, EventArgs e)
+        {
+            if (txtReplyContent.Text == "" || dgReplyBrowse.Rows.Count == 0)
+            {
+                MessageBox.Show("Điền thông tin trước khi Reply Comment!");
+                return;
+            }
+
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            int delay;
+
+            if (!int.TryParse(txtReplyDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+            int max;
+            if (!int.TryParse(txtReplyMAX.Text, out max) || max < 0)
+            {
+                MessageBox.Show("Max Reply/1 URL: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            txtReplyURL.Enabled = false;
+            txtReplyContent.Enabled = false;
+            txtReplyDelay.Enabled = false;
+            btnReply.Enabled = false;
+            btnReplyPause.Enabled = true;
+
+            SE.AutoReplyComment();
+        }
+
+        private void btnReplyPause_Click(object sender, EventArgs e)
+        {
+            btnReplyPause.Enabled = false;
+            SE.pause = true;
+        }
+
+        private void btnReplyBrowse_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Post IDS File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtReplyURL.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    if (line != "")
+                    {
+                        dgReplyBrowse.Rows.Insert(0, line);
+                        counter++;
+                    }
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " bài đăng");
+            }
+            else
+            {
+                txtReplyURL.Text = "";
+            }
+        }
+        #endregion
+
+        #region TAB EDIT
+        private void btnEditBrowse_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Post IDS File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtEditBrowse.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    if (line != "")
+                    {
+                        dgEditBrowse.Rows.Insert(0, line);
+                        counter++;
+                    }
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " bài đăng");
+            }
+            else
+            {
+                txtEditBrowse.Text = "";
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            int delay;
+
+            if (!int.TryParse(txtEditDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            if (txtEditContent.Text == "")
+            {
+                MessageBox.Show("Không được bỏ trống nội dung Sửa");
+                return;
+            }
+
+            txtEditContent.Enabled = false;
+            txtEditDelay.Enabled = false;
+            btnEditPause.Enabled = true;
+            btnEditBrowse.Enabled = false;
+            btnEdit.Enabled = false;
+            dgEditBrowse.Enabled = false;
+
+            SE.AutoEdit();
+        }
+
+        private void btnEditPause_Click(object sender, EventArgs e)
+        {
+            btnEditPause.Enabled = false;
+            SE.pause = true;
+        }
+        #endregion
+
+        private void btnPostImportGroups_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Post IDS File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    if (line != "")
+                    {
+                        dgGroups.Rows.Insert(0, "", line);
+                        counter++;
+                    }
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " Groups");
+            }
+        }
+
+        
     }
 }

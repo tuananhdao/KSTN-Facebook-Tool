@@ -30,8 +30,20 @@ namespace KSTN_Facebook_Tool
 
         private async void CalculateLicense()
         {
-            txtLicense.Text = await Task.Factory.StartNew(() =>FingerPrint.Value());
-            CalculateMD5Hash(txtLicense.Text + DateTime.Today.Month);
+            String machine_id = "";
+            if (Properties.Settings.Default.license_id == "")
+            {
+                machine_id = await Task.Factory.StartNew(() => FingerPrint.Value());
+                Properties.Settings.Default.license_id = machine_id;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                machine_id = Properties.Settings.Default.license_id;
+            }
+
+            txtLicense.Text = machine_id;
+            // CalculateMD5Hash(txtLicense.Text);
         }
 
         public void CalculateMD5Hash(string input)
