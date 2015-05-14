@@ -9,11 +9,16 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Net;
+using System.IO;
+using System.Diagnostics;
 
 namespace KSTN_Facebook_Tool
 {
     public partial class License : Form
     {
+        private String CHAT_URL = "http://kstnk57.com/AUTO/chatlog.php";
+
         public License()
         {
             InitializeComponent();
@@ -70,6 +75,19 @@ namespace KSTN_Facebook_Tool
             }
 
             txtKey.Text = sb.ToString();
+        }
+
+        private async void btnKey_Click(object sender, EventArgs e)
+        {
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + txtLicense.Text + "&change_pc=" + txtKey.Text);
+            myRequest.Method = "GET";
+            WebResponse myResponse = await myRequest.GetResponseAsync();
+            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+            string result = sr.ReadToEnd();
+            MessageBox.Show(result + " Bạn cần bật lại chương trình. Nhấn OK để đóng!");
+            sr.Close();
+            myResponse.Close();
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

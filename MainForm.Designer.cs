@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtChatLog = new System.Windows.Forms.TextBox();
@@ -59,11 +59,9 @@
             this.lblPostingGroup = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
             this.lblTick = new System.Windows.Forms.Label();
-            this.cbMethods = new System.Windows.Forms.ComboBox();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnPost = new System.Windows.Forms.Button();
             this.txtDelay = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnBrowse3 = new System.Windows.Forms.Button();
             this.btnBrowse2 = new System.Windows.Forms.Button();
@@ -314,7 +312,7 @@
             this.txtChatLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtChatLog.Size = new System.Drawing.Size(315, 62);
             this.txtChatLog.TabIndex = 4;
-            this.txtChatLog.Text = "Phiên bản 2.8.0 Final 3";
+            this.txtChatLog.Text = "Đang thiết lập kết nối đến máy chủ...";
             // 
             // cbRemember
             // 
@@ -429,12 +427,13 @@
             // 
             // btnPostImportGroups
             // 
+            this.btnPostImportGroups.Enabled = false;
             this.btnPostImportGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.btnPostImportGroups.Location = new System.Drawing.Point(309, 181);
             this.btnPostImportGroups.Name = "btnPostImportGroups";
             this.btnPostImportGroups.Size = new System.Drawing.Size(101, 20);
             this.btnPostImportGroups.TabIndex = 10;
-            this.btnPostImportGroups.Text = "Import Groups";
+            this.btnPostImportGroups.Text = "Nạp lại";
             this.btnPostImportGroups.UseVisualStyleBackColor = true;
             this.btnPostImportGroups.Click += new System.EventHandler(this.btnPostImportGroups_Click);
             // 
@@ -445,7 +444,7 @@
             this.btnGroupExport.Name = "btnGroupExport";
             this.btnGroupExport.Size = new System.Drawing.Size(101, 20);
             this.btnGroupExport.TabIndex = 10;
-            this.btnGroupExport.Text = "Export Groups";
+            this.btnGroupExport.Text = "Xuất TXT";
             this.btnGroupExport.UseVisualStyleBackColor = true;
             this.btnGroupExport.Click += new System.EventHandler(this.btnGroupExport_Click);
             // 
@@ -468,27 +467,28 @@
             this.group_name,
             this.group_link,
             this.group_mem});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgGroups.Location = new System.Drawing.Point(9, 18);
             this.dgGroups.Name = "dgGroups";
             this.dgGroups.ReadOnly = true;
             this.dgGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgGroups.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgGroups.ShowCellToolTips = false;
             this.dgGroups.ShowEditingIcon = false;
             this.dgGroups.Size = new System.Drawing.Size(507, 160);
             this.dgGroups.TabIndex = 0;
             this.dgGroups.TabStop = false;
+            this.dgGroups.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgGroups_RowsRemoved);
             // 
             // group_name
             // 
@@ -575,11 +575,9 @@
             this.groupBox2.Controls.Add(this.lblPostingGroup);
             this.groupBox2.Controls.Add(this.lblProgress);
             this.groupBox2.Controls.Add(this.lblTick);
-            this.groupBox2.Controls.Add(this.cbMethods);
             this.groupBox2.Controls.Add(this.btnPause);
             this.groupBox2.Controls.Add(this.btnPost);
             this.groupBox2.Controls.Add(this.txtDelay);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.btnBrowse3);
             this.groupBox2.Controls.Add(this.btnBrowse2);
@@ -592,7 +590,7 @@
             this.groupBox2.Controls.Add(this.txtContent);
             this.groupBox2.Location = new System.Drawing.Point(9, 9);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(404, 361);
+            this.groupBox2.Size = new System.Drawing.Size(404, 307);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Soạn nội dung";
@@ -602,15 +600,15 @@
             this.lblPostingGroup.AutoEllipsis = true;
             this.lblPostingGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.lblPostingGroup.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblPostingGroup.Location = new System.Drawing.Point(224, 336);
+            this.lblPostingGroup.Location = new System.Drawing.Point(98, 283);
             this.lblPostingGroup.Name = "lblPostingGroup";
-            this.lblPostingGroup.Size = new System.Drawing.Size(109, 12);
+            this.lblPostingGroup.Size = new System.Drawing.Size(235, 12);
             this.lblPostingGroup.TabIndex = 11;
             // 
             // lblProgress
             // 
             this.lblProgress.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblProgress.Location = new System.Drawing.Point(157, 336);
+            this.lblProgress.Location = new System.Drawing.Point(13, 283);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(66, 13);
             this.lblProgress.TabIndex = 10;
@@ -619,30 +617,18 @@
             // lblTick
             // 
             this.lblTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblTick.Location = new System.Drawing.Point(339, 336);
+            this.lblTick.Location = new System.Drawing.Point(339, 283);
             this.lblTick.Name = "lblTick";
             this.lblTick.Size = new System.Drawing.Size(50, 13);
             this.lblTick.TabIndex = 9;
             this.lblTick.Text = "Ready";
             this.lblTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbMethods
-            // 
-            this.cbMethods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMethods.FormattingEnabled = true;
-            this.cbMethods.Items.AddRange(new object[] {
-            "Bình thường (Giả lập)",
-            "Qua Graph API Explorer"});
-            this.cbMethods.Location = new System.Drawing.Point(206, 301);
-            this.cbMethods.Name = "cbMethods";
-            this.cbMethods.Size = new System.Drawing.Size(180, 21);
-            this.cbMethods.TabIndex = 7;
-            // 
             // btnPause
             // 
             this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnPause.Location = new System.Drawing.Point(98, 331);
+            this.btnPause.Location = new System.Drawing.Point(98, 253);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(57, 24);
             this.btnPause.TabIndex = 9;
@@ -654,7 +640,7 @@
             // 
             this.btnPost.Enabled = false;
             this.btnPost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnPost.Location = new System.Drawing.Point(15, 331);
+            this.btnPost.Location = new System.Drawing.Point(15, 253);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(81, 24);
             this.btnPost.TabIndex = 8;
@@ -664,34 +650,25 @@
             // 
             // txtDelay
             // 
-            this.txtDelay.Location = new System.Drawing.Point(15, 301);
+            this.txtDelay.Location = new System.Drawing.Point(309, 256);
             this.txtDelay.Name = "txtDelay";
-            this.txtDelay.Size = new System.Drawing.Size(176, 20);
+            this.txtDelay.Size = new System.Drawing.Size(77, 20);
             this.txtDelay.TabIndex = 6;
             this.txtDelay.Text = "30";
             this.txtDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(203, 285);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(100, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Phương thức POST";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 285);
+            this.label5.Location = new System.Drawing.Point(238, 259);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(102, 13);
+            this.label5.Size = new System.Drawing.Size(65, 13);
             this.label5.TabIndex = 5;
-            this.label5.Text = "Delay: (Đơn vị: giây)";
+            this.label5.Text = "Delay: (giây)";
             // 
             // btnBrowse3
             // 
-            this.btnBrowse3.Location = new System.Drawing.Point(305, 257);
+            this.btnBrowse3.Location = new System.Drawing.Point(305, 225);
             this.btnBrowse3.Name = "btnBrowse3";
             this.btnBrowse3.Size = new System.Drawing.Size(81, 25);
             this.btnBrowse3.TabIndex = 5;
@@ -701,7 +678,7 @@
             // 
             // btnBrowse2
             // 
-            this.btnBrowse2.Location = new System.Drawing.Point(305, 231);
+            this.btnBrowse2.Location = new System.Drawing.Point(305, 199);
             this.btnBrowse2.Name = "btnBrowse2";
             this.btnBrowse2.Size = new System.Drawing.Size(81, 25);
             this.btnBrowse2.TabIndex = 4;
@@ -711,7 +688,7 @@
             // 
             // btnBrowse1
             // 
-            this.btnBrowse1.Location = new System.Drawing.Point(305, 205);
+            this.btnBrowse1.Location = new System.Drawing.Point(305, 173);
             this.btnBrowse1.Name = "btnBrowse1";
             this.btnBrowse1.Size = new System.Drawing.Size(81, 25);
             this.btnBrowse1.TabIndex = 3;
@@ -721,7 +698,7 @@
             // 
             // txtBrowse3
             // 
-            this.txtBrowse3.Location = new System.Drawing.Point(15, 260);
+            this.txtBrowse3.Location = new System.Drawing.Point(15, 228);
             this.txtBrowse3.Name = "txtBrowse3";
             this.txtBrowse3.ReadOnly = true;
             this.txtBrowse3.Size = new System.Drawing.Size(284, 20);
@@ -731,7 +708,7 @@
             // 
             // txtBrowse2
             // 
-            this.txtBrowse2.Location = new System.Drawing.Point(15, 234);
+            this.txtBrowse2.Location = new System.Drawing.Point(15, 202);
             this.txtBrowse2.Name = "txtBrowse2";
             this.txtBrowse2.ReadOnly = true;
             this.txtBrowse2.Size = new System.Drawing.Size(284, 20);
@@ -741,7 +718,7 @@
             // 
             // txtBrowse1
             // 
-            this.txtBrowse1.Location = new System.Drawing.Point(15, 208);
+            this.txtBrowse1.Location = new System.Drawing.Point(15, 176);
             this.txtBrowse1.Name = "txtBrowse1";
             this.txtBrowse1.ReadOnly = true;
             this.txtBrowse1.Size = new System.Drawing.Size(284, 20);
@@ -752,7 +729,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 192);
+            this.label4.Location = new System.Drawing.Point(12, 160);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 13);
             this.label4.TabIndex = 2;
@@ -773,7 +750,7 @@
             this.txtContent.Location = new System.Drawing.Point(15, 34);
             this.txtContent.Multiline = true;
             this.txtContent.Name = "txtContent";
-            this.txtContent.Size = new System.Drawing.Size(371, 155);
+            this.txtContent.Size = new System.Drawing.Size(371, 120);
             this.txtContent.TabIndex = 0;
             // 
             // tabPage2
@@ -2302,7 +2279,7 @@
             this.miniTimer_ThemeContainer1.SmartBounds = true;
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
-            this.miniTimer_ThemeContainer1.Text = "iOne Facebook Auto Tools";
+            this.miniTimer_ThemeContainer1.Text = "All-In-One Face Auto - iPost™ 2015";
             // 
             // pbMinimize
             // 
@@ -2375,7 +2352,7 @@
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(230, 15);
             this.lblUsername.TabIndex = 1;
-            this.lblUsername.Text = "Bạn chưa đăng nhập Facebook";
+            this.lblUsername.Text = "Đăng nhập ở bên trái để sử dụng";
             // 
             // lblViewProfile
             // 
@@ -2384,7 +2361,7 @@
             this.lblViewProfile.Size = new System.Drawing.Size(229, 15);
             this.lblViewProfile.TabIndex = 2;
             this.lblViewProfile.TabStop = true;
-            this.lblViewProfile.Text = "http://fb.bietoncuocsong.com";
+            this.lblViewProfile.Text = "http://kstnk57.com";
             this.lblViewProfile.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblViewProfile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblViewProfile_LinkClicked);
             // 
@@ -2440,9 +2417,9 @@
             this.lblVer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
             this.lblVer.Location = new System.Drawing.Point(427, 539);
             this.lblVer.Name = "lblVer";
-            this.lblVer.Size = new System.Drawing.Size(131, 16);
+            this.lblVer.Size = new System.Drawing.Size(89, 16);
             this.lblVer.TabIndex = 0;
-            this.lblVer.Text = "Version: 2.8.0 Final 3";
+            this.lblVer.Text = "Version: 2.9.1";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
             // 
             // MainForm
@@ -2460,7 +2437,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(261, 65);
             this.Name = "MainForm";
-            this.Text = "iOne Facebook Auto Tools";
+            this.Text = "All-In-One Face Auto - iPost™ 2015";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
@@ -2557,7 +2534,6 @@
         public System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.GroupBox groupBox5;
         public System.Windows.Forms.DataGridView dgGroups;
-        private System.Windows.Forms.Label label6;
         public System.Windows.Forms.Button btnPost;
         public System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Label label7;
@@ -2591,7 +2567,6 @@
         public System.Windows.Forms.Button btnBrowse1;
         public System.Windows.Forms.Button btnBrowse3;
         public System.Windows.Forms.Button btnBrowse2;
-        public System.Windows.Forms.ComboBox cbMethods;
         public System.Windows.Forms.TextBox txtInviteName;
         public System.Windows.Forms.TextBox txtInviteDelay;
         private System.Windows.Forms.Label label12;
@@ -2742,7 +2717,7 @@
         private System.Windows.Forms.Label label37;
         public System.Windows.Forms.TextBox txtEditContent;
         private System.Windows.Forms.Button btnPostClearGroups;
-        private System.Windows.Forms.Button btnPostImportGroups;
+        public System.Windows.Forms.Button btnPostImportGroups;
 
     }
 }

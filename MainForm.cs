@@ -96,7 +96,7 @@ namespace KSTN_Facebook_Tool
         SeleniumControl SE;
         //public AutoItX3 autoIt = new AutoItX3();
 
-        private String CHAT_URL = "http://fb.bietoncuocsong.com/chatlog.php";
+        private String CHAT_URL = "http://kstnk57.com/AUTO/chatlog.php";
 
         #region GENERAL MAINFORM
         public MainForm()
@@ -112,14 +112,16 @@ namespace KSTN_Facebook_Tool
             Program.loadingForm = new LoadingForm();
             SE = new SeleniumControl();
             txtUser.Focus();
-            cbMethods.SelectedIndex = 0;
             txtUser.Text = Properties.Settings.Default.user;
             txtPass.Text = Properties.Settings.Default.pass;
             ChatRefresh();
+
+            
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Program.loadingForm.RequestStop();
             SE.quit();
         }
 
@@ -274,7 +276,6 @@ namespace KSTN_Facebook_Tool
             btnPost.Enabled = false;
             txtContent.Enabled = false;
             txtDelay.Enabled = false;
-            cbMethods.Enabled = false;
             txtBrowse1.Enabled = false;
             txtBrowse2.Enabled = false;
             txtBrowse3.Enabled = false;
@@ -767,8 +768,11 @@ namespace KSTN_Facebook_Tool
                 for (int j = 0; j < myDataGridViewQuantity.Columns.Count; j++)
                 {
                     oRange = (Excel_12.Range)oSheet.Cells[i + 2, j + 1];
-
-                    oRange.Value2 = myDataGridViewQuantity[j, i].Value;
+                    try
+                    {
+                        oRange.Value2 = myDataGridViewQuantity[j, i].Value;
+                    }
+                    catch { }
 
                 }
 
@@ -872,6 +876,20 @@ namespace KSTN_Facebook_Tool
                 StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
                 string result = sr.ReadToEnd();
                 txtChatLog.Text = result;
+                sr.Close();
+                myResponse.Close();
+
+                if (result == "trial?")
+                {
+                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày?", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id + "&trial=1");
+                        myResponse = await myRequest.GetResponseAsync();
+                        myResponse.Close();
+                        MessageBox.Show("Bạn đã kích hoạt thành công! Nhấn OK để đóng chương trình! Khởi động lại để sử dụng phiên bản dùng thử 7 ngày!");
+                        Process.GetCurrentProcess().Kill();
+                    }
+                }
 
                 if (result == "DENIED")
                 {
@@ -880,13 +898,11 @@ namespace KSTN_Facebook_Tool
                     licForm.ShowDialog();
                     Process.GetCurrentProcess().Kill();
                 }
-
-                sr.Close();
-                myResponse.Close();
             }
             catch
             {
-                MessageBox.Show("Không thể kiểm tra được bản quyền. Bắt đầu phiên bản dùng thử!\nNhấn OK để tiếp tục!");
+                MessageBox.Show("Không thể kết nối đến Server! Vui lòng thử lại trong giây lát hoặc liên hệ với chúng tôi để được hỗ trợ!");
+                Process.GetCurrentProcess().Kill();
             }
         }
         #endregion
@@ -1052,37 +1068,46 @@ namespace KSTN_Facebook_Tool
 
         private void btnPostImportGroups_Click(object sender, EventArgs e)
         {
-            var fDialog = new System.Windows.Forms.OpenFileDialog();
-            fDialog.Title = "Open Post IDS File";
-            fDialog.Filter = "TXT Files (*.txt) | *.txt";
-
-            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
+            if (SE.ready == false)
             {
-                string file = fDialog.FileName;
-
-                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
-
-                int counter = 0;
-                string line;
-
-                // Read the file and display it line by line.
-                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
-                while ((line = fileStr.ReadLine()) != null)
-                {
-                    if (line != "")
-                    {
-                        dgGroups.Rows.Insert(0, "", line);
-                        counter++;
-                    }
-                }
-
-                fileStr.Close();
-
-                MessageBox.Show("Đọc thành công: " + counter + " Groups");
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
             }
+            dgGroups.Rows.Clear();
+            SE.getGroups();
         }
 
-        
+        private void dgGroups_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            groups_to_xml();
+        }
+
+        public void groups_to_xml()
+        {
+            try
+            {
+                //Create a datatable to store XML data
+                DataTable dt = new DataTable();
+                
+                foreach (DataGridViewColumn col in dgGroups.Columns)
+                {
+                    dt.Columns.Add(col.HeaderText);
+                }
+
+                foreach (DataGridViewRow row in dgGroups.Rows)
+                {
+                    DataRow dRow = dt.NewRow();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                    dt.Rows.Add(dRow);
+                }
+                DataSet DS = new DataSet();
+                DS.Tables.Add(dt);
+                DS.WriteXml(SE.user_id + "_groups.xml");
+            }
+            catch (Exception ex) { MessageBox.Show(ex + ""); }
+        }
     }
 }

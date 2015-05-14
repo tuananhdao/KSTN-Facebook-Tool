@@ -64,8 +64,9 @@
             this.btnKey.Name = "btnKey";
             this.btnKey.Size = new System.Drawing.Size(96, 24);
             this.btnKey.TabIndex = 11;
-            this.btnKey.Text = "Nhập KEY";
+            this.btnKey.Text = "Lấy bản quyền";
             this.btnKey.UseVisualStyleBackColor = true;
+            this.btnKey.Click += new System.EventHandler(this.btnKey_Click);
             // 
             // txtKey
             // 
@@ -79,9 +80,9 @@
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(11, 62);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(31, 13);
+            this.label19.Size = new System.Drawing.Size(65, 13);
             this.label19.TabIndex = 9;
-            this.label19.Text = "KEY:";
+            this.label19.Text = "Nhập ID cũ:";
             // 
             // txtLicense
             // 
