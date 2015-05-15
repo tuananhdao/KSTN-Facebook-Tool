@@ -115,8 +115,6 @@ namespace KSTN_Facebook_Tool
             txtUser.Text = Properties.Settings.Default.user;
             txtPass.Text = Properties.Settings.Default.pass;
             ChatRefresh();
-
-            
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -881,7 +879,7 @@ namespace KSTN_Facebook_Tool
 
                 if (result == "trial?")
                 {
-                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày?", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày ngay bây giờ?", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
                     {
                         myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id + "&trial=1");
                         myResponse = await myRequest.GetResponseAsync();
@@ -1108,6 +1106,59 @@ namespace KSTN_Facebook_Tool
                 DS.WriteXml(SE.user_id + "_groups.xml");
             }
             catch (Exception ex) { MessageBox.Show(ex + ""); }
+        }
+
+        private void btnPMSendFrRequests_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (dgUID.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
+                return;
+            }
+
+            int delay;
+
+            if (!int.TryParse(txtPMDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            btnPMSendFrRequests.Enabled = false;
+            btnPMSendFrRequestsPause.Enabled = true;
+
+            SE.AutoAddFriends();
+        }
+
+        private void btnPMSendFrRequestsPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+        }
+
+        private void btnPMInsertName_Click(object sender, EventArgs e)
+        {
+            txtPM.AppendText("{username}");
+            txtPM.Focus();
+        }
+
+        private void btnPauseAll_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+            btnPauseAll.Enabled = false;
+        }
+
+        private void dgGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+                dgGroups.Rows.Remove(dgGroups.Rows[e.RowIndex]);
         }
     }
 }

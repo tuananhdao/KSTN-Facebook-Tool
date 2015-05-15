@@ -45,11 +45,11 @@
             this.btnPostClearGroups = new System.Windows.Forms.Button();
             this.btnPostImportGroups = new System.Windows.Forms.Button();
             this.btnGroupExport = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.dgGroups = new System.Windows.Forms.DataGridView();
             this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
             this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPostResultExport = new System.Windows.Forms.Button();
             this.dgPostResult = new System.Windows.Forms.DataGridView();
@@ -86,10 +86,6 @@
             this.group_search_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_search_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_search_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.btnGroupSearchFr = new System.Windows.Forms.Button();
-            this.txtGroupSearchFr = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.lblSearching = new System.Windows.Forms.Label();
             this.btnGroupSearch = new System.Windows.Forms.Button();
@@ -187,6 +183,9 @@
             this.txtTagUrl = new System.Windows.Forms.TextBox();
             this.tabPagePM = new System.Windows.Forms.TabPage();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.btnPMInsertName = new System.Windows.Forms.Button();
+            this.lblPMSendFrRequestsTick = new System.Windows.Forms.Label();
+            this.btnPMSendFrRequestsPause = new System.Windows.Forms.Button();
             this.btnPMPause = new System.Windows.Forms.Button();
             this.lblPMTick = new System.Windows.Forms.Label();
             this.txtPMDelay = new System.Windows.Forms.TextBox();
@@ -219,6 +218,7 @@
             this.label26 = new System.Windows.Forms.Label();
             this.btnPMImportFriends = new System.Windows.Forms.Button();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
+            this.btnPauseAll = new System.Windows.Forms.Button();
             this.pbMinimize = new System.Windows.Forms.PictureBox();
             this.pbClose = new System.Windows.Forms.PictureBox();
             this.btnTermsPolicies = new System.Windows.Forms.Button();
@@ -244,7 +244,6 @@
             this.groupBox11.SuspendLayout();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).BeginInit();
-            this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.tabPageInvite.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -405,7 +404,6 @@
             this.groupBox4.Controls.Add(this.btnPostClearGroups);
             this.groupBox4.Controls.Add(this.btnPostImportGroups);
             this.groupBox4.Controls.Add(this.btnGroupExport);
-            this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.dgGroups);
             this.groupBox4.Location = new System.Drawing.Point(431, 9);
             this.groupBox4.Name = "groupBox4";
@@ -448,16 +446,6 @@
             this.btnGroupExport.UseVisualStyleBackColor = true;
             this.btnGroupExport.Click += new System.EventHandler(this.btnGroupExport_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label7.Location = new System.Drawing.Point(6, 184);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(169, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "* Xóa nhóm: Chọn dòng => Delete";
-            // 
             // dgGroups
             // 
             this.dgGroups.AllowUserToAddRows = false;
@@ -466,7 +454,8 @@
             this.dgGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.group_name,
             this.group_link,
-            this.group_mem});
+            this.group_mem,
+            this.groupdeletebutton});
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
@@ -488,19 +477,25 @@
             this.dgGroups.Size = new System.Drawing.Size(507, 160);
             this.dgGroups.TabIndex = 0;
             this.dgGroups.TabStop = false;
+            this.dgGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGroups_CellContentClick);
             this.dgGroups.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgGroups_RowsRemoved);
             // 
             // group_name
             // 
+            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.group_name.DataPropertyName = "group_name";
+            this.group_name.Frozen = true;
             this.group_name.HeaderText = "Tên Group";
             this.group_name.Name = "group_name";
             this.group_name.ReadOnly = true;
+            this.group_name.Width = 210;
             // 
             // group_link
             // 
+            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.group_link.DataPropertyName = "group_link";
             this.group_link.FillWeight = 80F;
+            this.group_link.Frozen = true;
             this.group_link.HeaderText = "Link";
             this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.group_link.Name = "group_link";
@@ -509,14 +504,33 @@
             this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.group_link.TrackVisitedState = false;
             this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.group_link.Width = 150;
             // 
             // group_mem
             // 
+            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.group_mem.DataPropertyName = "group_mem";
             this.group_mem.FillWeight = 30F;
+            this.group_mem.Frozen = true;
             this.group_mem.HeaderText = "Thành viên";
             this.group_mem.Name = "group_mem";
             this.group_mem.ReadOnly = true;
+            this.group_mem.Width = 69;
+            // 
+            // groupdeletebutton
+            // 
+            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.groupdeletebutton.DataPropertyName = "delete";
+            this.groupdeletebutton.FillWeight = 30F;
+            this.groupdeletebutton.Frozen = true;
+            this.groupdeletebutton.HeaderText = "Xóa";
+            this.groupdeletebutton.Name = "groupdeletebutton";
+            this.groupdeletebutton.ReadOnly = true;
+            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.groupdeletebutton.Text = "Xóa";
+            this.groupdeletebutton.ToolTipText = "Xóa";
+            this.groupdeletebutton.UseColumnTextForButtonValue = true;
+            this.groupdeletebutton.Width = 32;
             // 
             // groupBox3
             // 
@@ -757,7 +771,6 @@
             // 
             this.tabPage2.Controls.Add(this.groupBox11);
             this.tabPage2.Controls.Add(this.groupBox10);
-            this.tabPage2.Controls.Add(this.groupBox9);
             this.tabPage2.Controls.Add(this.groupBox8);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -771,7 +784,7 @@
             // 
             this.groupBox11.Controls.Add(this.button1);
             this.groupBox11.Controls.Add(this.textBox1);
-            this.groupBox11.Location = new System.Drawing.Point(9, 246);
+            this.groupBox11.Location = new System.Drawing.Point(9, 146);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(404, 60);
             this.groupBox11.TabIndex = 3;
@@ -900,44 +913,6 @@
             this.group_search_mem.HeaderText = "Thành viên";
             this.group_search_mem.Name = "group_search_mem";
             this.group_search_mem.ReadOnly = true;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnGroupSearchFr);
-            this.groupBox9.Controls.Add(this.txtGroupSearchFr);
-            this.groupBox9.Controls.Add(this.label15);
-            this.groupBox9.Location = new System.Drawing.Point(9, 146);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(404, 94);
-            this.groupBox9.TabIndex = 1;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Lấy danh sách nhóm từ bạn bè";
-            // 
-            // btnGroupSearchFr
-            // 
-            this.btnGroupSearchFr.Enabled = false;
-            this.btnGroupSearchFr.Location = new System.Drawing.Point(253, 61);
-            this.btnGroupSearchFr.Name = "btnGroupSearchFr";
-            this.btnGroupSearchFr.Size = new System.Drawing.Size(133, 24);
-            this.btnGroupSearchFr.TabIndex = 7;
-            this.btnGroupSearchFr.Text = "Lấy danh sách nhóm";
-            this.btnGroupSearchFr.UseVisualStyleBackColor = true;
-            // 
-            // txtGroupSearchFr
-            // 
-            this.txtGroupSearchFr.Location = new System.Drawing.Point(18, 35);
-            this.txtGroupSearchFr.Name = "txtGroupSearchFr";
-            this.txtGroupSearchFr.Size = new System.Drawing.Size(367, 20);
-            this.txtGroupSearchFr.TabIndex = 6;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(16, 20);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(119, 13);
-            this.label15.TabIndex = 0;
-            this.label15.Text = "Tên hoặc email bạn bè:";
             // 
             // groupBox8
             // 
@@ -1935,6 +1910,9 @@
             // 
             // groupBox20
             // 
+            this.groupBox20.Controls.Add(this.btnPMInsertName);
+            this.groupBox20.Controls.Add(this.lblPMSendFrRequestsTick);
+            this.groupBox20.Controls.Add(this.btnPMSendFrRequestsPause);
             this.groupBox20.Controls.Add(this.btnPMPause);
             this.groupBox20.Controls.Add(this.lblPMTick);
             this.groupBox20.Controls.Add(this.txtPMDelay);
@@ -1953,6 +1931,37 @@
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Nhắn tin - Kết bạn";
             // 
+            // btnPMInsertName
+            // 
+            this.btnPMInsertName.Location = new System.Drawing.Point(253, 94);
+            this.btnPMInsertName.Name = "btnPMInsertName";
+            this.btnPMInsertName.Size = new System.Drawing.Size(75, 23);
+            this.btnPMInsertName.TabIndex = 10;
+            this.btnPMInsertName.Text = "Chèn tên";
+            this.btnPMInsertName.UseVisualStyleBackColor = true;
+            this.btnPMInsertName.Click += new System.EventHandler(this.btnPMInsertName_Click);
+            // 
+            // lblPMSendFrRequestsTick
+            // 
+            this.lblPMSendFrRequestsTick.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblPMSendFrRequestsTick.Location = new System.Drawing.Point(378, 128);
+            this.lblPMSendFrRequestsTick.Name = "lblPMSendFrRequestsTick";
+            this.lblPMSendFrRequestsTick.Size = new System.Drawing.Size(79, 15);
+            this.lblPMSendFrRequestsTick.TabIndex = 9;
+            this.lblPMSendFrRequestsTick.Text = "Ready";
+            this.lblPMSendFrRequestsTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnPMSendFrRequestsPause
+            // 
+            this.btnPMSendFrRequestsPause.Enabled = false;
+            this.btnPMSendFrRequestsPause.Location = new System.Drawing.Point(305, 123);
+            this.btnPMSendFrRequestsPause.Name = "btnPMSendFrRequestsPause";
+            this.btnPMSendFrRequestsPause.Size = new System.Drawing.Size(67, 24);
+            this.btnPMSendFrRequestsPause.TabIndex = 8;
+            this.btnPMSendFrRequestsPause.Text = "Dừng";
+            this.btnPMSendFrRequestsPause.UseVisualStyleBackColor = true;
+            this.btnPMSendFrRequestsPause.Click += new System.EventHandler(this.btnPMSendFrRequestsPause_Click);
+            // 
             // btnPMPause
             // 
             this.btnPMPause.Enabled = false;
@@ -1967,9 +1976,9 @@
             // lblPMTick
             // 
             this.lblPMTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblPMTick.Location = new System.Drawing.Point(197, 98);
+            this.lblPMTick.Location = new System.Drawing.Point(159, 98);
             this.lblPMTick.Name = "lblPMTick";
-            this.lblPMTick.Size = new System.Drawing.Size(127, 15);
+            this.lblPMTick.Size = new System.Drawing.Size(92, 15);
             this.lblPMTick.TabIndex = 7;
             this.lblPMTick.Text = "Ready";
             this.lblPMTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2023,10 +2032,11 @@
             this.btnPMSendFrRequests.Enabled = false;
             this.btnPMSendFrRequests.Location = new System.Drawing.Point(66, 123);
             this.btnPMSendFrRequests.Name = "btnPMSendFrRequests";
-            this.btnPMSendFrRequests.Size = new System.Drawing.Size(391, 24);
+            this.btnPMSendFrRequests.Size = new System.Drawing.Size(238, 24);
             this.btnPMSendFrRequests.TabIndex = 3;
             this.btnPMSendFrRequests.Text = "Kết bạn với tất cả User trong List";
             this.btnPMSendFrRequests.UseVisualStyleBackColor = true;
+            this.btnPMSendFrRequests.Click += new System.EventHandler(this.btnPMSendFrRequests_Click);
             // 
             // btnPM
             // 
@@ -2035,7 +2045,7 @@
             this.btnPM.Name = "btnPM";
             this.btnPM.Size = new System.Drawing.Size(67, 24);
             this.btnPM.TabIndex = 2;
-            this.btnPM.Text = "Send All";
+            this.btnPM.Text = "Gửi đi";
             this.btnPM.UseVisualStyleBackColor = true;
             this.btnPM.Click += new System.EventHandler(this.btnPM_Click);
             // 
@@ -2258,6 +2268,7 @@
             // miniTimer_ThemeContainer1
             // 
             this.miniTimer_ThemeContainer1.BackColor = System.Drawing.Color.White;
+            this.miniTimer_ThemeContainer1.Controls.Add(this.btnPauseAll);
             this.miniTimer_ThemeContainer1.Controls.Add(this.pbMinimize);
             this.miniTimer_ThemeContainer1.Controls.Add(this.pbClose);
             this.miniTimer_ThemeContainer1.Controls.Add(this.btnTermsPolicies);
@@ -2280,6 +2291,17 @@
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
             this.miniTimer_ThemeContainer1.Text = "All-In-One Face Auto - iPost™ 2015";
+            // 
+            // btnPauseAll
+            // 
+            this.btnPauseAll.Enabled = false;
+            this.btnPauseAll.Location = new System.Drawing.Point(940, 535);
+            this.btnPauseAll.Name = "btnPauseAll";
+            this.btnPauseAll.Size = new System.Drawing.Size(48, 23);
+            this.btnPauseAll.TabIndex = 16;
+            this.btnPauseAll.Text = "Dừng";
+            this.btnPauseAll.UseVisualStyleBackColor = true;
+            this.btnPauseAll.Click += new System.EventHandler(this.btnPauseAll_Click);
             // 
             // pbMinimize
             // 
@@ -2392,7 +2414,7 @@
             // 
             this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
             this.lblStatus.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblStatus.Location = new System.Drawing.Point(742, 539);
+            this.lblStatus.Location = new System.Drawing.Point(684, 539);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(231, 15);
             this.lblStatus.TabIndex = 3;
@@ -2403,7 +2425,7 @@
             // 
             this.imgStatus.BackColor = System.Drawing.SystemColors.Control;
             this.imgStatus.Image = ((System.Drawing.Image)(resources.GetObject("imgStatus.Image")));
-            this.imgStatus.Location = new System.Drawing.Point(976, 542);
+            this.imgStatus.Location = new System.Drawing.Point(918, 542);
             this.imgStatus.Name = "imgStatus";
             this.imgStatus.Size = new System.Drawing.Size(10, 10);
             this.imgStatus.TabIndex = 2;
@@ -2446,7 +2468,6 @@
             this.TabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGroups)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgPostResult)).EndInit();
@@ -2458,8 +2479,6 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGroupSearch)).EndInit();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.tabPageInvite.ResumeLayout(false);
@@ -2536,7 +2555,6 @@
         public System.Windows.Forms.DataGridView dgGroups;
         public System.Windows.Forms.Button btnPost;
         public System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.Label label7;
         public System.Windows.Forms.TextBox txtDelay;
         public System.Windows.Forms.Label lblTick;
         public System.Windows.Forms.Label lblProgress;
@@ -2575,16 +2593,12 @@
         public System.Windows.Forms.Label lblInvitingGroup;
         public System.Windows.Forms.DataGridView dgInvitedGroups;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_link;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_search_mem;
-        public System.Windows.Forms.Button btnGroupSearchFr;
-        public System.Windows.Forms.TextBox txtGroupSearchFr;
         public System.Windows.Forms.Button btnGroupSearch;
         public System.Windows.Forms.TextBox txtGroupSearchMin;
         public System.Windows.Forms.TextBox txtGroupSearch;
@@ -2615,9 +2629,6 @@
         public System.Windows.Forms.Label lblCommenting;
         public System.Windows.Forms.DataGridView dgComment;
         public System.Windows.Forms.Button btnCommentPause;
-        private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
-        private System.Windows.Forms.DataGridViewLinkColumn group_link;
-        private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
         private System.Windows.Forms.TabPage tabPageTag;
         private System.Windows.Forms.TabPage tabPagePM;
         private System.Windows.Forms.GroupBox groupBox16;
@@ -2718,6 +2729,14 @@
         public System.Windows.Forms.TextBox txtEditContent;
         private System.Windows.Forms.Button btnPostClearGroups;
         public System.Windows.Forms.Button btnPostImportGroups;
+        public System.Windows.Forms.Label lblPMSendFrRequestsTick;
+        public System.Windows.Forms.Button btnPMSendFrRequestsPause;
+        private System.Windows.Forms.Button btnPMInsertName;
+        public System.Windows.Forms.Button btnPauseAll;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
+        private System.Windows.Forms.DataGridViewLinkColumn group_link;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
+        private System.Windows.Forms.DataGridViewButtonColumn groupdeletebutton;
 
     }
 }

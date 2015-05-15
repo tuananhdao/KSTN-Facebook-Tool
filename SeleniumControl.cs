@@ -224,7 +224,7 @@ namespace KSTN_Facebook_Tool
                     Exceptions_Handler();
                 }
 
-                driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(0));
+                driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(1));
                 driver.Manage().Timeouts().SetScriptTimeout(TimeSpan.FromSeconds(10));
                 driver.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(30));
                 setReady(true);
@@ -261,7 +261,6 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPost.Enabled = true;
                 Program.mainForm.btnInvite.Enabled = true;
                 Program.mainForm.btnGroupSearch.Enabled = true;
-                Program.mainForm.btnGroupSearchFr.Enabled = true;
                 Program.mainForm.btnGroupJoin.Enabled = true;
                 Program.mainForm.btnTag.Enabled = true;
                 Program.mainForm.btnPMImportFriends.Enabled = true;
@@ -413,7 +412,6 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnPost.Enabled = false;
                 Program.mainForm.btnInvite.Enabled = false;
                 Program.mainForm.btnGroupSearch.Enabled = false;
-                Program.mainForm.btnGroupSearchFr.Enabled = false;
                 Program.mainForm.btnGroupJoin.Enabled = false;
                 Program.mainForm.btnTag.Enabled = false;
                 Program.mainForm.btnPMImportFriends.Enabled = false;
@@ -630,8 +628,13 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.lblInviteProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
                 Program.mainForm.lblInvitingGroup.Text = row.Cells[0].Value.ToString();
 
-                String group_id = row.Cells[1].Value.ToString().Substring(30);
-                await Task.Factory.StartNew(() => Navigate(links["fb_group_add"] + group_id + "&refid=18"));
+                //String group_id = row.Cells[1].Value.ToString().Substring(30);
+                await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
+
+                var btnAddMembers = driver.FindElementsByXPath("//a[contains(@href, '/groups/members/search/')]");
+
+                if (btnAddMembers.Count > 0)
+                    await Task.Factory.StartNew(() => ClickElement(btnAddMembers[0]));
 
                 try
                 {
@@ -701,6 +704,12 @@ namespace KSTN_Facebook_Tool
 
             while (success < 10)
             {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
                 await Task.Factory.StartNew(() => Navigate(links["fb_group_search_query"] + HttpUtility.UrlEncode(Program.mainForm.txtGroupSearch.Text) + "&s=" + skip));
 
                 var groups = driver.FindElementsByXPath("//form[@method='post']//tbody//tr");
@@ -716,19 +725,34 @@ namespace KSTN_Facebook_Tool
                     IWebElement a = groups[i].FindElement(By.TagName("a"));
                     IWebElement div = groups[i].FindElement(By.XPath(".//td//div"));
 
+                    int memnum = 0;
                     string memcount = Regex.Match(div.GetAttribute("innerHTML"), @"\d+\.\d+").Value;
-                    if (memcount == "")
-                        memcount = Regex.Match(div.GetAttribute("innerHTML"), @"\d+").Value;
+                    if (memcount != "") {
+                        memnum = int.Parse(memcount.Replace(".", string.Empty));
+                    }
+                    else
+                    {
+                        memcount = Regex.Match(div.GetAttribute("innerHTML"), @"\d+\,\d+").Value;
+                        if (memcount != "")
+                        {
+                            memnum = int.Parse(memcount.Replace(",", string.Empty));
+                        }
+                        else
+                        {
+                            memcount = Regex.Match(div.GetAttribute("innerHTML"), @"\d+").Value;
+                            memnum = int.Parse(memcount);
+                        }
+                    }
 
                     Program.mainForm.lblSearching.Text = "Đang quét: " + a.GetAttribute("innerHTML");
 
-                    if (int.Parse(memcount.Replace(".", string.Empty)) >= int.Parse(Program.mainForm.txtGroupSearchMin.Text))
+                    if (memnum >= int.Parse(Program.mainForm.txtGroupSearchMin.Text))
                     {
                         //Program.mainForm.dgGroupSearch.Rows.Add(a.GetAttribute("innerHTML"), a.GetAttribute("href"), memcount.Replace(".", string.Empty));
                         //success++;
                         grname[i] = a.GetAttribute("innerHTML");
                         grlink[i] = a.GetAttribute("href");
-                        grcount[i] = memcount.Replace(".", string.Empty);
+                        grcount[i] = memnum.ToString();
                     }
                 }
 
@@ -1024,7 +1048,13 @@ namespace KSTN_Facebook_Tool
 
             while (true)
             {
-                var members = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//div[contains(@id, 'member_')]"));
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                var members = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//table[contains(@id, 'member_')]"));
                 if (members.Count == 0)
                 {
                     break;
@@ -1032,6 +1062,7 @@ namespace KSTN_Facebook_Tool
 
                 foreach (IWebElement member in members)
                 {
+                    if (member.FindElement(By.TagName("a")).Text == "") continue;
                     Program.mainForm.dgUID.Rows.Insert(0, member.FindElement(By.TagName("a")).Text, member.FindElement(By.TagName("a")).GetAttribute("href"));
                     await TaskEx.Delay(10);
                     progress++;
@@ -1076,6 +1107,7 @@ namespace KSTN_Facebook_Tool
 
                 foreach (IWebElement member in members)
                 {
+                    if (member.Text == "") continue;
                     Program.mainForm.dgUID.Rows.Insert(0, member.Text, member.GetAttribute("href"));
                     await TaskEx.Delay(10);
                     progress++;
@@ -1161,9 +1193,12 @@ namespace KSTN_Facebook_Tool
                               .Select(s => s[rnd.Next(s.Length)])
                               .ToArray());
 
-                await Task.Factory.StartNew(() => InputValueAdd("body", Program.mainForm.txtPM.Text + random_tag));
+                await Task.Factory.StartNew(() => InputValueAdd("body", Program.mainForm.txtPM.Text.Replace("{username}", driver.Title) + random_tag));
 
-                await Task.Factory.StartNew(() => Click("Send"));
+                var btnSends = driver.FindElementsByName("send");
+                
+                if (btnSends.Count > 0)
+                    await Task.Factory.StartNew(() => ClickElement(btnSends[0]));
 
                 Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Đã gửi tin nhắn");
 
@@ -1403,6 +1438,78 @@ namespace KSTN_Facebook_Tool
             setReady(true, "Edit hoàn thành! | Ready");
         }
 
+        public async void AutoAddFriends()
+        {
+            setReady(false, "Đang tự động kết bạn");
+            int delay;
+
+            if (!int.TryParse(Program.mainForm.txtPMDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            Program.mainForm.lblPMSendFrRequestsTick.Text = "Đang KB";
+
+            while (Program.mainForm.dgUID.Rows.Count > 0)
+            {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                string friend_url = Program.mainForm.dgUID.Rows[0].Cells[1].Value.ToString();
+
+                await Task.Factory.StartNew(() => Navigate(friend_url));
+
+                while (true && !pause)
+                {
+                    int headers = await Task.Factory.StartNew(() => FindHeader());
+                    if (headers > 0)
+                    {
+                        break;
+                    }
+                    Program.mainForm.lblPMSendFrRequestsTick.Text = "(!) Mạng";
+                    await Task.Factory.StartNew(() => Navigate(friend_url));
+                    await TaskEx.Delay(1000);
+                }
+
+                var btnAddFriend = driver.FindElementsByXPath("//a[contains(@href, 'profile_add_friend.php')]");
+                if (btnAddFriend.Count == 1)
+                {
+                    await Task.Factory.StartNew(() => ClickElement(btnAddFriend[0]));
+                }
+                else
+                {
+                    Program.mainForm.dgUID.Rows.RemoveAt(0);
+                    continue;
+                }
+
+                Program.mainForm.dgUID.Rows.RemoveAt(0);
+
+                for (int i = 0; i < delay + 1; i++)
+                {
+                    if (pause)
+                        break;
+
+                    Program.mainForm.lblPMSendFrRequestsTick.Text = delay - i + "";
+                    if (i == delay)
+                    {
+                        Program.mainForm.lblPMSendFrRequestsTick.Text = "Đang KB";
+                    }
+                    await TaskEx.Delay(1000);
+                }
+            }
+
+            Program.mainForm.btnPMSendFrRequests.Enabled = true;
+            Program.mainForm.btnPMSendFrRequestsPause.Enabled = false;
+            Program.mainForm.lblPMSendFrRequestsTick.Text = "Ready";
+
+            MessageBox.Show("Hoàn thành kết bạn!");
+            setReady(true, "Kết bạn hoàn thành! | Ready");
+        }
+
         #region OTHER HELPERS
         public void setReady(bool status, String message = "Ready")
         {
@@ -1411,10 +1518,12 @@ namespace KSTN_Facebook_Tool
             if (status)
             {
                 Program.mainForm.imgStatus.Image = System.Drawing.Bitmap.FromFile("green.png");
+                pause = false;
             }
             else
             {
                 Program.mainForm.imgStatus.Image = System.Drawing.Bitmap.FromFile("red.gif");
+                Program.mainForm.btnPauseAll.Enabled = true;
             }
         }
         #endregion
