@@ -114,6 +114,7 @@ namespace KSTN_Facebook_Tool
             txtUser.Focus();
             txtUser.Text = Properties.Settings.Default.user;
             txtPass.Text = Properties.Settings.Default.pass;
+            cbGroupReload.Checked = Properties.Settings.Default.group_reload;
             ChatRefresh();
         }
 
@@ -1159,6 +1160,31 @@ namespace KSTN_Facebook_Tool
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 dgGroups.Rows.Remove(dgGroups.Rows[e.RowIndex]);
+        }
+
+        private void btnCommentScan_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            btnCommentScan.Enabled = false;
+            btnCommentScanPause.Enabled = true;
+
+            SE.AutoCommentScan();
+        }
+
+        private void btnCommentScanPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+        }
+
+        private void cbGroupReload_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.group_reload = cbGroupReload.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

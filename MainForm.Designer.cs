@@ -46,10 +46,6 @@
             this.btnPostImportGroups = new System.Windows.Forms.Button();
             this.btnGroupExport = new System.Windows.Forms.Button();
             this.dgGroups = new System.Windows.Forms.DataGridView();
-            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPostResultExport = new System.Windows.Forms.Button();
             this.dgPostResult = new System.Windows.Forms.DataGridView();
@@ -114,21 +110,22 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabPageComment = new System.Windows.Forms.TabPage();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.btnCommentPause = new System.Windows.Forms.Button();
+            this.btnCommentImportComment = new System.Windows.Forms.Button();
             this.dgCommentBrowse = new System.Windows.Forms.DataGridView();
             this.group_comment_import_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnCommentBrowse = new System.Windows.Forms.Button();
             this.txtCommentBrowse = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.dgComment = new System.Windows.Forms.DataGridView();
             this.group_comment_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.group_comment_link = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.btnCommentImportComment = new System.Windows.Forms.Button();
-            this.btnCommentPause = new System.Windows.Forms.Button();
             this.lblCommenting = new System.Windows.Forms.Label();
             this.lblCommentTick = new System.Windows.Forms.Label();
+            this.btnCommentScanPause = new System.Windows.Forms.Button();
             this.txtCommentDelay = new System.Windows.Forms.TextBox();
+            this.btnCommentScan = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.txtComment = new System.Windows.Forms.TextBox();
             this.tabPageCommentReply = new System.Windows.Forms.TabPage();
@@ -217,6 +214,11 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.btnPMImportFriends = new System.Windows.Forms.Button();
+            this.cbGroupReload = new System.Windows.Forms.CheckBox();
+            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
             this.btnPauseAll = new System.Windows.Forms.Button();
             this.pbMinimize = new System.Windows.Forms.PictureBox();
@@ -401,6 +403,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.cbGroupReload);
             this.groupBox4.Controls.Add(this.btnPostClearGroups);
             this.groupBox4.Controls.Add(this.btnPostImportGroups);
             this.groupBox4.Controls.Add(this.btnGroupExport);
@@ -480,58 +483,6 @@
             this.dgGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGroups_CellContentClick);
             this.dgGroups.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgGroups_RowsRemoved);
             // 
-            // group_name
-            // 
-            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_name.DataPropertyName = "group_name";
-            this.group_name.Frozen = true;
-            this.group_name.HeaderText = "Tên Group";
-            this.group_name.Name = "group_name";
-            this.group_name.ReadOnly = true;
-            this.group_name.Width = 210;
-            // 
-            // group_link
-            // 
-            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_link.DataPropertyName = "group_link";
-            this.group_link.FillWeight = 80F;
-            this.group_link.Frozen = true;
-            this.group_link.HeaderText = "Link";
-            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.group_link.Name = "group_link";
-            this.group_link.ReadOnly = true;
-            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.group_link.TrackVisitedState = false;
-            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.group_link.Width = 150;
-            // 
-            // group_mem
-            // 
-            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_mem.DataPropertyName = "group_mem";
-            this.group_mem.FillWeight = 30F;
-            this.group_mem.Frozen = true;
-            this.group_mem.HeaderText = "Thành viên";
-            this.group_mem.Name = "group_mem";
-            this.group_mem.ReadOnly = true;
-            this.group_mem.Width = 69;
-            // 
-            // groupdeletebutton
-            // 
-            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.groupdeletebutton.DataPropertyName = "delete";
-            this.groupdeletebutton.FillWeight = 30F;
-            this.groupdeletebutton.Frozen = true;
-            this.groupdeletebutton.HeaderText = "Xóa";
-            this.groupdeletebutton.Name = "groupdeletebutton";
-            this.groupdeletebutton.ReadOnly = true;
-            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.groupdeletebutton.Text = "Xóa";
-            this.groupdeletebutton.ToolTipText = "Xóa";
-            this.groupdeletebutton.UseColumnTextForButtonValue = true;
-            this.groupdeletebutton.Width = 32;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnPostResultExport);
@@ -550,7 +501,7 @@
             this.btnPostResultExport.Name = "btnPostResultExport";
             this.btnPostResultExport.Size = new System.Drawing.Size(101, 20);
             this.btnPostResultExport.TabIndex = 10;
-            this.btnPostResultExport.Text = "Export DS Bài đăng";
+            this.btnPostResultExport.Text = "Xuất kết quả ra File";
             this.btnPostResultExport.UseVisualStyleBackColor = true;
             this.btnPostResultExport.Click += new System.EventHandler(this.btnPostResultExport_Click);
             // 
@@ -1199,16 +1150,39 @@
             // 
             // groupBox16
             // 
+            this.groupBox16.Controls.Add(this.btnCommentPause);
+            this.groupBox16.Controls.Add(this.btnCommentImportComment);
             this.groupBox16.Controls.Add(this.dgCommentBrowse);
             this.groupBox16.Controls.Add(this.btnCommentBrowse);
             this.groupBox16.Controls.Add(this.txtCommentBrowse);
-            this.groupBox16.Controls.Add(this.label24);
-            this.groupBox16.Location = new System.Drawing.Point(8, 8);
+            this.groupBox16.Location = new System.Drawing.Point(8, 159);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(431, 174);
+            this.groupBox16.Size = new System.Drawing.Size(431, 190);
             this.groupBox16.TabIndex = 3;
             this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Bình luận bài đăng nhóm";
+            this.groupBox16.Text = "Nhập nguồn bài đăng từ file";
+            // 
+            // btnCommentPause
+            // 
+            this.btnCommentPause.Enabled = false;
+            this.btnCommentPause.Location = new System.Drawing.Point(341, 158);
+            this.btnCommentPause.Name = "btnCommentPause";
+            this.btnCommentPause.Size = new System.Drawing.Size(75, 23);
+            this.btnCommentPause.TabIndex = 6;
+            this.btnCommentPause.Text = "Dừng";
+            this.btnCommentPause.UseVisualStyleBackColor = true;
+            this.btnCommentPause.Click += new System.EventHandler(this.btnCommentPause_Click);
+            // 
+            // btnCommentImportComment
+            // 
+            this.btnCommentImportComment.Enabled = false;
+            this.btnCommentImportComment.Location = new System.Drawing.Point(227, 158);
+            this.btnCommentImportComment.Name = "btnCommentImportComment";
+            this.btnCommentImportComment.Size = new System.Drawing.Size(108, 24);
+            this.btnCommentImportComment.TabIndex = 6;
+            this.btnCommentImportComment.Text = "Bắt đầu bình luận";
+            this.btnCommentImportComment.UseVisualStyleBackColor = true;
+            this.btnCommentImportComment.Click += new System.EventHandler(this.btnCommentImportComment_Click);
             // 
             // dgCommentBrowse
             // 
@@ -1217,10 +1191,10 @@
             this.dgCommentBrowse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCommentBrowse.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.group_comment_import_link});
-            this.dgCommentBrowse.Location = new System.Drawing.Point(12, 58);
+            this.dgCommentBrowse.Location = new System.Drawing.Point(12, 52);
             this.dgCommentBrowse.Name = "dgCommentBrowse";
             this.dgCommentBrowse.ReadOnly = true;
-            this.dgCommentBrowse.Size = new System.Drawing.Size(407, 105);
+            this.dgCommentBrowse.Size = new System.Drawing.Size(407, 100);
             this.dgCommentBrowse.TabIndex = 5;
             // 
             // group_comment_import_link
@@ -1232,30 +1206,21 @@
             // 
             // btnCommentBrowse
             // 
-            this.btnCommentBrowse.Location = new System.Drawing.Point(319, 32);
+            this.btnCommentBrowse.Location = new System.Drawing.Point(319, 24);
             this.btnCommentBrowse.Name = "btnCommentBrowse";
             this.btnCommentBrowse.Size = new System.Drawing.Size(100, 22);
             this.btnCommentBrowse.TabIndex = 4;
-            this.btnCommentBrowse.Text = "Browse";
+            this.btnCommentBrowse.Text = "Nhập từ File";
             this.btnCommentBrowse.UseVisualStyleBackColor = true;
             this.btnCommentBrowse.Click += new System.EventHandler(this.btnCommentBrowse_Click);
             // 
             // txtCommentBrowse
             // 
-            this.txtCommentBrowse.Location = new System.Drawing.Point(12, 33);
+            this.txtCommentBrowse.Location = new System.Drawing.Point(12, 25);
             this.txtCommentBrowse.Name = "txtCommentBrowse";
             this.txtCommentBrowse.ReadOnly = true;
             this.txtCommentBrowse.Size = new System.Drawing.Size(301, 20);
             this.txtCommentBrowse.TabIndex = 3;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(9, 17);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(191, 13);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "Nhập danh sách bài đăng nhóm từ file:";
             // 
             // groupBox15
             // 
@@ -1297,69 +1262,70 @@
             // 
             // groupBox14
             // 
-            this.groupBox14.Controls.Add(this.btnCommentImportComment);
-            this.groupBox14.Controls.Add(this.btnCommentPause);
             this.groupBox14.Controls.Add(this.lblCommenting);
             this.groupBox14.Controls.Add(this.lblCommentTick);
+            this.groupBox14.Controls.Add(this.btnCommentScanPause);
             this.groupBox14.Controls.Add(this.txtCommentDelay);
+            this.groupBox14.Controls.Add(this.btnCommentScan);
             this.groupBox14.Controls.Add(this.label23);
             this.groupBox14.Controls.Add(this.txtComment);
-            this.groupBox14.Location = new System.Drawing.Point(8, 188);
+            this.groupBox14.Location = new System.Drawing.Point(8, 8);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(431, 139);
+            this.groupBox14.Size = new System.Drawing.Size(431, 145);
             this.groupBox14.TabIndex = 1;
             this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "Nội dung";
-            // 
-            // btnCommentImportComment
-            // 
-            this.btnCommentImportComment.Enabled = false;
-            this.btnCommentImportComment.Location = new System.Drawing.Point(318, 85);
-            this.btnCommentImportComment.Name = "btnCommentImportComment";
-            this.btnCommentImportComment.Size = new System.Drawing.Size(108, 24);
-            this.btnCommentImportComment.TabIndex = 6;
-            this.btnCommentImportComment.Text = "Bắt đầu bình luận";
-            this.btnCommentImportComment.UseVisualStyleBackColor = true;
-            this.btnCommentImportComment.Click += new System.EventHandler(this.btnCommentImportComment_Click);
-            // 
-            // btnCommentPause
-            // 
-            this.btnCommentPause.Enabled = false;
-            this.btnCommentPause.Location = new System.Drawing.Point(351, 110);
-            this.btnCommentPause.Name = "btnCommentPause";
-            this.btnCommentPause.Size = new System.Drawing.Size(75, 23);
-            this.btnCommentPause.TabIndex = 6;
-            this.btnCommentPause.Text = "Dừng";
-            this.btnCommentPause.UseVisualStyleBackColor = true;
-            this.btnCommentPause.Click += new System.EventHandler(this.btnCommentPause_Click);
+            this.groupBox14.Text = "Tự động bình luận";
             // 
             // lblCommenting
             // 
             this.lblCommenting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.lblCommenting.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblCommenting.Location = new System.Drawing.Point(7, 115);
+            this.lblCommenting.Location = new System.Drawing.Point(105, 91);
             this.lblCommenting.Name = "lblCommenting";
-            this.lblCommenting.Size = new System.Drawing.Size(328, 12);
+            this.lblCommenting.Size = new System.Drawing.Size(190, 12);
             this.lblCommenting.TabIndex = 5;
             // 
             // lblCommentTick
             // 
             this.lblCommentTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblCommentTick.Location = new System.Drawing.Point(210, 87);
+            this.lblCommentTick.Location = new System.Drawing.Point(300, 87);
             this.lblCommentTick.Name = "lblCommentTick";
-            this.lblCommentTick.Size = new System.Drawing.Size(100, 20);
+            this.lblCommentTick.Size = new System.Drawing.Size(125, 20);
             this.lblCommentTick.TabIndex = 4;
             this.lblCommentTick.Text = "Ready";
             this.lblCommentTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnCommentScanPause
+            // 
+            this.btnCommentScanPause.Enabled = false;
+            this.btnCommentScanPause.Location = new System.Drawing.Point(319, 114);
+            this.btnCommentScanPause.Name = "btnCommentScanPause";
+            this.btnCommentScanPause.Size = new System.Drawing.Size(100, 23);
+            this.btnCommentScanPause.TabIndex = 8;
+            this.btnCommentScanPause.Text = "Hủy quét bài";
+            this.btnCommentScanPause.UseVisualStyleBackColor = true;
+            this.btnCommentScanPause.Click += new System.EventHandler(this.btnCommentScanPause_Click);
             // 
             // txtCommentDelay
             // 
             this.txtCommentDelay.Location = new System.Drawing.Point(49, 88);
             this.txtCommentDelay.Name = "txtCommentDelay";
-            this.txtCommentDelay.Size = new System.Drawing.Size(154, 20);
+            this.txtCommentDelay.Size = new System.Drawing.Size(50, 20);
             this.txtCommentDelay.TabIndex = 3;
             this.txtCommentDelay.Text = "30";
             this.txtCommentDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // btnCommentScan
+            // 
+            this.btnCommentScan.Enabled = false;
+            this.btnCommentScan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnCommentScan.Location = new System.Drawing.Point(6, 114);
+            this.btnCommentScan.Name = "btnCommentScan";
+            this.btnCommentScan.Size = new System.Drawing.Size(308, 23);
+            this.btnCommentScan.TabIndex = 7;
+            this.btnCommentScan.Text = "Tự động quét + Bình luận";
+            this.btnCommentScan.UseVisualStyleBackColor = true;
+            this.btnCommentScan.Click += new System.EventHandler(this.btnCommentScan_Click);
             // 
             // label23
             // 
@@ -2265,6 +2231,69 @@
             this.btnPMImportFriends.UseVisualStyleBackColor = true;
             this.btnPMImportFriends.Click += new System.EventHandler(this.btnPMImportFriends_Click);
             // 
+            // cbGroupReload
+            // 
+            this.cbGroupReload.AutoSize = true;
+            this.cbGroupReload.Location = new System.Drawing.Point(10, 184);
+            this.cbGroupReload.Name = "cbGroupReload";
+            this.cbGroupReload.Size = new System.Drawing.Size(189, 17);
+            this.cbGroupReload.TabIndex = 11;
+            this.cbGroupReload.Text = "Đừng tải lại DS này khi đăng nhập";
+            this.cbGroupReload.UseVisualStyleBackColor = true;
+            this.cbGroupReload.CheckedChanged += new System.EventHandler(this.cbGroupReload_CheckedChanged);
+            // 
+            // group_name
+            // 
+            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_name.DataPropertyName = "group_name";
+            this.group_name.Frozen = true;
+            this.group_name.HeaderText = "Tên Group";
+            this.group_name.Name = "group_name";
+            this.group_name.ReadOnly = true;
+            this.group_name.Width = 210;
+            // 
+            // group_link
+            // 
+            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_link.DataPropertyName = "group_link";
+            this.group_link.FillWeight = 80F;
+            this.group_link.Frozen = true;
+            this.group_link.HeaderText = "Link";
+            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.group_link.Name = "group_link";
+            this.group_link.ReadOnly = true;
+            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.group_link.TrackVisitedState = false;
+            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.group_link.Width = 150;
+            // 
+            // group_mem
+            // 
+            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_mem.DataPropertyName = "group_mem";
+            this.group_mem.FillWeight = 30F;
+            this.group_mem.Frozen = true;
+            this.group_mem.HeaderText = "T.V";
+            this.group_mem.Name = "group_mem";
+            this.group_mem.ReadOnly = true;
+            this.group_mem.Width = 50;
+            // 
+            // groupdeletebutton
+            // 
+            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.groupdeletebutton.DataPropertyName = "delete";
+            this.groupdeletebutton.FillWeight = 30F;
+            this.groupdeletebutton.Frozen = true;
+            this.groupdeletebutton.HeaderText = "Xóa";
+            this.groupdeletebutton.Name = "groupdeletebutton";
+            this.groupdeletebutton.ReadOnly = true;
+            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.groupdeletebutton.Text = "Xóa";
+            this.groupdeletebutton.ToolTipText = "Xóa";
+            this.groupdeletebutton.UseColumnTextForButtonValue = true;
+            this.groupdeletebutton.Width = 32;
+            // 
             // miniTimer_ThemeContainer1
             // 
             this.miniTimer_ThemeContainer1.BackColor = System.Drawing.Color.White;
@@ -2468,6 +2497,7 @@
             this.TabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgGroups)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgPostResult)).EndInit();
@@ -2633,7 +2663,6 @@
         private System.Windows.Forms.TabPage tabPagePM;
         private System.Windows.Forms.GroupBox groupBox16;
         private System.Windows.Forms.TextBox txtCommentBrowse;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_comment_import_link;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.DataGridViewTextBoxColumn post_tag_name;
@@ -2733,6 +2762,9 @@
         public System.Windows.Forms.Button btnPMSendFrRequestsPause;
         private System.Windows.Forms.Button btnPMInsertName;
         public System.Windows.Forms.Button btnPauseAll;
+        public System.Windows.Forms.Button btnCommentScan;
+        public System.Windows.Forms.Button btnCommentScanPause;
+        public System.Windows.Forms.CheckBox cbGroupReload;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
         private System.Windows.Forms.DataGridViewLinkColumn group_link;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
