@@ -187,6 +187,12 @@ namespace KSTN_Facebook_Tool
                 SE.Toggle();
             }
         }
+
+        private void btnPauseAll_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+            btnPauseAll.Enabled = false;
+        }
         #endregion
 
         #region TAB AUTOPOST
@@ -339,6 +345,145 @@ namespace KSTN_Facebook_Tool
         {
             dgGroups.Rows.Clear();
         }
+
+        private void cbGroupReload_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.group_reload = cbGroupReload.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void btnGroupJoinFromFile_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Groups File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtGroupJoinFromFile.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    string[] _line = new string[] { "", line, "" };
+                    dgGroupSearch.Rows.Insert(0, _line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
+            }
+            else
+            {
+                txtGroupJoinFromFile.Text = "";
+            }
+        }
+
+        private void btnGroupImport_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Groups File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    string[] _line = new string[] { "", line, "" };
+                    dgGroups.Rows.Insert(0, _line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
+            }
+        }
+
+        private void btnGroupImportFriends_Click(object sender, EventArgs e)
+        {
+            if (!SE.ready)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác!");
+                return;
+            }
+
+            btnGroupImportFriends.Enabled = false;
+
+            SE.GroupImportFriends();
+        }
+
+        private void btnPostImportGroups_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            dgGroups.Rows.Clear();
+            SE.getGroups();
+        }
+
+        private void dgGroups_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            groups_to_xml();
+        }
+
+        public void groups_to_xml()
+        {
+            try
+            {
+                //Create a datatable to store XML data
+                DataTable dt = new DataTable();
+
+                foreach (DataGridViewColumn col in dgGroups.Columns)
+                {
+                    dt.Columns.Add(col.HeaderText);
+                }
+
+                foreach (DataGridViewRow row in dgGroups.Rows)
+                {
+                    DataRow dRow = dt.NewRow();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                    dt.Rows.Add(dRow);
+                }
+                DataSet DS = new DataSet();
+                DS.Tables.Add(dt);
+                DS.WriteXml(SE.user_id + "_groups.xml");
+            }
+            catch (Exception ex) { MessageBox.Show(ex + ""); }
+        }
+
+        private void dgGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+                dgGroups.Rows.Remove(dgGroups.Rows[e.RowIndex]);
+        }
+
         #endregion
 
         #region TAB AUTOJOIN
@@ -508,6 +653,25 @@ namespace KSTN_Facebook_Tool
             dgCommentBrowse.Enabled = false;
 
             SE.AutoComment2();
+        }
+
+        private void btnCommentScan_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            btnCommentScan.Enabled = false;
+            btnCommentScanPause.Enabled = true;
+
+            SE.AutoCommentScan();
+        }
+
+        private void btnCommentScanPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
         }
         #endregion
 
@@ -806,6 +970,45 @@ namespace KSTN_Facebook_Tool
 
             SE.AutoPM();
         }
+
+        private void btnPMSendFrRequests_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (dgUID.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
+                return;
+            }
+
+            int delay;
+
+            if (!int.TryParse(txtPMDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
+
+            btnPMSendFrRequests.Enabled = false;
+            btnPMSendFrRequestsPause.Enabled = true;
+
+            SE.AutoAddFriends();
+        }
+
+        private void btnPMSendFrRequestsPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+        }
+
+        private void btnPMInsertName_Click(object sender, EventArgs e)
+        {
+            txtPM.AppendText("{username}");
+            txtPM.Focus();
+        }
         #endregion
 
         #region OTHER HELPERS
@@ -1058,194 +1261,5 @@ namespace KSTN_Facebook_Tool
             SE.pause = true;
         }
         #endregion
-
-        private void btnPostImportGroups_Click(object sender, EventArgs e)
-        {
-            if (SE.ready == false)
-            {
-                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
-                return;
-            }
-            dgGroups.Rows.Clear();
-            SE.getGroups();
-        }
-
-        private void dgGroups_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-            groups_to_xml();
-        }
-
-        public void groups_to_xml()
-        {
-            try
-            {
-                //Create a datatable to store XML data
-                DataTable dt = new DataTable();
-
-                foreach (DataGridViewColumn col in dgGroups.Columns)
-                {
-                    dt.Columns.Add(col.HeaderText);
-                }
-
-                foreach (DataGridViewRow row in dgGroups.Rows)
-                {
-                    DataRow dRow = dt.NewRow();
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        dRow[cell.ColumnIndex] = cell.Value;
-                    }
-                    dt.Rows.Add(dRow);
-                }
-                DataSet DS = new DataSet();
-                DS.Tables.Add(dt);
-                DS.WriteXml(SE.user_id + "_groups.xml");
-            }
-            catch (Exception ex) { MessageBox.Show(ex + ""); }
-        }
-
-        private void btnPMSendFrRequests_Click(object sender, EventArgs e)
-        {
-            if (SE.ready == false)
-            {
-                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
-                return;
-            }
-
-            if (dgUID.Rows.Count == 0)
-            {
-                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
-                return;
-            }
-
-            int delay;
-
-            if (!int.TryParse(txtPMDelay.Text, out delay) || delay < 0)
-            {
-                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
-                return;
-            }
-
-            btnPMSendFrRequests.Enabled = false;
-            btnPMSendFrRequestsPause.Enabled = true;
-
-            SE.AutoAddFriends();
-        }
-
-        private void btnPMSendFrRequestsPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
-        }
-
-        private void btnPMInsertName_Click(object sender, EventArgs e)
-        {
-            txtPM.AppendText("{username}");
-            txtPM.Focus();
-        }
-
-        private void btnPauseAll_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
-            btnPauseAll.Enabled = false;
-        }
-
-        private void dgGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var senderGrid = (DataGridView)sender;
-
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
-                dgGroups.Rows.Remove(dgGroups.Rows[e.RowIndex]);
-        }
-
-        private void btnCommentScan_Click(object sender, EventArgs e)
-        {
-            if (SE.ready == false)
-            {
-                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
-                return;
-            }
-
-            btnCommentScan.Enabled = false;
-            btnCommentScanPause.Enabled = true;
-
-            SE.AutoCommentScan();
-        }
-
-        private void btnCommentScanPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
-        }
-
-        private void cbGroupReload_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.group_reload = cbGroupReload.Checked;
-            Properties.Settings.Default.Save();
-        }
-
-        private void btnGroupJoinFromFile_Click(object sender, EventArgs e)
-        {
-            var fDialog = new System.Windows.Forms.OpenFileDialog();
-            fDialog.Title = "Open Groups File";
-            fDialog.Filter = "TXT Files (*.txt) | *.txt";
-
-            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
-            {
-                string file = fDialog.FileName;
-                txtGroupJoinFromFile.Text = file;
-
-                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
-
-                int counter = 0;
-                string line;
-
-                // Read the file and display it line by line.
-                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
-                while ((line = fileStr.ReadLine()) != null)
-                {
-                    string[] _line = new string[] { "", line, "" };
-                    dgGroupSearch.Rows.Insert(0, _line);
-                    counter++;
-                }
-
-                fileStr.Close();
-
-                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
-            }
-            else
-            {
-                txtGroupJoinFromFile.Text = "";
-            }
-        }
-
-        private void btnGroupImport_Click(object sender, EventArgs e)
-        {
-            var fDialog = new System.Windows.Forms.OpenFileDialog();
-            fDialog.Title = "Open Groups File";
-            fDialog.Filter = "TXT Files (*.txt) | *.txt";
-
-            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
-            {
-                string file = fDialog.FileName;
-
-                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
-
-                int counter = 0;
-                string line;
-
-                // Read the file and display it line by line.
-                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
-                while ((line = fileStr.ReadLine()) != null)
-                {
-                    string[] _line = new string[] { "", line, "" };
-                    dgGroups.Rows.Insert(0, _line);
-                    counter++;
-                }
-
-                fileStr.Close();
-
-                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
-            }
-        }
     }
 }

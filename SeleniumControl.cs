@@ -303,6 +303,7 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnReply.Enabled = true;
                 Program.mainForm.btnEdit.Enabled = true;
                 Program.mainForm.btnPostImportGroups.Enabled = true;
+                Program.mainForm.btnGroupImportFriends.Enabled = true;
                 Program.mainForm.btnCommentScan.Enabled = true;
 
                 var photos = driver.FindElementsByXPath("//a[contains(@href, '?v=photos')]");
@@ -457,6 +458,7 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnReply.Enabled = false;
                 Program.mainForm.btnEdit.Enabled = false;
                 Program.mainForm.btnPostImportGroups.Enabled = false;
+                Program.mainForm.btnGroupImportFriends.Enabled = false;
                 Program.mainForm.btnLogin.Enabled = true;
                 Program.mainForm.btnCommentScan.Enabled = false;
                 Program.mainForm.dgGroups.Rows.Clear();
@@ -554,7 +556,7 @@ namespace KSTN_Facebook_Tool
                     }
                     await Task.Factory.StartNew(() => Click("lgc_view_photo"));
 
-                    if (driver.FindElementsByName("xc_message").Count == 0 || driver.FindElementsByName("file1").Count == 0 || driver.FindElementsByName("file2").Count == 0 || driver.FindElementsByName("file3").Count == 0 || driver.FindElementsByName("photo_upload").Count == 0)
+                    if (driver.FindElementsByName("xc_message").Count == 0 || driver.FindElementsByName("file1").Count == 0 || driver.FindElementsByName("photo_upload").Count == 0)
                     {
                         Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, "Skip - Không tìm thấy nút đăng bài!");
                         Program.mainForm.dgGroups.Rows.RemoveAt(0);
@@ -568,15 +570,15 @@ namespace KSTN_Facebook_Tool
                                   .ToArray());
                     await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('xc_message')[0].innerHTML = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtContent.Text) + random_tag + "';"));
 
-                    if (Program.mainForm.txtBrowse1.Text != "")
+                    if (Program.mainForm.txtBrowse1.Text != "" && driver.FindElementsByName("file1").Count > 0)
                     {
                         await Task.Factory.StartNew(() => FileInputAdd("file1", Program.mainForm.txtBrowse1.Text));
                     }
-                    if (Program.mainForm.txtBrowse2.Text != "")
+                    if (Program.mainForm.txtBrowse2.Text != "" && driver.FindElementsByName("file2").Count > 0)
                     {
                         await Task.Factory.StartNew(() => FileInputAdd("file2", Program.mainForm.txtBrowse2.Text));
                     }
-                    if (Program.mainForm.txtBrowse3.Text != "")
+                    if (Program.mainForm.txtBrowse3.Text != "" && driver.FindElementsByName("file3").Count > 0)
                     {
                         await Task.Factory.StartNew(() => FileInputAdd("file3", Program.mainForm.txtBrowse3.Text));
                     }
@@ -1185,6 +1187,49 @@ namespace KSTN_Facebook_Tool
             setReady(true, "Nhập thành công danh sách bạn bè | Ready");
         }
 
+        public async void GroupImportFriends()
+        {
+            setReady(false, "Đang nhập danh sách bạn bè");
+
+            if (user_id == "")
+            {
+                MessageBox.Show("Ứng dụng không thể lấy được USER ID của bạn!\nQuá trình này sẽ diễn ra không thành công!");
+            }
+
+            await Task.Factory.StartNew(() => Navigate("https://m.facebook.com/" + user_id + "?v=friends&refid=17"));
+
+            while (true)
+            {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
+                var profiles = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'fref=fr')]"));
+                if (profiles.Count == 0)
+                    break;
+
+                foreach (IWebElement profile in profiles)
+                {
+                    if (profile.Text == "") continue;
+                    Program.mainForm.dgGroups.Rows.Insert(0, profile.Text, profile.GetAttribute("href"));
+                    await TaskEx.Delay(10);
+                }
+
+                driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(0));
+                var m_more_friends = await Task.Factory.StartNew(() => driver.FindElementsById("m_more_friends"));
+                if (m_more_friends.Count == 0)
+                    break;
+                else
+                    await Task.Factory.StartNew(() => ClickElement(m_more_friends[0].FindElement(By.TagName("a"))));
+            }
+
+            MessageBox.Show("Nhập danh sách bạn bè thành công!");
+            Program.mainForm.btnGroupImportFriends.Enabled = true;
+            setReady(true, "Nhập thành công danh sách bạn bè | Ready");
+        }
+
         public async void ImportGroupMembers(String group_url)
         {
             setReady(false, "Đang Import từ Group");
@@ -1641,10 +1686,12 @@ namespace KSTN_Facebook_Tool
                 if (btnAddFriend.Count == 1)
                 {
                     await Task.Factory.StartNew(() => ClickElement(btnAddFriend[0]));
+                    Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Đã gửi lời mời kết bạn!");
                 }
                 else
                 {
                     Program.mainForm.dgUID.Rows.RemoveAt(0);
+                    Program.mainForm.dgPMResult.Rows.Insert(0, driver.Title, "Không cho phép kết bạn!");
                     continue;
                 }
 

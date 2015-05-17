@@ -45,17 +45,12 @@
             this.cbGroupReload = new System.Windows.Forms.CheckBox();
             this.btnPostClearGroups = new System.Windows.Forms.Button();
             this.btnPostImportGroups = new System.Windows.Forms.Button();
+            this.btnGroupImport = new System.Windows.Forms.Button();
             this.btnGroupExport = new System.Windows.Forms.Button();
             this.dgGroups = new System.Windows.Forms.DataGridView();
-            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPostResultExport = new System.Windows.Forms.Button();
             this.dgPostResult = new System.Windows.Forms.DataGridView();
-            this.posted_group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.posted_URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblPostingGroup = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
@@ -220,7 +215,13 @@
             this.label25 = new System.Windows.Forms.Label();
             this.btnTag = new System.Windows.Forms.Button();
             this.txtTagUrl = new System.Windows.Forms.TextBox();
-            this.btnGroupImport = new System.Windows.Forms.Button();
+            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.posted_group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.posted_URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnGroupImportFriends = new System.Windows.Forms.Button();
             this.miniTimer_ThemeContainer1 = new MiniTimer_Theme.MiniTimer_ThemeContainer();
             this.btnPauseAll = new System.Windows.Forms.Button();
             this.pbMinimize = new System.Windows.Forms.PictureBox();
@@ -400,13 +401,14 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(969, 376);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tự động đăng nhóm";
+            this.tabPage1.Text = "Tự động đăng tin";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cbGroupReload);
             this.groupBox4.Controls.Add(this.btnPostClearGroups);
+            this.groupBox4.Controls.Add(this.btnGroupImportFriends);
             this.groupBox4.Controls.Add(this.btnPostImportGroups);
             this.groupBox4.Controls.Add(this.btnGroupImport);
             this.groupBox4.Controls.Add(this.btnGroupExport);
@@ -416,23 +418,23 @@
             this.groupBox4.Size = new System.Drawing.Size(525, 205);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Danh sách nhóm";
+            this.groupBox4.Text = "Nơi đăng bài";
             // 
             // cbGroupReload
             // 
             this.cbGroupReload.AutoSize = true;
             this.cbGroupReload.Location = new System.Drawing.Point(10, 184);
             this.cbGroupReload.Name = "cbGroupReload";
-            this.cbGroupReload.Size = new System.Drawing.Size(189, 17);
+            this.cbGroupReload.Size = new System.Drawing.Size(152, 17);
             this.cbGroupReload.TabIndex = 11;
-            this.cbGroupReload.Text = "Đừng tải lại DS này khi đăng nhập";
+            this.cbGroupReload.Text = "Giữ nguyên khi đăng nhập";
             this.cbGroupReload.UseVisualStyleBackColor = true;
             this.cbGroupReload.CheckedChanged += new System.EventHandler(this.cbGroupReload_CheckedChanged);
             // 
             // btnPostClearGroups
             // 
             this.btnPostClearGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnPostClearGroups.Location = new System.Drawing.Point(205, 181);
+            this.btnPostClearGroups.Location = new System.Drawing.Point(170, 181);
             this.btnPostClearGroups.Name = "btnPostClearGroups";
             this.btnPostClearGroups.Size = new System.Drawing.Size(75, 20);
             this.btnPostClearGroups.TabIndex = 10;
@@ -444,13 +446,24 @@
             // 
             this.btnPostImportGroups.Enabled = false;
             this.btnPostImportGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnPostImportGroups.Location = new System.Drawing.Point(284, 181);
+            this.btnPostImportGroups.Location = new System.Drawing.Point(245, 181);
             this.btnPostImportGroups.Name = "btnPostImportGroups";
-            this.btnPostImportGroups.Size = new System.Drawing.Size(75, 20);
+            this.btnPostImportGroups.Size = new System.Drawing.Size(50, 20);
             this.btnPostImportGroups.TabIndex = 10;
             this.btnPostImportGroups.Text = "Nạp lại";
             this.btnPostImportGroups.UseVisualStyleBackColor = true;
             this.btnPostImportGroups.Click += new System.EventHandler(this.btnPostImportGroups_Click);
+            // 
+            // btnGroupImport
+            // 
+            this.btnGroupImport.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnGroupImport.Location = new System.Drawing.Point(367, 181);
+            this.btnGroupImport.Name = "btnGroupImport";
+            this.btnGroupImport.Size = new System.Drawing.Size(75, 20);
+            this.btnGroupImport.TabIndex = 10;
+            this.btnGroupImport.Text = "Nhập từ File";
+            this.btnGroupImport.UseVisualStyleBackColor = true;
+            this.btnGroupImport.Click += new System.EventHandler(this.btnGroupImport_Click);
             // 
             // btnGroupExport
             // 
@@ -497,58 +510,6 @@
             this.dgGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGroups_CellContentClick);
             this.dgGroups.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgGroups_RowsRemoved);
             // 
-            // group_name
-            // 
-            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_name.DataPropertyName = "group_name";
-            this.group_name.Frozen = true;
-            this.group_name.HeaderText = "Tên Group";
-            this.group_name.Name = "group_name";
-            this.group_name.ReadOnly = true;
-            this.group_name.Width = 215;
-            // 
-            // group_link
-            // 
-            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_link.DataPropertyName = "group_link";
-            this.group_link.FillWeight = 80F;
-            this.group_link.Frozen = true;
-            this.group_link.HeaderText = "Link";
-            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.group_link.Name = "group_link";
-            this.group_link.ReadOnly = true;
-            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.group_link.TrackVisitedState = false;
-            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.group_link.Width = 150;
-            // 
-            // group_mem
-            // 
-            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_mem.DataPropertyName = "group_mem";
-            this.group_mem.FillWeight = 30F;
-            this.group_mem.Frozen = true;
-            this.group_mem.HeaderText = "T.V";
-            this.group_mem.Name = "group_mem";
-            this.group_mem.ReadOnly = true;
-            this.group_mem.Width = 50;
-            // 
-            // groupdeletebutton
-            // 
-            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.groupdeletebutton.DataPropertyName = "delete";
-            this.groupdeletebutton.FillWeight = 30F;
-            this.groupdeletebutton.Frozen = true;
-            this.groupdeletebutton.HeaderText = "Xóa";
-            this.groupdeletebutton.Name = "groupdeletebutton";
-            this.groupdeletebutton.ReadOnly = true;
-            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.groupdeletebutton.Text = "Xóa";
-            this.groupdeletebutton.ToolTipText = "Xóa";
-            this.groupdeletebutton.UseColumnTextForButtonValue = true;
-            this.groupdeletebutton.Width = 32;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnPostResultExport);
@@ -586,20 +547,6 @@
             this.dgPostResult.Size = new System.Drawing.Size(506, 112);
             this.dgPostResult.TabIndex = 0;
             this.dgPostResult.TabStop = false;
-            // 
-            // posted_group
-            // 
-            this.posted_group.DataPropertyName = "posted_group";
-            this.posted_group.HeaderText = "Tên nhóm";
-            this.posted_group.Name = "posted_group";
-            this.posted_group.ReadOnly = true;
-            // 
-            // posted_URL
-            // 
-            this.posted_URL.DataPropertyName = "posted_URL";
-            this.posted_URL.HeaderText = "URL bài viết";
-            this.posted_URL.Name = "posted_URL";
-            this.posted_URL.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -2310,16 +2257,83 @@
             this.txtTagUrl.Size = new System.Drawing.Size(253, 20);
             this.txtTagUrl.TabIndex = 0;
             // 
-            // btnGroupImport
+            // group_name
             // 
-            this.btnGroupImport.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnGroupImport.Location = new System.Drawing.Point(363, 181);
-            this.btnGroupImport.Name = "btnGroupImport";
-            this.btnGroupImport.Size = new System.Drawing.Size(75, 20);
-            this.btnGroupImport.TabIndex = 10;
-            this.btnGroupImport.Text = "Nhập từ File";
-            this.btnGroupImport.UseVisualStyleBackColor = true;
-            this.btnGroupImport.Click += new System.EventHandler(this.btnGroupImport_Click);
+            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_name.DataPropertyName = "group_name";
+            this.group_name.Frozen = true;
+            this.group_name.HeaderText = "Tên";
+            this.group_name.Name = "group_name";
+            this.group_name.ReadOnly = true;
+            this.group_name.Width = 215;
+            // 
+            // group_link
+            // 
+            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_link.DataPropertyName = "group_link";
+            this.group_link.FillWeight = 80F;
+            this.group_link.Frozen = true;
+            this.group_link.HeaderText = "Link";
+            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.group_link.Name = "group_link";
+            this.group_link.ReadOnly = true;
+            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.group_link.TrackVisitedState = false;
+            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.group_link.Width = 150;
+            // 
+            // group_mem
+            // 
+            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_mem.DataPropertyName = "group_mem";
+            this.group_mem.FillWeight = 30F;
+            this.group_mem.Frozen = true;
+            this.group_mem.HeaderText = "T.V";
+            this.group_mem.Name = "group_mem";
+            this.group_mem.ReadOnly = true;
+            this.group_mem.Width = 50;
+            // 
+            // groupdeletebutton
+            // 
+            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.groupdeletebutton.DataPropertyName = "delete";
+            this.groupdeletebutton.FillWeight = 30F;
+            this.groupdeletebutton.Frozen = true;
+            this.groupdeletebutton.HeaderText = "Xóa";
+            this.groupdeletebutton.Name = "groupdeletebutton";
+            this.groupdeletebutton.ReadOnly = true;
+            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.groupdeletebutton.Text = "Xóa";
+            this.groupdeletebutton.ToolTipText = "Xóa";
+            this.groupdeletebutton.UseColumnTextForButtonValue = true;
+            this.groupdeletebutton.Width = 32;
+            // 
+            // posted_group
+            // 
+            this.posted_group.DataPropertyName = "posted_group";
+            this.posted_group.HeaderText = "Tên";
+            this.posted_group.Name = "posted_group";
+            this.posted_group.ReadOnly = true;
+            // 
+            // posted_URL
+            // 
+            this.posted_URL.DataPropertyName = "posted_URL";
+            this.posted_URL.HeaderText = "URL bài viết";
+            this.posted_URL.Name = "posted_URL";
+            this.posted_URL.ReadOnly = true;
+            // 
+            // btnGroupImportFriends
+            // 
+            this.btnGroupImportFriends.Enabled = false;
+            this.btnGroupImportFriends.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnGroupImportFriends.Location = new System.Drawing.Point(317, 181);
+            this.btnGroupImportFriends.Name = "btnGroupImportFriends";
+            this.btnGroupImportFriends.Size = new System.Drawing.Size(50, 20);
+            this.btnGroupImportFriends.TabIndex = 10;
+            this.btnGroupImportFriends.Text = "Bạn bè";
+            this.btnGroupImportFriends.UseVisualStyleBackColor = true;
+            this.btnGroupImportFriends.Click += new System.EventHandler(this.btnGroupImportFriends_Click);
             // 
             // miniTimer_ThemeContainer1
             // 
@@ -2624,8 +2638,6 @@
         public System.Windows.Forms.TextBox txtBrowse2;
         public System.Windows.Forms.TextBox txtContent;
         private System.Windows.Forms.TabPage tabPageInvite;
-        private System.Windows.Forms.DataGridViewTextBoxColumn posted_group;
-        private System.Windows.Forms.DataGridViewTextBoxColumn posted_URL;
         public System.Windows.Forms.DataGridView dgPostResult;
         public System.Windows.Forms.Label lblPostingGroup;
         private System.Windows.Forms.Button btnGroupExport;
@@ -2792,12 +2804,15 @@
         public System.Windows.Forms.Button btnCommentScan;
         public System.Windows.Forms.Button btnCommentScanPause;
         public System.Windows.Forms.CheckBox cbGroupReload;
+        public System.Windows.Forms.CheckBox cbCommentOnlyMe;
+        private System.Windows.Forms.Button btnGroupImport;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
         private System.Windows.Forms.DataGridViewLinkColumn group_link;
         private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
         private System.Windows.Forms.DataGridViewButtonColumn groupdeletebutton;
-        public System.Windows.Forms.CheckBox cbCommentOnlyMe;
-        private System.Windows.Forms.Button btnGroupImport;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posted_group;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posted_URL;
+        public System.Windows.Forms.Button btnGroupImportFriends;
 
     }
 }
