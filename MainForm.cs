@@ -609,16 +609,10 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            if (txtPMImportProfile.Text.Contains("/"))
-            {
-                MessageBox.Show("Xem lại Profile ID\nVí dụ: https://facebook.com/a3graphic/ \nthì điền a3graphic là profile ID");
-                return;
-            }
-
             txtPMImportProfile.Enabled = false;
             btnPMImportProfile.Enabled = false;
 
-            SE.ImportProfileFriends("https://m.facebook.com/" + txtPMImportProfile.Text + "/?v=friends");
+            SE.ImportProfileFriends(txtPMImportProfile.Text);
         }
 
         private void btnPMPause_Click(object sender, EventArgs e)

@@ -1007,7 +1007,12 @@ namespace KSTN_Facebook_Tool
                 await Task.Factory.StartNew(() => Navigate(group));
                 Program.mainForm.lblCommenting.Text = driver.Title;
 
-                var post_match = driver.FindElementsByXPath("//div[@id='m_group_stories_container']//a[contains(@href,'fref=nf') and contains(@href, '" + user_id + "')]");
+                string post_xpath = "";
+                if (Program.mainForm.cbCommentOnlyMe.Checked == true)
+                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'fref=nf') and contains(@href, '" + user_id + "')]";
+                else
+                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'fref=nf')]";
+                var post_match = driver.FindElementsByXPath(post_xpath);
                 if (post_match.Count > 0)
                 {
                     var post_url = post_match[0].FindElements(By.XPath("(.//ancestor::div[@id])[last()]"));
@@ -1050,6 +1055,8 @@ namespace KSTN_Facebook_Tool
                 }
             }
 
+            Program.mainForm.lblCommenting.Text = "";
+            Program.mainForm.lblCommentTick.Text = "Ready";
             Program.mainForm.btnCommentScan.Enabled = true;
             Program.mainForm.btnCommentScanPause.Enabled = false;
             MessageBox.Show("Đã quét xong bài đăng nhóm!");
@@ -1148,6 +1155,12 @@ namespace KSTN_Facebook_Tool
 
             while (true)
             {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
                 var profiles = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'fref=fr')]"));
                 if (profiles.Count == 0)
                     break;
@@ -1226,32 +1239,47 @@ namespace KSTN_Facebook_Tool
         public async void ImportProfileFriends(String profile_url)
         {
             setReady(false, "Đang Import từ Profile");
-
+            if (!profile_url.Contains('/')) profile_url = "https://m.facebook.com/" + profile_url;
             await Task.Factory.StartNew(() => Navigate(profile_url));
 
             int progress = 0;
 
-            while (true)
+            var friend_list_url = driver.FindElementsByXPath("//a[contains(@href, 'v=friends')]");
+
+            if (friend_list_url.Count > 0)
             {
-                var members = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'fref=fr_tab')]"));
-                if (members.Count == 0)
-                {
-                    break;
-                }
+                await Task.Factory.StartNew(() => ClickElement(friend_list_url[0]));
 
-                foreach (IWebElement member in members)
+                while (true)
                 {
-                    if (member.Text == "") continue;
-                    Program.mainForm.dgUID.Rows.Insert(0, member.Text, member.GetAttribute("href"));
-                    await TaskEx.Delay(10);
-                    progress++;
-                }
+                    if (pause)
+                    {
+                        pause = false;
+                        break;
+                    }
 
-                var more = await Task.Factory.StartNew(() => driver.FindElementsById("m_more_friends"));
-                if (more.Count == 0)
-                    break;
-                await Task.Factory.StartNew(() => ClickElement(more[0].FindElement(By.TagName("a"))));
+                    var members = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'fref=fr_tab')]"));
+                    if (members.Count == 0)
+                    {
+                        break;
+                    }
+
+                    foreach (IWebElement member in members)
+                    {
+                        if (member.Text == "") continue;
+                        Program.mainForm.dgUID.Rows.Insert(0, member.Text, member.GetAttribute("href"));
+                        await TaskEx.Delay(10);
+                        progress++;
+                    }
+
+                    var more = await Task.Factory.StartNew(() => driver.FindElementsById("m_more_friends"));
+                    if (more.Count == 0)
+                        break;
+                    await Task.Factory.StartNew(() => ClickElement(more[0].FindElement(By.TagName("a"))));
+                }
             }
+
+            
             if (progress > 0)
             {
                 MessageBox.Show("Import Profile xong! (" + progress + " bạn bè)");
