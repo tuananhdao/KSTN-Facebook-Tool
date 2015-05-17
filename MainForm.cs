@@ -1081,7 +1081,7 @@ namespace KSTN_Facebook_Tool
             {
                 //Create a datatable to store XML data
                 DataTable dt = new DataTable();
-                
+
                 foreach (DataGridViewColumn col in dgGroups.Columns)
                 {
                     dt.Columns.Add(col.HeaderText);
@@ -1179,6 +1179,73 @@ namespace KSTN_Facebook_Tool
         {
             Properties.Settings.Default.group_reload = cbGroupReload.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void btnGroupJoinFromFile_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Groups File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtGroupJoinFromFile.Text = file;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    string[] _line = new string[] { "", line, "" };
+                    dgGroupSearch.Rows.Insert(0, _line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
+            }
+            else
+            {
+                txtGroupJoinFromFile.Text = "";
+            }
+        }
+
+        private void btnGroupImport_Click(object sender, EventArgs e)
+        {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open Groups File";
+            fDialog.Filter = "TXT Files (*.txt) | *.txt";
+
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+
+                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                while ((line = fileStr.ReadLine()) != null)
+                {
+                    string[] _line = new string[] { "", line, "" };
+                    dgGroups.Rows.Insert(0, _line);
+                    counter++;
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " nhóm");
+            }
         }
     }
 }

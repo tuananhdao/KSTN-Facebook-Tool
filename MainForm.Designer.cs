@@ -75,8 +75,8 @@
             this.txtContent = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnGroupJoinFromFile = new System.Windows.Forms.Button();
+            this.txtGroupJoinFromFile = new System.Windows.Forms.TextBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txtJoinDelay = new System.Windows.Forms.TextBox();
@@ -799,8 +799,8 @@
             // 
             // groupBox11
             // 
-            this.groupBox11.Controls.Add(this.button1);
-            this.groupBox11.Controls.Add(this.textBox1);
+            this.groupBox11.Controls.Add(this.btnGroupJoinFromFile);
+            this.groupBox11.Controls.Add(this.txtGroupJoinFromFile);
             this.groupBox11.Location = new System.Drawing.Point(9, 146);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(404, 60);
@@ -808,23 +808,24 @@
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Nhập danh sách nhóm từ File";
             // 
-            // button1
+            // btnGroupJoinFromFile
             // 
-            this.button1.Location = new System.Drawing.Point(313, 22);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 24);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Browse";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnGroupJoinFromFile.Location = new System.Drawing.Point(313, 22);
+            this.btnGroupJoinFromFile.Name = "btnGroupJoinFromFile";
+            this.btnGroupJoinFromFile.Size = new System.Drawing.Size(72, 24);
+            this.btnGroupJoinFromFile.TabIndex = 8;
+            this.btnGroupJoinFromFile.Text = "Browse";
+            this.btnGroupJoinFromFile.UseVisualStyleBackColor = true;
+            this.btnGroupJoinFromFile.Click += new System.EventHandler(this.btnGroupJoinFromFile_Click);
             // 
-            // textBox1
+            // txtGroupJoinFromFile
             // 
-            this.textBox1.Location = new System.Drawing.Point(19, 24);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(292, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TabStop = false;
+            this.txtGroupJoinFromFile.Location = new System.Drawing.Point(19, 24);
+            this.txtGroupJoinFromFile.Name = "txtGroupJoinFromFile";
+            this.txtGroupJoinFromFile.ReadOnly = true;
+            this.txtGroupJoinFromFile.Size = new System.Drawing.Size(292, 20);
+            this.txtGroupJoinFromFile.TabIndex = 0;
+            this.txtGroupJoinFromFile.TabStop = false;
             // 
             // groupBox10
             // 
@@ -2318,6 +2319,7 @@
             this.btnGroupImport.TabIndex = 10;
             this.btnGroupImport.Text = "Nhập từ File";
             this.btnGroupImport.UseVisualStyleBackColor = true;
+            this.btnGroupImport.Click += new System.EventHandler(this.btnGroupImport_Click);
             // 
             // miniTimer_ThemeContainer1
             // 
@@ -2659,8 +2661,8 @@
         public System.Windows.Forms.TextBox txtGroupSearch;
         private System.Windows.Forms.GroupBox groupBox11;
         public System.Windows.Forms.Button btnGroupJoin;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnGroupJoinFromFile;
+        private System.Windows.Forms.TextBox txtGroupJoinFromFile;
         public System.Windows.Forms.DataGridView dgGroupSearch;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
