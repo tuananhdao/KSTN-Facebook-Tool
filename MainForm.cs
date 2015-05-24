@@ -168,10 +168,18 @@ namespace KSTN_Facebook_Tool
                 dgGroups.Parent = GroupBoxInvite;
                 dgGroups.Height = 310;
             }
-            else
+            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPagePost"])
             {
                 dgGroups.Parent = groupBox4;
                 dgGroups.Height = 160;
+            }
+            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageFanpage"])
+            {
+                fanpage_init();
+            }
+            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageEvents"])
+            {
+                events_init();
             }
         }
 
@@ -471,7 +479,7 @@ namespace KSTN_Facebook_Tool
                 }
                 DataSet DS = new DataSet();
                 DS.Tables.Add(dt);
-                DS.WriteXml(SE.user_id + "_groups.xml");
+                DS.WriteXml(SE.RemoveSpecialCharacters(SE.user_id) + "_groups.xml");
             }
             catch (Exception ex) { MessageBox.Show(ex + ""); }
         }
@@ -675,47 +683,61 @@ namespace KSTN_Facebook_Tool
         }
         #endregion
 
-        #region TAB AUTOTAG
-        private void btnTag_Click(object sender, EventArgs e)
+        #region TAB EVENTS
+        private async void events_init()
         {
-            if (!SE.ready)
+            if (SE.events.Count > 0) return;
+
+            await SE.getEvents();
+
+            if (SE.events.Count > 0)
+            {
+                cbEvents.Items.Clear();
+                foreach (string event_title in SE.events.Keys)
+                {
+                    cbEvents.Items.Add(event_title);
+                }
+
+                cbEvents.SelectedIndex = 0;
+                cbEvents.Enabled = true;
+            }
+            else
+            {
+                cbEvents.Items.Add("Bạn không có Sự kiện nào cả!");
+                cbEvents.SelectedIndex = 0;
+                cbEvents.Enabled = false;
+            }
+        }
+
+        private void btnEventReload_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
             {
                 MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
 
-            if (txtTagUrl.Text == "")
+            SE.events = new Dictionary<string, string>();
+            events_init();
+        }
+
+        private void btnEventInviteFriends_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
             {
-                MessageBox.Show("Thêm đường dẫn ảnh hoặc bài viết trước khi Tag");
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
 
-            String tag_url = "";
+            btnEventInviteFriends.Enabled = false;
+            btnEventInviteFriendsPause.Enabled = true;
 
-            Match match = Regex.Match(txtTagUrl.Text, @"^https\:\/\/www\.facebook\.com\/(.*)", RegexOptions.None);
+            SE.EventsInviteFriends();
+        }
 
-            if (match.Success)
-            {
-                tag_url = "https://m.facebook.com/" + match.Groups[1].Value;
-            }
-            else
-            {
-                match = Regex.Match(txtTagUrl.Text, @"^https\:\/\/m\.facebook\.com\/(.*)", RegexOptions.None);
-                if (match.Success)
-                {
-                    tag_url = txtTagUrl.Text;
-                }
-                else
-                {
-                    MessageBox.Show("Đường dẫn bài viết/ảnh sai định dạng!\nVí dụ:\nhttps://www.facebook.com/photo.php?fbid=########\nhoặc\nhttps://m.facebook.com/photo.php?fbid=########");
-                    return;
-                }
-            }
-
-            btnTag.Enabled = false;
-            txtTagUrl.Enabled = false;
-
-            SE.AutoTag(tag_url);
+        private void btnEventInviteFriendsPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
         }
         #endregion
 
@@ -1103,12 +1125,75 @@ namespace KSTN_Facebook_Tool
         }
         #endregion
 
-        #region TAB REPLY
-        private void btnReply_Click(object sender, EventArgs e)
+        #region TAB FANPAGE
+        private async void fanpage_init()
         {
-            if (txtReplyContent.Text == "" || dgReplyBrowse.Rows.Count == 0)
+            if (SE.pages.Count > 0) return;
+
+            PictureBox loading = new PictureBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadingForm));
+            loading.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            loading.Size = new System.Drawing.Size(172, 107);
+            loading.Location = new Point(89, 0);
+            panelFanpageComment.Controls.Add(loading);
+
+            await SE.getPages();
+
+            panelFanpageComment.Controls.Remove(loading);
+            loading.Dispose();
+            // logical :]]
+            if (SE.pages.Count > 0)
             {
-                MessageBox.Show("Điền thông tin trước khi Reply Comment!");
+                int top_pos = 0;
+                cbFanpage.Items.Clear();
+                panelFanpageComment.Controls.Clear();
+                foreach (string page_title in SE.pages.Keys)
+                {
+                    CheckBox cb = new CheckBox();
+                    panelFanpageComment.Controls.Add(cb);
+                    cb.Location = new Point(10, top_pos);
+                    cb.Size = new System.Drawing.Size(300, 20);
+                    cb.Checked = true;
+                    cb.Text = page_title;
+                    top_pos += 20;
+
+                    cbFanpage.Items.Add(page_title);
+                }
+
+                cbFanpage.SelectedIndex = 0;
+                cbFanpage.Enabled = true;
+            }
+            else
+            {
+                CheckBox cb = new CheckBox();
+                panelFanpageComment.Controls.Add(cb);
+                cb.Location = new Point(10, 0);
+                cb.Size = new System.Drawing.Size(300, 20);
+                cb.Text = "Bạn chưa thích Fanpage nào cả!";
+                cb.Enabled = false;
+                cbFanpage.Items.Add("Bạn chưa thích Fanpage nào cả!");
+                cbFanpage.SelectedIndex = 0;
+                cbFanpage.Enabled = false;
+            }
+        }
+
+        private void btnFanpageReload_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            SE.pages = new Dictionary<string, string>();
+            fanpage_init();
+        }
+
+        private void btnFanpageComment_Click(object sender, EventArgs e)
+        {
+            if (SE.pages.Count == 0)
+            {
+                MessageBox.Show("Bạn chưa like Page nào cả!");
                 return;
             }
 
@@ -1119,68 +1204,80 @@ namespace KSTN_Facebook_Tool
             }
             int delay;
 
-            if (!int.TryParse(txtReplyDelay.Text, out delay) || delay < 0)
+            if (!int.TryParse(txtFanpageCommentDelay.Text, out delay) || delay < 0)
             {
                 MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
                 return;
             }
-            int max;
-            if (!int.TryParse(txtReplyMAX.Text, out max) || max < 0)
+
+            if (txtFanpageComment.Text == "")
             {
-                MessageBox.Show("Max Reply/1 URL: số nguyên không nhỏ hơn 0");
+                MessageBox.Show("Điền nội dung bình luận");
                 return;
             }
 
-            txtReplyURL.Enabled = false;
-            txtReplyContent.Enabled = false;
-            txtReplyDelay.Enabled = false;
-            btnReply.Enabled = false;
-            btnReplyPause.Enabled = true;
+            btnFanpageComment.Enabled = false;
+            btnFanpageCommentPause.Enabled = true;
 
-            SE.AutoReplyComment();
+            SE.FanpageComment();
         }
 
-        private void btnReplyPause_Click(object sender, EventArgs e)
+        private void btnFanpageCommentPause_Click(object sender, EventArgs e)
         {
-            btnReplyPause.Enabled = false;
             SE.pause = true;
         }
 
-        private void btnReplyBrowse_Click(object sender, EventArgs e)
+        private void btnFanpageGroupPost_Click(object sender, EventArgs e)
         {
-            var fDialog = new System.Windows.Forms.OpenFileDialog();
-            fDialog.Title = "Open Post IDS File";
-            fDialog.Filter = "TXT Files (*.txt) | *.txt";
-
-            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
+            if (SE.pages.Count == 0)
             {
-                string file = fDialog.FileName;
-                txtReplyURL.Text = file;
+                MessageBox.Show("Bạn chưa like Page nào cả!");
+                return;
+            }
 
-                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            int delay;
 
-                int counter = 0;
-                string line;
+            if (!int.TryParse(txtFanpageGroupPostDelay.Text, out delay) || delay < 0)
+            {
+                MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
+                return;
+            }
 
-                // Read the file and display it line by line.
-                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
-                while ((line = fileStr.ReadLine()) != null)
+            btnFanpageGroupPost.Enabled = false;
+            btnFanpageGroupPostPause.Enabled = true;
+
+            SE.FanpagePost();
+        }
+
+        private void btnFanpageGroupPostPause_Click(object sender, EventArgs e)
+        {
+            SE.pause = true;
+        }
+
+        private void btnFanpageInviteFriends_Click(object sender, EventArgs e)
+        {
+            if (btnFanpageInviteFriends.Text != "Mời tất cả bạn bè")
+            {
+                SE.pause = true;
+                return;
+            }
+
+            if (MessageBox.Show("Mời toàn bộ bạn bè thích trang này?", "Fanpage", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+            {
+                if (SE.ready == false)
                 {
-                    if (line != "")
-                    {
-                        dgReplyBrowse.Rows.Insert(0, line);
-                        counter++;
-                    }
+                    MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                    return;
                 }
 
-                fileStr.Close();
+                btnFanpageInviteFriends.Enabled = false;
 
-                MessageBox.Show("Đọc thành công: " + counter + " bài đăng");
-            }
-            else
-            {
-                txtReplyURL.Text = "";
+                SE.FanpageInviteFriends();
             }
         }
         #endregion
@@ -1260,6 +1357,6 @@ namespace KSTN_Facebook_Tool
             btnEditPause.Enabled = false;
             SE.pause = true;
         }
-        #endregion
+        #endregion    
     }
 }

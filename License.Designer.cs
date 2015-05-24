@@ -59,7 +59,6 @@
             // 
             // btnKey
             // 
-            this.btnKey.Enabled = false;
             this.btnKey.Location = new System.Drawing.Point(280, 86);
             this.btnKey.Name = "btnKey";
             this.btnKey.Size = new System.Drawing.Size(96, 24);
