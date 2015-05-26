@@ -62,7 +62,6 @@ C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\WebDriver.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\WebDriver.xml
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\WebDriver.Support.pdb
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\WebDriver.Support.xml
-C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN Facebook Tool.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.LoadingForm.resources
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.MainForm.resources
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN_Facebook_Tool.Properties.Resources.resources
@@ -83,3 +82,4 @@ C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\close2.png
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\min2.png
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\close1.png
 C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\bin\Debug\min1.png
+C:\Users\Admin\Documents\GitHub\KSTN-Facebook-Tool\obj\Debug\KSTN Facebook Tool.csprojResolveAssemblyReference.cache

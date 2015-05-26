@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtChatLog = new System.Windows.Forms.TextBox();
@@ -49,10 +49,6 @@
             this.btnGroupImport = new System.Windows.Forms.Button();
             this.btnGroupExport = new System.Windows.Forms.Button();
             this.dgGroups = new System.Windows.Forms.DataGridView();
-            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupdeletebutton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPostResultExport = new System.Windows.Forms.Button();
             this.dgPostResult = new System.Windows.Forms.DataGridView();
@@ -236,6 +232,10 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.lblEventInviting = new System.Windows.Forms.Label();
+            this.lblEventInviteTick = new System.Windows.Forms.Label();
+            this.txtEventInviteDelay = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.btnEventInviteFriendsPause = new System.Windows.Forms.Button();
             this.btnEventInviteFriends = new System.Windows.Forms.Button();
             this.btnEventReload = new System.Windows.Forms.Button();
@@ -255,10 +255,10 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.imgStatus = new System.Windows.Forms.PictureBox();
             this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtEventInviteDelay = new System.Windows.Forms.TextBox();
-            this.lblEventInviteTick = new System.Windows.Forms.Label();
-            this.lblEventInviting = new System.Windows.Forms.Label();
+            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1.SuspendLayout();
             this.TabControl1.SuspendLayout();
             this.tabPagePost.SuspendLayout();
@@ -444,6 +444,8 @@
             // cbGroupReload
             // 
             this.cbGroupReload.AutoSize = true;
+            this.cbGroupReload.Checked = true;
+            this.cbGroupReload.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbGroupReload.Location = new System.Drawing.Point(10, 184);
             this.cbGroupReload.Name = "cbGroupReload";
             this.cbGroupReload.Size = new System.Drawing.Size(152, 17);
@@ -512,28 +514,28 @@
             // dgGroups
             // 
             this.dgGroups.AllowUserToAddRows = false;
+            this.dgGroups.AllowUserToResizeColumns = false;
             this.dgGroups.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.group_name,
             this.group_link,
             this.group_mem,
-            this.groupdeletebutton});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle9;
+            this.group_selected});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgGroups.Location = new System.Drawing.Point(9, 18);
             this.dgGroups.Name = "dgGroups";
-            this.dgGroups.ReadOnly = true;
             this.dgGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgGroups.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgGroups.ShowCellToolTips = false;
             this.dgGroups.ShowEditingIcon = false;
@@ -541,59 +543,6 @@
             this.dgGroups.TabIndex = 0;
             this.dgGroups.TabStop = false;
             this.dgGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGroups_CellContentClick);
-            this.dgGroups.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgGroups_RowsRemoved);
-            // 
-            // group_name
-            // 
-            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_name.DataPropertyName = "group_name";
-            this.group_name.Frozen = true;
-            this.group_name.HeaderText = "Tên";
-            this.group_name.Name = "group_name";
-            this.group_name.ReadOnly = true;
-            this.group_name.Width = 215;
-            // 
-            // group_link
-            // 
-            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_link.DataPropertyName = "group_link";
-            this.group_link.FillWeight = 80F;
-            this.group_link.Frozen = true;
-            this.group_link.HeaderText = "Link";
-            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.group_link.Name = "group_link";
-            this.group_link.ReadOnly = true;
-            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.group_link.TrackVisitedState = false;
-            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.group_link.Width = 150;
-            // 
-            // group_mem
-            // 
-            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_mem.DataPropertyName = "group_mem";
-            this.group_mem.FillWeight = 30F;
-            this.group_mem.Frozen = true;
-            this.group_mem.HeaderText = "T.V";
-            this.group_mem.Name = "group_mem";
-            this.group_mem.ReadOnly = true;
-            this.group_mem.Width = 50;
-            // 
-            // groupdeletebutton
-            // 
-            this.groupdeletebutton.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.groupdeletebutton.DataPropertyName = "delete";
-            this.groupdeletebutton.FillWeight = 30F;
-            this.groupdeletebutton.Frozen = true;
-            this.groupdeletebutton.HeaderText = "Xóa";
-            this.groupdeletebutton.Name = "groupdeletebutton";
-            this.groupdeletebutton.ReadOnly = true;
-            this.groupdeletebutton.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.groupdeletebutton.Text = "Xóa";
-            this.groupdeletebutton.ToolTipText = "Xóa";
-            this.groupdeletebutton.UseColumnTextForButtonValue = true;
-            this.groupdeletebutton.Width = 32;
             // 
             // groupBox3
             // 
@@ -2343,9 +2292,9 @@
             this.radFanpageURL.AutoSize = true;
             this.radFanpageURL.Location = new System.Drawing.Point(43, 107);
             this.radFanpageURL.Name = "radFanpageURL";
-            this.radFanpageURL.Size = new System.Drawing.Size(331, 17);
+            this.radFanpageURL.Size = new System.Drawing.Size(301, 17);
             this.radFanpageURL.TabIndex = 5;
-            this.radFanpageURL.Text = "Liên kết tới Fanpage của tôi kèm Nội dung sau (Có thể bỏ trống):";
+            this.radFanpageURL.Text = "URL Fanpage của tôi kèm Nội dung sau (Có thể bỏ trống):";
             this.radFanpageURL.UseVisualStyleBackColor = true;
             // 
             // radFanpageImage
@@ -2502,6 +2451,44 @@
             this.groupBox17.TabIndex = 0;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Mời bạn bè tham gia sự kiện";
+            // 
+            // lblEventInviting
+            // 
+            this.lblEventInviting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblEventInviting.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblEventInviting.Location = new System.Drawing.Point(3, 69);
+            this.lblEventInviting.Name = "lblEventInviting";
+            this.lblEventInviting.Size = new System.Drawing.Size(193, 17);
+            this.lblEventInviting.TabIndex = 7;
+            this.lblEventInviting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblEventInviteTick
+            // 
+            this.lblEventInviteTick.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblEventInviteTick.Location = new System.Drawing.Point(258, 71);
+            this.lblEventInviteTick.Name = "lblEventInviteTick";
+            this.lblEventInviteTick.Size = new System.Drawing.Size(100, 13);
+            this.lblEventInviteTick.TabIndex = 6;
+            this.lblEventInviteTick.Text = "Ready";
+            this.lblEventInviteTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtEventInviteDelay
+            // 
+            this.txtEventInviteDelay.Location = new System.Drawing.Point(301, 46);
+            this.txtEventInviteDelay.Name = "txtEventInviteDelay";
+            this.txtEventInviteDelay.Size = new System.Drawing.Size(55, 20);
+            this.txtEventInviteDelay.TabIndex = 5;
+            this.txtEventInviteDelay.Text = "10";
+            this.txtEventInviteDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(257, 49);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(37, 13);
+            this.label25.TabIndex = 4;
+            this.label25.Text = "Delay:";
             // 
             // btnEventInviteFriendsPause
             // 
@@ -2718,48 +2705,63 @@
             this.lblVer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
             this.lblVer.Location = new System.Drawing.Point(427, 539);
             this.lblVer.Name = "lblVer";
-            this.lblVer.Size = new System.Drawing.Size(89, 16);
+            this.lblVer.Size = new System.Drawing.Size(88, 16);
             this.lblVer.TabIndex = 0;
             this.lblVer.Text = "Version: 2.9.1";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
             // 
-            // label25
+            // group_name
             // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(257, 49);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(37, 13);
-            this.label25.TabIndex = 4;
-            this.label25.Text = "Delay:";
+            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_name.DataPropertyName = "group_name";
+            this.group_name.Frozen = true;
+            this.group_name.HeaderText = "Tên";
+            this.group_name.Name = "group_name";
+            this.group_name.ReadOnly = true;
+            this.group_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_name.Width = 215;
             // 
-            // txtEventInviteDelay
+            // group_link
             // 
-            this.txtEventInviteDelay.Location = new System.Drawing.Point(301, 46);
-            this.txtEventInviteDelay.Name = "txtEventInviteDelay";
-            this.txtEventInviteDelay.Size = new System.Drawing.Size(55, 20);
-            this.txtEventInviteDelay.TabIndex = 5;
-            this.txtEventInviteDelay.Text = "10";
-            this.txtEventInviteDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_link.DataPropertyName = "group_link";
+            this.group_link.FillWeight = 80F;
+            this.group_link.Frozen = true;
+            this.group_link.HeaderText = "Link";
+            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.group_link.Name = "group_link";
+            this.group_link.ReadOnly = true;
+            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.group_link.TrackVisitedState = false;
+            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.group_link.Width = 150;
             // 
-            // lblEventInviteTick
+            // group_mem
             // 
-            this.lblEventInviteTick.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblEventInviteTick.Location = new System.Drawing.Point(258, 71);
-            this.lblEventInviteTick.Name = "lblEventInviteTick";
-            this.lblEventInviteTick.Size = new System.Drawing.Size(100, 13);
-            this.lblEventInviteTick.TabIndex = 6;
-            this.lblEventInviteTick.Text = "Ready";
-            this.lblEventInviteTick.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_mem.DataPropertyName = "group_mem";
+            this.group_mem.FillWeight = 30F;
+            this.group_mem.Frozen = true;
+            this.group_mem.HeaderText = "T.V";
+            this.group_mem.Name = "group_mem";
+            this.group_mem.ReadOnly = true;
+            this.group_mem.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_mem.Width = 50;
             // 
-            // lblEventInviting
+            // group_selected
             // 
-            this.lblEventInviting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblEventInviting.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblEventInviting.Location = new System.Drawing.Point(3, 69);
-            this.lblEventInviting.Name = "lblEventInviting";
-            this.lblEventInviting.Size = new System.Drawing.Size(193, 17);
-            this.lblEventInviting.TabIndex = 7;
-            this.lblEventInviting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.group_selected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_selected.DataPropertyName = "group_selected";
+            this.group_selected.FalseValue = "0";
+            this.group_selected.FillWeight = 30F;
+            this.group_selected.Frozen = true;
+            this.group_selected.HeaderText = "v";
+            this.group_selected.Name = "group_selected";
+            this.group_selected.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_selected.ToolTipText = "Chọn?";
+            this.group_selected.TrueValue = "1";
+            this.group_selected.Width = 32;
             // 
             // MainForm
             // 
@@ -3026,10 +3028,6 @@
         public System.Windows.Forms.CheckBox cbGroupReload;
         public System.Windows.Forms.CheckBox cbCommentOnlyMe;
         private System.Windows.Forms.Button btnGroupImport;
-        private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
-        private System.Windows.Forms.DataGridViewLinkColumn group_link;
-        private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
-        private System.Windows.Forms.DataGridViewButtonColumn groupdeletebutton;
         private System.Windows.Forms.DataGridViewTextBoxColumn posted_group;
         private System.Windows.Forms.DataGridViewTextBoxColumn posted_URL;
         public System.Windows.Forms.Button btnGroupImportFriends;
@@ -3082,6 +3080,10 @@
         public System.Windows.Forms.Label lblEventInviteTick;
         public System.Windows.Forms.Label lblEventInviting;
         public System.Windows.Forms.TextBox txtEventInviteDelay;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_name;
+        private System.Windows.Forms.DataGridViewLinkColumn group_link;
+        private System.Windows.Forms.DataGridViewTextBoxColumn group_mem;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn group_selected;
 
     }
 }

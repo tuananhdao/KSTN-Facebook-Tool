@@ -116,6 +116,33 @@ namespace KSTN_Facebook_Tool
             txtPass.Text = Properties.Settings.Default.pass;
             cbGroupReload.Checked = Properties.Settings.Default.group_reload;
             ChatRefresh();
+
+            dgGroups.Rows.Add("Đăng nhập để sử dụng", "", "", 0);
+            Rectangle rect = dgGroups.GetCellDisplayRectangle(3, -1, true);
+            rect.Y = 3;
+            rect.X = rect.Location.X + (rect.Width / 5);
+            CheckBox checkboxHeader = new CheckBox();
+            checkboxHeader.Name = "cbGroupHeader";
+            checkboxHeader.Checked = true;
+            //datagridview[0, 0].ToolTipText = "sdfsdf";
+            checkboxHeader.Size = new Size(18, 18);
+            checkboxHeader.Location = rect.Location;
+            checkboxHeader.CheckedChanged += new EventHandler(cbGroupHeader_CheckedChanged);
+            dgGroups.Controls.Add(checkboxHeader);  
+        }
+
+        private void cbGroupHeader_CheckedChanged(object sender, EventArgs e)
+        {
+            var headerBox = (CheckBox)sender;
+            var b = headerBox.Checked;
+            if (dgGroups.Rows.Count == 0) return; 
+            foreach (DataGridViewRow row in dgGroups.Rows)
+            {
+                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[3];
+                chk.Value = b?1:0;
+            }
+
+            groups_to_xml();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -451,13 +478,9 @@ namespace KSTN_Facebook_Tool
             SE.getGroups();
         }
 
-        private void dgGroups_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-            groups_to_xml();
-        }
-
         public void groups_to_xml()
         {
+            if (SE.user_id == "") return;
             try
             {
                 //Create a datatable to store XML data
@@ -488,8 +511,11 @@ namespace KSTN_Facebook_Tool
         {
             var senderGrid = (DataGridView)sender;
 
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
-                dgGroups.Rows.Remove(dgGroups.Rows[e.RowIndex]);
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn && e.RowIndex >= 0)
+            {
+                dgGroups.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                groups_to_xml();
+            }
         }
 
         #endregion
@@ -1037,7 +1063,7 @@ namespace KSTN_Facebook_Tool
         public void addGroup2Grid(IWebElement k)
         {
             //dgGroups.Rows.Add(k.GetAttribute("innerHTML"), k.GetAttribute("href"), "");
-            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Insert(0, k.GetAttribute("innerHTML"), k.GetAttribute("href"), ""); })));
+            Thread t = new Thread(() => Program.mainForm.Invoke(new MethodInvoker(delegate() { dgGroups.Rows.Insert(0, k.GetAttribute("innerHTML"), k.GetAttribute("href"), "", 1); })));
             t.Start();
         }
 
@@ -1357,6 +1383,6 @@ namespace KSTN_Facebook_Tool
             btnEditPause.Enabled = false;
             SE.pause = true;
         }
-        #endregion    
+        #endregion
     }
 }
