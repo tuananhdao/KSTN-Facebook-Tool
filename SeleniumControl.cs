@@ -18,7 +18,7 @@ namespace KSTN_Facebook_Tool
 {
     class SeleniumControl
     {
-        public OpenQA.Selenium.Firefox.FirefoxDriver driver;
+        public OpenQA.Selenium.Chrome.ChromeDriver driver;
 
         private const int SW_HIDE = 0;
         private const int SW_SHOW = 5;
@@ -205,12 +205,18 @@ namespace KSTN_Facebook_Tool
                 profile.SetPreference("permissions.default.image", 2);
                 profile.AddExtension("App/Firefox/firebug.xpi");
                 //profile.SetPreference("dom.ipc.plugins.enabled.libflashplayer.so", "false");
-                IEnumerable<int> pidsBefore = Process.GetProcessesByName("firefox").Select(p => p.Id);
+                IEnumerable<int> pidsBefore = Process.GetProcessesByName("chrome").Select(p => p.Id);
                 try
                 {
                     //this.driver = await Task.Factory.StartNew(() => new OpenQA.Selenium.Firefox.FirefoxDriver(profile));
+                    /*
                     OpenQA.Selenium.Firefox.FirefoxBinary firefox = new OpenQA.Selenium.Firefox.FirefoxBinary("App/Firefox/firefox.exe");
-                    this.driver = new OpenQA.Selenium.Firefox.FirefoxDriver(firefox, profile);
+                    this.driver = new OpenQA.Selenium.Firefox.FirefoxDriver(firefox, profile);*/
+                    var chromeDriverService = OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(Path.GetDirectoryName(Application.ExecutablePath) + @"\App");
+                    chromeDriverService.HideCommandPromptWindow = true;
+                    OpenQA.Selenium.Chrome.ChromeOptions chromeDriverOptions = new OpenQA.Selenium.Chrome.ChromeOptions();
+                    chromeDriverOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0");
+                    driver = await Task.Factory.StartNew(() => new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService, chromeDriverOptions));
                 }
                 catch
                 {
@@ -250,7 +256,7 @@ namespace KSTN_Facebook_Tool
 
                     Exceptions_Handler();
                 }
-                IEnumerable<int> pidsAfter = Process.GetProcessesByName("firefox").Select(p => p.Id);
+                IEnumerable<int> pidsAfter = Process.GetProcessesByName("chrome").Select(p => p.Id);
 
                 newFirefoxPids = pidsAfter.Except(pidsBefore);
 
@@ -259,7 +265,7 @@ namespace KSTN_Facebook_Tool
                     foreach (int pid in newFirefoxPids)
                     {
                         int hWnd = Process.GetProcessById(pid).MainWindowHandle.ToInt32();
-                        //ShowWindow(hWnd, SW_HIDE);
+                        ShowWindow(hWnd, SW_HIDE);
                     }
                 }
                 catch
@@ -356,16 +362,29 @@ namespace KSTN_Facebook_Tool
                 //Program.mainForm.Focus();
                 Program.loadingForm.setText("ĐĂNG NHẬP THÀNH CÔNG! ĐANG TẢI DANH SÁCH NHÓM...");
 
+                Program.mainForm.dgGroups.Rows.Clear();
                 if (Program.mainForm.cbGroupReload.Checked)
                 {
                     try
                     {
-                        Program.mainForm.dgGroups.Rows.Clear();
                         DataSet DS = new DataSet();
                         DS.ReadXml(RemoveSpecialCharacters(user_id) + "_groups.xml");
+
+                        bool empty = true;
+
                         foreach (DataRow dr in DS.Tables[0].Rows)
                         {
                             Program.mainForm.dgGroups.Rows.Add(dr[0], dr[1], dr[2], dr[3]);
+                            if (dr[3].ToString() == "1") empty = false;
+                        }
+
+                        if (empty)
+                        {
+                            foreach (DataGridViewRow row in Program.mainForm.dgGroups.Rows)
+                            {
+                                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[3];
+                                chk.Value = 1;
+                            }
                         }
                     }
                     catch { }
@@ -395,7 +414,6 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.btnLogin.Enabled = true;
                 return;
             }
-
             // await Task.Factory.StartNew(() => new WebDriverWait(driver, TimeSpan.FromSeconds(10))); // Chờ tải xong trang
         }
 
@@ -520,6 +538,8 @@ namespace KSTN_Facebook_Tool
                 Program.mainForm.lblProgress.Text = progress + "/" + Program.mainForm.dgGroups.Rows.Count;
 
                 if (row.Cells[3].Value.ToString() == "0") continue;
+                row.Cells[3].Value = "0";
+                Program.mainForm.groups_to_xml();
 
                 await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
                 Program.mainForm.lblPostingGroup.Text = driver.Title;
@@ -562,7 +582,13 @@ namespace KSTN_Facebook_Tool
                             continue;
                         }
                         await Task.Factory.StartNew(() => Click("view_post"));
-                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, Uri.UnescapeDataString(driver.Url));
+
+                        var url_to_comment_a = driver.FindElements(By.XPath("//a[contains(@href, 'view=permalink')]"));
+                        string post_url = Uri.UnescapeDataString(driver.Url);
+                        if (url_to_comment_a.Count > 0)
+                            post_url = url_to_comment_a[0].GetAttribute("href");
+
+                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblPostingGroup.Text, post_url);
                     }
                     else
                     {
@@ -857,6 +883,12 @@ namespace KSTN_Facebook_Tool
 
             while (Program.mainForm.dgGroupSearch.Rows.Count > 0)
             {
+                if (pause)
+                {
+                    pause = false;
+                    break;
+                }
+
                 DataGridViewRow row = Program.mainForm.dgGroupSearch.Rows[0];
 
                 await Task.Factory.StartNew(() => Navigate(row.Cells[1].Value.ToString()));
@@ -876,6 +908,9 @@ namespace KSTN_Facebook_Tool
 
                 for (int i = 0; i < delay + 1; i++)
                 {
+                    if (pause)
+                        break;
+
                     Program.mainForm.lblJoinTick.Text = delay - i + "";
                     if (i == delay)
                     {
@@ -1158,7 +1193,7 @@ namespace KSTN_Facebook_Tool
                 foreach (IWebElement profile in profiles)
                 {
                     if (profile.Text == "") continue;
-                    Program.mainForm.dgGroups.Rows.Insert(0, profile.Text, profile.GetAttribute("href"));
+                    Program.mainForm.dgGroups.Rows.Insert(0, profile.Text, profile.GetAttribute("href"), "", "1");
                     await TaskEx.Delay(10);
                 }
 
@@ -1169,6 +1204,8 @@ namespace KSTN_Facebook_Tool
                 else
                     await Task.Factory.StartNew(() => ClickElement(m_more_friends[0].FindElement(By.TagName("a"))));
             }
+
+            Program.mainForm.groups_to_xml();
 
             MessageBox.Show("Nhập danh sách bạn bè thành công!");
             Program.mainForm.btnGroupImportFriends.Enabled = true;
@@ -1556,7 +1593,11 @@ namespace KSTN_Facebook_Tool
                 {
                     foreach (IWebElement afref in afrefs)
                     {
-                        pages.Add(afref.Text, afref.GetAttribute("href"));
+                        try
+                        {
+                            pages.Add(afref.Text, afref.GetAttribute("href"));
+                        }
+                        catch { }
                     }
                     var next = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'v=likes')]"));
                     if (next.Count > 0)
@@ -1569,7 +1610,11 @@ namespace KSTN_Facebook_Tool
                         {
                             foreach (IWebElement afref_more in afrefs_more)
                             {
-                                pages.Add(afref_more.Text, afref_more.GetAttribute("href"));
+                                try
+                                {
+                                    pages.Add(afref_more.Text, afref_more.GetAttribute("href"));
+                                }
+                                catch { }
                             }
                         }
                     }
@@ -1716,7 +1761,7 @@ namespace KSTN_Facebook_Tool
             {
                 string page_name = Program.mainForm.cbFanpage.Text;
                 await Task.Factory.StartNew(() => Navigate(pages[page_name]));
-                var page_posts = driver.FindElementsByXPath("//div[@id='recent']//div[@id]//a[contains(@href, '/photos/')]");
+                var page_posts = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//div[@id='recent']//div[@id]//a[contains(@href, '/photos/')]"));
 
                 if (page_posts.Count > 0)
                 {
@@ -1746,17 +1791,17 @@ namespace KSTN_Facebook_Tool
                 if (e2.Count < 4)
                 {
                     await Task.Factory.StartNew(() => Navigate(links["fb_groups_2"]));
-                    var divs = driver.FindElementsByXPath("//div[@id='root']//div");
-                    var h3 = divs[1].FindElements(By.TagName("h3"));
+                    var divs = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//div[@id='root']//div"));
+                    var h3 = await Task.Factory.StartNew(() => divs[1].FindElements(By.TagName("h3")));
                     foreach (IWebElement _h3 in h3)
                     {
-                        var k = _h3.FindElement(By.TagName("a"));
+                        var k = await Task.Factory.StartNew(() => _h3.FindElement(By.TagName("a")));
                         post_targets.Add(k.GetAttribute("href").Replace("/m.facebook", "/www.facebook"));
                     }
                 }
                 else
                 {
-                    var e = e2[3].FindElements(By.XPath(".//li//table//tbody//tr//td//a"));
+                    var e = await Task.Factory.StartNew(() => e2[3].FindElements(By.XPath(".//li//table//tbody//tr//td//a")));
 
                     foreach (IWebElement k in e)
                     {
@@ -1765,34 +1810,64 @@ namespace KSTN_Facebook_Tool
                 }
             }
             Program.mainForm.lblFanpageGroupTick.Text = "Khởi tạo";
-            var profile = new OpenQA.Selenium.Firefox.FirefoxProfile();
-            profile.SetPreference("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
-            profile.SetPreference("permissions.default.image", 2);
-            //profile.SetPreference("permissions.default.stylesheet", 2);
-            profile.AddExtension("App/Firefox/firebug.xpi");
 
-            OpenQA.Selenium.Firefox.FirefoxBinary firefox = new OpenQA.Selenium.Firefox.FirefoxBinary("App/Firefox/firefox.exe");
-            OpenQA.Selenium.Firefox.FirefoxDriver driver2 = new OpenQA.Selenium.Firefox.FirefoxDriver(firefox, profile);
-            driver2.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-            driver2.Manage().Timeouts().SetScriptTimeout(TimeSpan.FromSeconds(10));
-            driver2.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(60));
+            //var driverService = OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService();
+            //driverService.HideCommandPromptWindow = true;
 
-            Program.mainForm.lblFanpageGroupTick.Text = "Mã hóa";
-            //await Task.Factory.StartNew(() => Navigate2(driver2, "https://www.facebook.com/"));
-            WebDriverWait wait = new WebDriverWait(driver2, TimeSpan.FromSeconds(60));
+            //OpenQA.Selenium.Chrome.ChromeOptions chromeOptions = new OpenQA.Selenium.Chrome.ChromeOptions();
+
+            IEnumerable<int> pidsBefore = Process.GetProcessesByName("chrome").Select(p => p.Id);
+
+            var chromeDriverService = OpenQA.Selenium.Chrome.ChromeDriverService.CreateDefaultService(Path.GetDirectoryName(Application.ExecutablePath) + @"\App");
+            chromeDriverService.HideCommandPromptWindow = true;
+            OpenQA.Selenium.Chrome.ChromeOptions chromeDriverOptions = new OpenQA.Selenium.Chrome.ChromeOptions();
+            OpenQA.Selenium.Chrome.ChromeDriver driver2 = await Task.Factory.StartNew(() => new OpenQA.Selenium.Chrome.ChromeDriver(chromeDriverService, chromeDriverOptions));
+
+
+            IEnumerable<int> pidsAfter = Process.GetProcessesByName("chrome").Select(p => p.Id);
+            var newChromePids = pidsAfter.Except(pidsBefore);
 
             try
             {
-                driver2.Url = "https://www.facebook.com/";
+                foreach (int pid in newChromePids)
+                {
+                    int hWnd = Process.GetProcessById(pid).MainWindowHandle.ToInt32();
+                    ShowWindow(hWnd, SW_HIDE);
+                }
             }
             catch
             {
-                ((IJavaScriptExecutor)driver2).ExecuteScript("return window.stop()");
+                MessageBox.Show("Không tìm thấy cửa sổ Chrome!");
+                goto FanpageGroupFinish;
             }
 
-            wait.Until<Boolean>((d) =>
+            Program.mainForm.lblFanpageGroupTick.Text = "Mã hóa";
+
+            driver2.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+
+            await Task.Factory.StartNew(() => driver2.Url = "https://www.facebook.com/");
+
+
+            WebDriverWait wait = new WebDriverWait(driver2, TimeSpan.FromSeconds(60));
+
+            await Task.Factory.StartNew(() =>
             {
-                return ((IJavaScriptExecutor)driver2).ExecuteScript("return document.readyState").Equals("complete");
+                try
+                {
+                    driver2.Url = "https://www.facebook.com/";
+                }
+                catch
+                {
+                    ((IJavaScriptExecutor)driver2).ExecuteScript("return window.stop()");
+                }
+            });
+
+            await Task.Factory.StartNew(() =>
+            {
+                wait.Until<Boolean>((d) =>
+                {
+                    return ((IJavaScriptExecutor)driver2).ExecuteScript("return document.readyState").Equals("complete");
+                });
             });
 
             try
@@ -1804,13 +1879,19 @@ namespace KSTN_Facebook_Tool
                 MessageBox.Show("Đường truyền mạng quá chậm, vui lòng thử lại sau!");
                 goto FanpageGroupFinish;
             }
-            
-            driver2.ExecuteScript(@"document.getElementsByName('pass')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtPass.Text) + "';");
-            driver2.ExecuteScript(@"document.getElementById('loginbutton').click();");
 
-            wait.Until<Boolean>((d) =>
+            await Task.Factory.StartNew(() =>
             {
-                return ((IJavaScriptExecutor)driver2).ExecuteScript("return document.readyState").Equals("complete");
+                driver2.ExecuteScript(@"document.getElementsByName('pass')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtPass.Text) + "';");
+                driver2.ExecuteScript(@"document.getElementById('loginbutton').click();");
+            });
+
+            await Task.Factory.StartNew(() =>
+            {
+                wait.Until<Boolean>((d) =>
+                {
+                    return ((IJavaScriptExecutor)driver2).ExecuteScript("return document.readyState").Equals("complete");
+                });
             });
 
             await TaskEx.Delay(2000);
@@ -1831,7 +1912,7 @@ namespace KSTN_Facebook_Tool
 
                     try
                     {
-                        driver2.Url = post_target;
+                        await Task.Factory.StartNew(() => driver2.Url = post_target);
                     }
                     catch
                     {
@@ -1864,13 +1945,14 @@ namespace KSTN_Facebook_Tool
                     var xhpc = await Task.Factory.StartNew(() => driver2.FindElementsByXPath("//a[@data-endpoint='/ajax/composerx/attachment/group/post/']"));
                     if (xhpc.Count == 0) continue;
                     await Task.Factory.StartNew(() => ClickElement(xhpc[0]));
-                    await TaskEx.Delay(1000);
+                    await TaskEx.Delay(5000);
 
-                    var xhpc_text = wait.Until<IWebElement>((d) =>
+                    var xhpc_text = await Task.Factory.StartNew(() => wait.Until<IWebElement>((d) =>
                     {
-                        return d.FindElement(By.XPath("//form[contains(@action, 'updatestatus.php')]//textarea[@name='xhpc_message_text']"));
-                    });
-                    //await Task.Factory.StartNew(() => ClickElement(xhpc_text));
+                        return d.FindElement(By.Name("xhpc_message_text"));
+                    }));
+
+                    await Task.Factory.StartNew(() => ClickElement(xhpc_text));
 
                     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                     var rnd = new Random();
@@ -1878,7 +1960,8 @@ namespace KSTN_Facebook_Tool
                         Enumerable.Repeat(chars, rnd.Next(8) + 1)
                                   .Select(s => s[rnd.Next(s.Length)])
                                   .ToArray());
-                    driver2.ExecuteScript(@"document.getElementsByName('xhpc_message_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(text_to_share) + random_tag + "';");
+
+                    await Task.Factory.StartNew(() => driver2.ExecuteScript(@"document.getElementsByName('xhpc_message_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(text_to_share) + random_tag + "';"));
 
                     xhpc_text.SendKeys(OpenQA.Selenium.Keys.Enter);
 
@@ -1903,7 +1986,7 @@ namespace KSTN_Facebook_Tool
                 }
             }
 
-            FanpageGroupFinish:
+        FanpageGroupFinish:
 
             if (driver2 != null)
             {

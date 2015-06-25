@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtChatLog = new System.Windows.Forms.TextBox();
@@ -49,6 +49,10 @@
             this.btnGroupImport = new System.Windows.Forms.Button();
             this.btnGroupExport = new System.Windows.Forms.Button();
             this.dgGroups = new System.Windows.Forms.DataGridView();
+            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.group_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPostResultExport = new System.Windows.Forms.Button();
             this.dgPostResult = new System.Windows.Forms.DataGridView();
@@ -255,10 +259,6 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.imgStatus = new System.Windows.Forms.PictureBox();
             this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
-            this.group_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_link = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.group_mem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.group_selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1.SuspendLayout();
             this.TabControl1.SuspendLayout();
             this.tabPagePost.SuspendLayout();
@@ -522,20 +522,20 @@
             this.group_link,
             this.group_mem,
             this.group_selected});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgGroups.Location = new System.Drawing.Point(9, 18);
             this.dgGroups.Name = "dgGroups";
             this.dgGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgGroups.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgGroups.ShowCellToolTips = false;
             this.dgGroups.ShowEditingIcon = false;
@@ -543,6 +543,59 @@
             this.dgGroups.TabIndex = 0;
             this.dgGroups.TabStop = false;
             this.dgGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGroups_CellContentClick);
+            // 
+            // group_name
+            // 
+            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_name.DataPropertyName = "group_name";
+            this.group_name.Frozen = true;
+            this.group_name.HeaderText = "Tên";
+            this.group_name.Name = "group_name";
+            this.group_name.ReadOnly = true;
+            this.group_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_name.Width = 215;
+            // 
+            // group_link
+            // 
+            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_link.DataPropertyName = "group_link";
+            this.group_link.FillWeight = 80F;
+            this.group_link.Frozen = true;
+            this.group_link.HeaderText = "Link";
+            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.group_link.Name = "group_link";
+            this.group_link.ReadOnly = true;
+            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.group_link.TrackVisitedState = false;
+            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.group_link.Width = 150;
+            // 
+            // group_mem
+            // 
+            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_mem.DataPropertyName = "group_mem";
+            this.group_mem.FillWeight = 30F;
+            this.group_mem.Frozen = true;
+            this.group_mem.HeaderText = "T.V";
+            this.group_mem.Name = "group_mem";
+            this.group_mem.ReadOnly = true;
+            this.group_mem.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_mem.Width = 50;
+            // 
+            // group_selected
+            // 
+            this.group_selected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.group_selected.DataPropertyName = "group_selected";
+            this.group_selected.FalseValue = "0";
+            this.group_selected.FillWeight = 30F;
+            this.group_selected.Frozen = true;
+            this.group_selected.HeaderText = "v";
+            this.group_selected.Name = "group_selected";
+            this.group_selected.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.group_selected.ToolTipText = "Chọn?";
+            this.group_selected.TrueValue = "1";
+            this.group_selected.Width = 32;
             // 
             // groupBox3
             // 
@@ -1106,9 +1159,9 @@
             this.label12.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.label12.Location = new System.Drawing.Point(11, 101);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(275, 13);
+            this.label12.Size = new System.Drawing.Size(234, 13);
             this.label12.TabIndex = 5;
-            this.label12.Text = "*Tên 01 bạn bè (đã kết bạn) hiển thị trong trang cá nhân";
+            this.label12.Text = "*Tên hiển thị bình thường. Ví dụ: Đào Tuấn Anh";
             // 
             // btnInvite
             // 
@@ -1707,7 +1760,7 @@
             this.txtPMDelay.Name = "txtPMDelay";
             this.txtPMDelay.Size = new System.Drawing.Size(100, 20);
             this.txtPMDelay.TabIndex = 6;
-            this.txtPMDelay.Text = "30";
+            this.txtPMDelay.Text = "60";
             this.txtPMDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label20
@@ -1992,7 +2045,7 @@
             this.tabPageFanpage.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageFanpage.Size = new System.Drawing.Size(969, 376);
             this.tabPageFanpage.TabIndex = 7;
-            this.tabPageFanpage.Text = "Quảng cáo Fanpage";
+            this.tabPageFanpage.Text = "Quảng cáo Link + Fanpage";
             this.tabPageFanpage.UseVisualStyleBackColor = true;
             // 
             // groupBox9
@@ -2597,7 +2650,7 @@
             // btnTermsPolicies
             // 
             this.btnTermsPolicies.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnTermsPolicies.Location = new System.Drawing.Point(198, 535);
+            this.btnTermsPolicies.Location = new System.Drawing.Point(211, 535);
             this.btnTermsPolicies.Name = "btnTermsPolicies";
             this.btnTermsPolicies.Size = new System.Drawing.Size(155, 25);
             this.btnTermsPolicies.TabIndex = 14;
@@ -2657,9 +2710,9 @@
             // 
             this.btnLicense.Location = new System.Drawing.Point(134, 535);
             this.btnLicense.Name = "btnLicense";
-            this.btnLicense.Size = new System.Drawing.Size(62, 25);
+            this.btnLicense.Size = new System.Drawing.Size(75, 25);
             this.btnLicense.TabIndex = 12;
-            this.btnLicense.Text = "License";
+            this.btnLicense.Text = "Bản quyền";
             this.btnLicense.UseVisualStyleBackColor = true;
             this.btnLicense.Click += new System.EventHandler(this.btnLicense_Click);
             // 
@@ -2705,63 +2758,10 @@
             this.lblVer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
             this.lblVer.Location = new System.Drawing.Point(427, 539);
             this.lblVer.Name = "lblVer";
-            this.lblVer.Size = new System.Drawing.Size(88, 16);
+            this.lblVer.Size = new System.Drawing.Size(89, 16);
             this.lblVer.TabIndex = 0;
             this.lblVer.Text = "Version: 2.9.1";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
-            // 
-            // group_name
-            // 
-            this.group_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_name.DataPropertyName = "group_name";
-            this.group_name.Frozen = true;
-            this.group_name.HeaderText = "Tên";
-            this.group_name.Name = "group_name";
-            this.group_name.ReadOnly = true;
-            this.group_name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.group_name.Width = 215;
-            // 
-            // group_link
-            // 
-            this.group_link.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_link.DataPropertyName = "group_link";
-            this.group_link.FillWeight = 80F;
-            this.group_link.Frozen = true;
-            this.group_link.HeaderText = "Link";
-            this.group_link.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.group_link.Name = "group_link";
-            this.group_link.ReadOnly = true;
-            this.group_link.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.group_link.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.group_link.TrackVisitedState = false;
-            this.group_link.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.group_link.Width = 150;
-            // 
-            // group_mem
-            // 
-            this.group_mem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_mem.DataPropertyName = "group_mem";
-            this.group_mem.FillWeight = 30F;
-            this.group_mem.Frozen = true;
-            this.group_mem.HeaderText = "T.V";
-            this.group_mem.Name = "group_mem";
-            this.group_mem.ReadOnly = true;
-            this.group_mem.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.group_mem.Width = 50;
-            // 
-            // group_selected
-            // 
-            this.group_selected.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.group_selected.DataPropertyName = "group_selected";
-            this.group_selected.FalseValue = "0";
-            this.group_selected.FillWeight = 30F;
-            this.group_selected.Frozen = true;
-            this.group_selected.HeaderText = "v";
-            this.group_selected.Name = "group_selected";
-            this.group_selected.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.group_selected.ToolTipText = "Chọn?";
-            this.group_selected.TrueValue = "1";
-            this.group_selected.Width = 32;
             // 
             // MainForm
             // 

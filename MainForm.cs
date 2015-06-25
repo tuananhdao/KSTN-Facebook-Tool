@@ -103,8 +103,6 @@ namespace KSTN_Facebook_Tool
         {
             InitializeComponent();
             DisableClickSounds();
-
-            //autoIt.AutoItSetOption("WinTitleMatchMode", 2);
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -128,7 +126,9 @@ namespace KSTN_Facebook_Tool
             checkboxHeader.Size = new Size(18, 18);
             checkboxHeader.Location = rect.Location;
             checkboxHeader.CheckedChanged += new EventHandler(cbGroupHeader_CheckedChanged);
-            dgGroups.Controls.Add(checkboxHeader);  
+            dgGroups.Controls.Add(checkboxHeader);
+
+            pbAvatar.ErrorImage = pbAvatar.Image;
         }
 
         private void cbGroupHeader_CheckedChanged(object sender, EventArgs e)
@@ -504,7 +504,8 @@ namespace KSTN_Facebook_Tool
                 DS.Tables.Add(dt);
                 DS.WriteXml(SE.RemoveSpecialCharacters(SE.user_id) + "_groups.xml");
             }
-            catch (Exception ex) { MessageBox.Show(ex + ""); }
+            catch { }
+            //catch (Exception ex) { MessageBox.Show(ex + ""); }
         }
 
         private void dgGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -1125,12 +1126,18 @@ namespace KSTN_Facebook_Tool
 
                 if (result == "trial?")
                 {
-                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày ngay bây giờ?", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày ngay bây giờ? Nếu bạn muốn chuyển Key từ máy cũ, hãy chọn NO", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
                     {
                         myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id + "&trial=1");
                         myResponse = await myRequest.GetResponseAsync();
                         myResponse.Close();
                         MessageBox.Show("Bạn đã kích hoạt thành công! Nhấn OK để đóng chương trình! Khởi động lại để sử dụng phiên bản dùng thử 7 ngày!");
+                        Process.GetCurrentProcess().Kill();
+                    }
+                    else
+                    {
+                        License licForm = new License();
+                        licForm.ShowDialog();
                         Process.GetCurrentProcess().Kill();
                     }
                 }

@@ -94,7 +94,8 @@
     <Reference Include="ThoughtWorks.Selenium.Core">
       <HintPath>bin\Debug\selenium\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver">
+    <Reference Include="WebDriver, Version=2.43.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\selenium\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support">

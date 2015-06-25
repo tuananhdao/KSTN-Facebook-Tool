@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSTN Facebook Tool", "KSTN Facebook Tool.csproj", "{58D796C4-B324-430A-A1D8-AF4AB3734FA9}"
 EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "FbToolDeploy", "..\FbToolDeploy\FbToolDeploy.isproj", "{7EEC1C15-3020-4FB8-8798-A8A51731277E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -24,6 +26,16 @@ Global
 		{58D796C4-B324-430A-A1D8-AF4AB3734FA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58D796C4-B324-430A-A1D8-AF4AB3734FA9}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{58D796C4-B324-430A-A1D8-AF4AB3734FA9}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.CD_ROM|Any CPU.Build.0 = CD_ROM
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.Debug|Any CPU.ActiveCfg = SingleImage
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.Debug|Any CPU.Build.0 = SingleImage
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.DVD-5|Any CPU.ActiveCfg = DVD-5
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.DVD-5|Any CPU.Build.0 = DVD-5
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.Release|Any CPU.ActiveCfg = SingleImage
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.Release|Any CPU.Build.0 = SingleImage
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.SingleImage|Any CPU.ActiveCfg = SingleImage
+		{7EEC1C15-3020-4FB8-8798-A8A51731277E}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
