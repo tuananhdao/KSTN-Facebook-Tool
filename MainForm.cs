@@ -96,7 +96,7 @@ namespace KSTN_Facebook_Tool
         SeleniumControl SE;
         //public AutoItX3 autoIt = new AutoItX3();
 
-        private String CHAT_URL = "http://kstnk57.com/AUTO/chatlog.php";
+        private String CHAT_URL = "http://ipostfb.com/chatlog.php";
 
         #region GENERAL MAINFORM
         public MainForm()
@@ -129,17 +129,19 @@ namespace KSTN_Facebook_Tool
             dgGroups.Controls.Add(checkboxHeader);
 
             pbAvatar.ErrorImage = pbAvatar.Image;
+
+            txtFanpageSeeder.Text = string.Join("\r\n", Properties.Settings.Default.comments.Split(','));
         }
 
         private void cbGroupHeader_CheckedChanged(object sender, EventArgs e)
         {
             var headerBox = (CheckBox)sender;
             var b = headerBox.Checked;
-            if (dgGroups.Rows.Count == 0) return; 
+            if (dgGroups.Rows.Count == 0) return;
             foreach (DataGridViewRow row in dgGroups.Rows)
             {
                 DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[3];
-                chk.Value = b?1:0;
+                chk.Value = b ? 1 : 0;
             }
 
             groups_to_xml();
@@ -200,13 +202,58 @@ namespace KSTN_Facebook_Tool
                 dgGroups.Parent = groupBox4;
                 dgGroups.Height = 160;
             }
-            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageFanpage"])
+            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageFanpage"] || TabControl1.SelectedTab == TabControl1.TabPages["tabPageComment"])
             {
                 fanpage_init();
             }
             else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageEvents"])
             {
                 events_init();
+            }
+            else if (TabControl1.SelectedTab == TabControl1.TabPages["tabPageScraper"])
+            {
+                Dictionary<string, string> relationships = new Dictionary<string, string>();
+                relationships.Add("-- Chọn mối quan hệ --", "");
+                relationships.Add("Độc thân", "single");
+                relationships.Add("Đang hẹn hò", "engaged");
+                relationships.Add("Đã đính hôn", "married");
+                relationships.Add("Đang có quan hệ kết hợp dân sự", "in-civil-union");
+                relationships.Add("Đang có quan hệ chung sống", "in-domestic-partnership");
+                relationships.Add("Đang trong một mối quan hệ mở", "in-open-relationship");
+                relationships.Add("Có mối quan hệ phức tạp", "its-complicated");
+                relationships.Add("Đã ly thân", "separated");
+                relationships.Add("Đã ly hôn", "divorced");
+                relationships.Add("Góa", "widowed");
+
+                cbGraphSearchRelationship.DataSource = new BindingSource(relationships, null);
+                cbGraphSearchRelationship.DisplayMember = "Key";
+                cbGraphSearchRelationship.ValueMember = "Value";
+
+                Dictionary<string, string> genders = new Dictionary<string, string>();
+                genders.Add("-- Chọn giới tính --", "");
+                genders.Add("Nam", "males");
+                genders.Add("Nữ", "females");
+
+                cbGraphSearchGender.DataSource = new BindingSource(genders, null);
+                cbGraphSearchGender.DisplayMember = "Key";
+                cbGraphSearchGender.ValueMember = "Value";
+
+                Dictionary<string, string> locations = new Dictionary<string, string>();
+                locations.Add("-- Chọn địa điểm --", "");
+                locations.Add("Hà Nội", "653678611405322");
+                locations.Add("Sài Gòn", "108458769184495");
+                locations.Add("Hải Phòng", "106480866055537");
+                locations.Add("Đà Nẵng", "108680672485750");
+                locations.Add("Cần Thơ", "200647606648129");
+                locations.Add("Huế", "218845041469665");
+                locations.Add("Bắc Ninh", "218692191496704");
+                locations.Add("Bắc Giang", "123356831042645");
+                locations.Add("Bắc Kạn", "203910742994900");
+                locations.Add("Bà Rịa-Vũng Tàu", "230834780261698");
+
+                cbGraphSearchLocation.DataSource = new BindingSource(locations, null);
+                cbGraphSearchLocation.DisplayMember = "Key";
+                cbGraphSearchLocation.ValueMember = "Value";
             }
         }
 
@@ -285,12 +332,6 @@ namespace KSTN_Facebook_Tool
             }
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
-        {
-            btnPause.Enabled = false;
-            SE.pause = true;
-        }
-
         private void btnPost_Click(object sender, EventArgs e)
         {
             if (txtBrowse1.Text == "" && txtBrowse2.Text == "" && txtBrowse3.Text == "" && txtContent.Text == "")
@@ -323,7 +364,6 @@ namespace KSTN_Facebook_Tool
             btnBrowse2.Enabled = false;
             btnBrowse3.Enabled = false;
             dgGroups.Enabled = false;
-            btnPause.Enabled = true;
 
             SE.AutoPost();
         }
@@ -341,7 +381,7 @@ namespace KSTN_Facebook_Tool
                 {
                     foreach (DataGridViewRow row in dgGroups.Rows)
                     {
-                        sw.WriteLine(row.Cells[1].Value + "");
+                        sw.WriteLine(SE.RemoveSpecialCharacters(row.Cells[1].Value.ToString()) + "");
                     }
                 }
                 else
@@ -502,7 +542,8 @@ namespace KSTN_Facebook_Tool
                 }
                 DataSet DS = new DataSet();
                 DS.Tables.Add(dt);
-                DS.WriteXml(SE.RemoveSpecialCharacters(SE.user_id) + "_groups.xml");
+                if (SE.user_id_img != "")
+                    DS.WriteXml(SE.RemoveSpecialCharacters(SE.user_id_img) + "_groups.xml");
             }
             catch { }
             //catch (Exception ex) { MessageBox.Show(ex + ""); }
@@ -605,27 +646,16 @@ namespace KSTN_Facebook_Tool
             txtInviteDelay.Enabled = false;
             txtInviteName.Enabled = false;
             btnInvite.Enabled = false;
-            btnInvitePause.Enabled = true;
 
             SE.AutoInvite();
-        }
-
-        private void btnInvitePause_Click(object sender, EventArgs e)
-        {
-            btnInvitePause.Enabled = false;
-            SE.pause = true;
         }
         #endregion
 
         #region TAB AUTOCOMMENT
-        private void btnCommentPause_Click(object sender, EventArgs e)
-        {
-            btnCommentPause.Enabled = false;
-            SE.pause = true;
-        }
 
         private void btnCommentBrowse_Click(object sender, EventArgs e)
         {
+            dgCommentBrowse.Rows.Clear();
             var fDialog = new System.Windows.Forms.OpenFileDialog();
             fDialog.Title = "Open Post IDS File";
             fDialog.Filter = "TXT Files (*.txt) | *.txt";
@@ -682,7 +712,6 @@ namespace KSTN_Facebook_Tool
 
             txtComment.Enabled = false;
             txtCommentDelay.Enabled = false;
-            btnCommentPause.Enabled = true;
             btnCommentBrowse.Enabled = false;
             btnCommentImportComment.Enabled = false;
             dgCommentBrowse.Enabled = false;
@@ -699,14 +728,8 @@ namespace KSTN_Facebook_Tool
             }
 
             btnCommentScan.Enabled = false;
-            btnCommentScanPause.Enabled = true;
 
             SE.AutoCommentScan();
-        }
-
-        private void btnCommentScanPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
         }
         #endregion
 
@@ -757,14 +780,8 @@ namespace KSTN_Facebook_Tool
             }
 
             btnEventInviteFriends.Enabled = false;
-            btnEventInviteFriendsPause.Enabled = true;
 
             SE.EventsInviteFriends();
-        }
-
-        private void btnEventInviteFriendsPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
         }
         #endregion
 
@@ -796,16 +813,10 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            if (txtPMImportGroup.Text.Contains("/"))
-            {
-                MessageBox.Show("Xem lại Group ID\nVí dụ: https://facebook.com/groups/saletour/ hoăc https://facebook.com/groups/123/\nThì điền saletour hoặc 123 là Group ID");
-                return;
-            }
-
             txtPMImportGroup.Enabled = false;
             btnPMImportGroup.Enabled = false;
 
-            SE.ImportGroupMembers("https://m.facebook.com/groups/" + txtPMImportGroup.Text + "/?view=members&refid=18");
+            SE.ImportGroupMembers(txtPMImportGroup.Text);
         }
 
         private void btnPMImportProfile_Click(object sender, EventArgs e)
@@ -826,12 +837,6 @@ namespace KSTN_Facebook_Tool
             btnPMImportProfile.Enabled = false;
 
             SE.ImportProfileFriends(txtPMImportProfile.Text);
-        }
-
-        private void btnPMPause_Click(object sender, EventArgs e)
-        {
-            btnPMPause.Enabled = false;
-            SE.pause = true;
         }
 
         private void btnPMImportFile_Click(object sender, EventArgs e)
@@ -878,7 +883,7 @@ namespace KSTN_Facebook_Tool
         {
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "TXT files (*.txt)|*.txt";
-            saveFile.FileName = "MEMBERS.txt";
+            saveFile.FileName = "UID.txt";
             saveFile.ShowDialog();
 
             using (StreamWriter sw = new StreamWriter(saveFile.FileName, false))
@@ -900,8 +905,7 @@ namespace KSTN_Facebook_Tool
 
         private void btnPMExportXLS_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Xuất file Exel có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
-            ExportDataGridViewTo_Excel12(dgUID);
+            UIDToCSV(dgUID);
         }
 
         public static void ExportDataGridViewTo_Excel12(DataGridView myDataGridViewQuantity)
@@ -989,6 +993,37 @@ namespace KSTN_Facebook_Tool
             GC.Collect();
         }
 
+        public static void UIDToCSV(DataGridView myDataGridView)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "CSV files (*.csv)|*.csv";
+            saveFile.FileName = "UID.csv";
+            saveFile.ShowDialog();
+
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(saveFile.FileName, false, Encoding.UTF8))
+                {
+                    if (myDataGridView.Rows.Count > 0)
+                    {
+                        foreach (DataGridViewRow row in myDataGridView.Rows)
+                        {
+                            sw.WriteLine("\"" + row.Cells[0].Value + "\"" + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator + "=\"" + row.Cells[1].Value + "\"");
+                        }
+                    }
+                    else
+                    {
+                        sw.WriteLine("No Data found.");
+                    }
+                    sw.Close();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Đang có ứng dụng cản trở việc ghi file này!");
+            }
+        }
+
         private void btnPM_Click(object sender, EventArgs e)
         {
             if (!SE.ready)
@@ -1011,11 +1046,10 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            dgUID.Enabled = false;
+            dgInteractions.Enabled = false;
             txtPM.Enabled = false;
             txtPMDelay.Enabled = false;
             btnPM.Enabled = false;
-            btnPMPause.Enabled = true;
 
             SE.AutoPM();
         }
@@ -1028,7 +1062,7 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            if (dgUID.Rows.Count == 0)
+            if (dgInteractions.Rows.Count == 0)
             {
                 MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
                 return;
@@ -1043,19 +1077,90 @@ namespace KSTN_Facebook_Tool
             }
 
             btnPMSendFrRequests.Enabled = false;
-            btnPMSendFrRequestsPause.Enabled = true;
 
             SE.AutoAddFriends();
         }
 
-        private void btnPMSendFrRequestsPause_Click(object sender, EventArgs e)
+        private void btnInteractionsClear_Click(object sender, EventArgs e)
         {
-            SE.pause = true;
+            dgInteractions.Rows.Clear();
+        }
+
+        private void btnInteractionsFollow_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (dgInteractions.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
+                return;
+            }
+
+            btnInteractionsFollow.Enabled = false;
+
+            SE.AutoFollow();
+        }
+
+        private void btnInteractionsImport_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnInteractionsPoke_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (dgInteractions.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
+                return;
+            }
+
+            btnInteractionsPoke.Enabled = false;
+
+            SE.AutoPoke();
+        }
+
+        private void btnInteractionsLike_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            if (dgInteractions.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách kết bạn trống! Hãy nạp DS từ nhóm hoặc từ bạn bè hoặc từ file trước khi thực hiện tác vụ này!");
+                return;
+            }
+            btnInteractionsLike.Enabled = false;
+            SE.InteractionsAutoLike();
         }
 
         private void btnPMInsertName_Click(object sender, EventArgs e)
         {
             txtPM.AppendText("{username}");
+            txtPM.Focus();
+        }
+
+        private void btnPMInsertHometown_Click(object sender, EventArgs e)
+        {
+            txtPM.AppendText("{hometown}");
+            txtPM.Focus();
+        }
+
+        private void btnPMInsertCurrentCity_Click(object sender, EventArgs e)
+        {
+            txtPM.AppendText("{current_city}");
             txtPM.Focus();
         }
         #endregion
@@ -1091,6 +1196,18 @@ namespace KSTN_Facebook_Tool
             TermsPolicies TPForm = new TermsPolicies();
             TPForm.ShowDialog();
         }
+
+        private async void getAccessToken()
+        {
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create("https://graph.facebook.com/oauth/access_token?client_id=243417155773519&client_secret=336ebd8db32ac2b432476a22432375a9&grant_type=client_credentials");
+            myRequest.Method = "GET";
+            WebResponse myResponse = await myRequest.GetResponseAsync();
+            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+            string result = sr.ReadToEnd();
+            SE.access_token = result;
+            sr.Close();
+            myResponse.Close();
+        }
         #endregion
 
         #region CHAT
@@ -1120,18 +1237,21 @@ namespace KSTN_Facebook_Tool
                 WebResponse myResponse = await myRequest.GetResponseAsync();
                 StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
                 string result = sr.ReadToEnd();
-                txtChatLog.Text = result;
+                string[] _results = result.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                string new_version = _results[0];
+                txtChatLog.Text = result.Replace(_results[0] + "\r\n", "");
                 sr.Close();
                 myResponse.Close();
 
                 if (result == "trial?")
                 {
-                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 7 ngày ngay bây giờ? Nếu bạn muốn chuyển Key từ máy cũ, hãy chọn NO", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    Program.loadingForm.RequestStop();
+                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 3 ngày ngay bây giờ? Nếu bạn muốn chuyển Key từ máy cũ, hãy chọn NO", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
                     {
                         myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id + "&trial=1");
                         myResponse = await myRequest.GetResponseAsync();
                         myResponse.Close();
-                        MessageBox.Show("Bạn đã kích hoạt thành công! Nhấn OK để đóng chương trình! Khởi động lại để sử dụng phiên bản dùng thử 7 ngày!");
+                        MessageBox.Show("Bạn đã kích hoạt thành công! Nhấn OK để đóng chương trình! Khởi động lại để sử dụng phiên bản dùng thử 3 ngày!");
                         Process.GetCurrentProcess().Kill();
                     }
                     else
@@ -1144,14 +1264,27 @@ namespace KSTN_Facebook_Tool
 
                 if (result == "DENIED")
                 {
-                    MessageBox.Show("Vui lòng gia hạn bản quyền!\nGia hạn bản quyền bằng cách Copy lại MACHINE ID, email tới kitsudo1412@gmail.com\nNhấn OK để xem MACHINE ID!");
+                    Program.loadingForm.RequestStop();
+                    MessageBox.Show("Vui lòng gia hạn bản quyền!\nGia hạn bản quyền bằng cách Copy lại MACHINE ID, email tới admin@ipostfb.com\nNhấn OK để xem MACHINE ID!");
                     License licForm = new License();
                     licForm.ShowDialog();
                     Process.GetCurrentProcess().Kill();
                 }
+
+                if ("Version: " + new_version != lblVer.Text)
+                {
+                    Program.loadingForm.RequestStop();
+
+                    if (MessageBox.Show("Có phiên bản mới hơn của ứng dụng (" + new_version + "). Nhấn OK để tải về!", "Cập nhật phiên bản mới", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("http://ipostfb.com/downloads");
+                    }
+                }
+
             }
             catch
             {
+                Program.loadingForm.RequestStop();
                 MessageBox.Show("Không thể kết nối đến Server! Vui lòng thử lại trong giây lát hoặc liên hệ với chúng tôi để được hỗ trợ!");
                 Process.GetCurrentProcess().Kill();
             }
@@ -1210,18 +1343,6 @@ namespace KSTN_Facebook_Tool
             }
         }
 
-        private void btnFanpageReload_Click(object sender, EventArgs e)
-        {
-            if (SE.ready == false)
-            {
-                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
-                return;
-            }
-
-            SE.pages = new Dictionary<string, string>();
-            fanpage_init();
-        }
-
         private void btnFanpageComment_Click(object sender, EventArgs e)
         {
             if (SE.pages.Count == 0)
@@ -1250,14 +1371,8 @@ namespace KSTN_Facebook_Tool
             }
 
             btnFanpageComment.Enabled = false;
-            btnFanpageCommentPause.Enabled = true;
 
             SE.FanpageComment();
-        }
-
-        private void btnFanpageCommentPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
         }
 
         private void btnFanpageGroupPost_Click(object sender, EventArgs e)
@@ -1273,6 +1388,11 @@ namespace KSTN_Facebook_Tool
                 MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
+            if (SE.ready2 == false)
+            {
+                MessageBox.Show("Kết nối nâng cao đang thực hiện 1 tác vụ khác");
+                return;
+            }
             int delay;
 
             if (!int.TryParse(txtFanpageGroupPostDelay.Text, out delay) || delay < 0)
@@ -1282,14 +1402,8 @@ namespace KSTN_Facebook_Tool
             }
 
             btnFanpageGroupPost.Enabled = false;
-            btnFanpageGroupPostPause.Enabled = true;
 
             SE.FanpagePost();
-        }
-
-        private void btnFanpageGroupPostPause_Click(object sender, EventArgs e)
-        {
-            SE.pause = true;
         }
 
         private void btnFanpageInviteFriends_Click(object sender, EventArgs e)
@@ -1308,88 +1422,122 @@ namespace KSTN_Facebook_Tool
                     return;
                 }
 
+                if (SE.pages.Count == 0)
+                {
+                    MessageBox.Show("Bạn chưa like Page nào cả!");
+                    return;
+                }
+
                 btnFanpageInviteFriends.Enabled = false;
 
                 SE.FanpageInviteFriends();
             }
         }
-        #endregion
 
-        #region TAB EDIT
-        private void btnEditBrowse_Click(object sender, EventArgs e)
-        {
-            var fDialog = new System.Windows.Forms.OpenFileDialog();
-            fDialog.Title = "Open Post IDS File";
-            fDialog.Filter = "TXT Files (*.txt) | *.txt";
-
-            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
-            {
-                string file = fDialog.FileName;
-                txtEditBrowse.Text = file;
-
-                MessageBox.Show("Import File có thể gây treo chương trình trong vài giây! Nhấn OK để tiếp tục.");
-
-                int counter = 0;
-                string line;
-
-                // Read the file and display it line by line.
-                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
-                while ((line = fileStr.ReadLine()) != null)
-                {
-                    if (line != "")
-                    {
-                        dgEditBrowse.Rows.Insert(0, line);
-                        counter++;
-                    }
-                }
-
-                fileStr.Close();
-
-                MessageBox.Show("Đọc thành công: " + counter + " bài đăng");
-            }
-            else
-            {
-                txtEditBrowse.Text = "";
-            }
-        }
-
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void btnFanpageLike_Click(object sender, EventArgs e)
         {
             if (SE.ready == false)
             {
                 MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
                 return;
             }
+
+            if (SE.pages.Count == 0)
+            {
+                MessageBox.Show("Bạn chưa like Page nào cả!");
+                return;
+            }
+
+            btnFanpageLike.Enabled = false;
+
+            SE.FanpageLike();
+        }
+
+        private void txtFanpageSeeder_Leave(object sender, EventArgs e)
+        {
+            List<string> comments = new List<string>();
+            foreach (string line in txtFanpageSeeder.Lines)
+            {
+                if (line != "")
+                    comments.Add(line);
+            }
+            Properties.Settings.Default.comments = string.Join(",", comments);
+            Properties.Settings.Default.Save();
+        }
+
+        private void btnFanpageSeeder_Click(object sender, EventArgs e)
+        {
+            if (SE.pages.Count == 0)
+            {
+                MessageBox.Show("Bạn chưa like Page nào cả!");
+                return;
+            }
+
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
             int delay;
 
-            if (!int.TryParse(txtEditDelay.Text, out delay) || delay < 0)
+            if (!int.TryParse(txtFanpageSeederDelay.Text, out delay) || delay < 0)
             {
                 MessageBox.Show("Số giây Delay: số nguyên không nhỏ hơn 0");
                 return;
             }
 
-            if (txtEditContent.Text == "")
+            int seeder_count;
+
+            if (!int.TryParse(txtFanpageSeederCount.Text, out seeder_count) || delay < 0)
             {
-                MessageBox.Show("Không được bỏ trống nội dung Sửa");
+                MessageBox.Show("Số lượng bài tối thiêu: số nguyên không nhỏ hơn 0");
                 return;
             }
 
-            txtEditContent.Enabled = false;
-            txtEditDelay.Enabled = false;
-            btnEditPause.Enabled = true;
-            btnEditBrowse.Enabled = false;
-            btnEdit.Enabled = false;
-            dgEditBrowse.Enabled = false;
+            if (txtFanpageSeeder.Text == "")
+            {
+                MessageBox.Show("Điền nội dung bình luận");
+                return;
+            }
 
-            SE.AutoEdit();
-        }
+            btnFanpageSeeder.Enabled = false;
+            txtFanpageSeederDelay.Enabled = false;
+            cbFanpageSeeder.Enabled = false;
+            txtFanpageSeeder.Enabled = false;
 
-        private void btnEditPause_Click(object sender, EventArgs e)
-        {
-            btnEditPause.Enabled = false;
-            SE.pause = true;
+            SE.FanpageSeeder();
         }
         #endregion
+
+        #region TAB GRAPHSEARCH
+        private void btnGraphSearch_Click(object sender, EventArgs e)
+        {
+            if (SE.ready == false)
+            {
+                MessageBox.Show("Chương trình đang thực hiện 1 tác vụ khác");
+                return;
+            }
+            if (SE.ready2 == false)
+            {
+                MessageBox.Show("Kết nối nâng cao đang thực hiện 1 tác vụ khác");
+                return;
+            }
+
+            btnGraphSearch.Enabled = false;
+            txtGraphSearchPage1.Enabled = false;
+            txtGraphSearchPage2.Enabled = false;
+            cbGraphSearchRelationship.Enabled = false;
+            cbGraphSearchGender.Enabled = false;
+            cbGraphSearchLocation.Enabled = false;
+            txtGraphSearchUsersNamed.Enabled = false;
+            txtGraphSearchAge1.Enabled = false;
+            txtGraphSearchAge2.Enabled = false;
+            txtGraphSearchGraphURL.ReadOnly = true;
+
+            SE.GraphSearch();
+        }
+        #endregion
+
     }
 }

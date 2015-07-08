@@ -79,6 +79,11 @@ namespace KSTN_Facebook_Tool
 
         private async void btnKey_Click(object sender, EventArgs e)
         {
+            if (txtKey.Text == "" || txtKey.Text.Length != 39)
+            {
+                this.Close();
+                return;
+            }
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + txtLicense.Text + "&change_pc=" + txtKey.Text);
             myRequest.Method = "GET";
             WebResponse myResponse = await myRequest.GetResponseAsync();
