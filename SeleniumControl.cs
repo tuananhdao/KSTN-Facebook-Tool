@@ -32,8 +32,8 @@ namespace KSTN_Facebook_Tool
         IEnumerable<int> newFirefoxPids;
 
         Dictionary<String, String> links = new Dictionary<string, string>();
-        public Dictionary<string, string> pages = new Dictionary<string, string>();
-        public Dictionary<string, string> events = new Dictionary<string, string>();
+        public SortedDictionary<string, string> pages = new SortedDictionary<string, string>();
+        public SortedDictionary<string, string> events = new SortedDictionary<string, string>();
         Thread t;
         public bool ready = true;
         public bool ready2 = true;
@@ -618,7 +618,7 @@ namespace KSTN_Facebook_Tool
                         if (url_to_comment_a.Count > 0)
                             post_url = url_to_comment_a[0].GetAttribute("href");
 
-                        Program.mainForm.dgPostResult.Rows.Insert(0, Program.mainForm.lblStatus.Text, post_url);
+                        Program.mainForm.dgPostResult.Rows.Insert(0, driver.Title, post_url);
                     }
                     else
                     {
@@ -1808,36 +1808,34 @@ namespace KSTN_Facebook_Tool
             {
                 await Task.Factory.StartNew(() => Navigate("https://m.facebook.com/" + user_id + "?v=likes&refid=17"));
 
-                var afrefs = driver.FindElementsByXPath("//a[contains(@href, 'fref=none')]");
-
-                if (afrefs.Count > 0)
+                while (true)
                 {
-                    foreach (IWebElement afref in afrefs)
+                    var afrefs = driver.FindElementsByXPath("//a[contains(@href, 'fref=none')]");
+
+                    if (afrefs.Count > 0)
                     {
-                        try
+                        foreach (IWebElement afref in afrefs)
                         {
-                            pages.Add(afref.Text, afref.GetAttribute("href"));
+                            try
+                            {
+                                pages.Add(afref.Text, afref.GetAttribute("href"));
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
-                    var next = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'v=likes')]"));
+                    else
+                    {
+                        break;
+                    }
+
+                    var next = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, 'v=likes&sectionid=9999')]"));
                     if (next.Count > 0)
                     {
                         await Task.Factory.StartNew(() => ClickElement(next[0]));
-
-                        var afrefs_more = driver.FindElementsByXPath("//a[contains(@href, 'fref=none')]");
-
-                        if (afrefs_more.Count > 0)
-                        {
-                            foreach (IWebElement afref_more in afrefs_more)
-                            {
-                                try
-                                {
-                                    pages.Add(afref_more.Text, afref_more.GetAttribute("href"));
-                                }
-                                catch { }
-                            }
-                        }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -1922,9 +1920,9 @@ namespace KSTN_Facebook_Tool
                             await Task.Factory.StartNew(() => driver.ExecuteScript(@"document.getElementsByName('comment_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtFanpageComment.Text) + "';"));
 
                             IWebElement btnSubmit = driver.FindElementByXPath("//form[@method='post']//input[@type='submit']");
-                            await Task.Factory.StartNew(() => ClickElement(btnSubmit));
 
                             Program.mainForm.dgFanpageCommentResults.Rows.Insert(0, _page.Text, driver.Url.Replace("m.facebook", "www.facebook"));
+                            await Task.Factory.StartNew(() => ClickElement(btnSubmit));
                         }
                         else
                         {
@@ -2070,7 +2068,7 @@ namespace KSTN_Facebook_Tool
                 if (page_posts.Count > 0)
                 {
                     text_to_share = page_posts[0].GetAttribute("href");
-                    text_to_share.Replace("/m.facebook", "/www.facebook");
+                    text_to_share = text_to_share.Replace("/m.facebook", "/www.facebook");
                 }
             }
 
@@ -2081,8 +2079,7 @@ namespace KSTN_Facebook_Tool
 
             if (text_to_share == "")
             {
-                if (Program.mainForm.txtFanpageURLText.Text != "") text_to_share = Program.mainForm.txtFanpageURLText.Text + "\r\n";
-                text_to_share += pages[Program.mainForm.cbFanpage.Text].Replace("/m.facebook", "/www.facebook");
+                text_to_share = pages[Program.mainForm.cbFanpage.Text].Replace("/m.facebook", "/www.facebook");
             }
 
             Program.mainForm.lblStatus.Text = "Quét mục tiêu";
@@ -2179,11 +2176,14 @@ namespace KSTN_Facebook_Tool
                                   .Select(s => s[rnd.Next(s.Length)])
                                   .ToArray());
 
-                    await Task.Factory.StartNew(() => driver2.ExecuteScript(@"document.getElementsByName('xhpc_message_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(text_to_share) + random_tag + "';"));
+                    await Task.Factory.StartNew(() => driver2.ExecuteScript(@"document.getElementsByName('xhpc_message_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(text_to_share) + "';"));
 
                     xhpc_text.SendKeys(OpenQA.Selenium.Keys.Enter);
 
                     await TaskEx.Delay(5000);
+                    await Task.Factory.StartNew(() => driver2.ExecuteScript(@"document.getElementsByName('xhpc_message_text')[0].value = '" + System.Web.HttpUtility.JavaScriptStringEncode(Program.mainForm.txtFanpageURLText.Text) + random_tag + "';"));
+                    xhpc_text.SendKeys(OpenQA.Selenium.Keys.Enter);
+                    await TaskEx.Delay(500);
                     var btn_post = driver2.FindElementsByXPath("//form[contains(@action, 'updatestatus.php') and @class='']//button[@type='submit']");
                     if (btn_post.Count == 0) continue;
                     await Task.Factory.StartNew(() => ClickElement(btn_post[0]));

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtChatLog = new System.Windows.Forms.TextBox();
@@ -267,6 +267,7 @@
             this.pictureBoxTimer = new System.Windows.Forms.PictureBox();
             this.imgStatus = new System.Windows.Forms.PictureBox();
             this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
+            this.label52 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.TabControl1.SuspendLayout();
             this.tabPagePost.SuspendLayout();
@@ -546,20 +547,20 @@
             this.group_link,
             this.group_mem,
             this.group_selected});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgGroups.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgGroups.Location = new System.Drawing.Point(9, 18);
             this.dgGroups.Name = "dgGroups";
             this.dgGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgGroups.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgGroups.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgGroups.ShowCellToolTips = false;
             this.dgGroups.ShowEditingIcon = false;
@@ -2265,7 +2266,7 @@
             this.groupBox24.Controls.Add(this.txtFanpageSeederCount);
             this.groupBox24.Controls.Add(this.label15);
             this.groupBox24.Controls.Add(this.txtFanpageSeederDelay);
-            this.groupBox24.Location = new System.Drawing.Point(4, 195);
+            this.groupBox24.Location = new System.Drawing.Point(4, 220);
             this.groupBox24.Name = "groupBox24";
             this.groupBox24.Size = new System.Drawing.Size(578, 150);
             this.groupBox24.TabIndex = 7;
@@ -2443,6 +2444,7 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.label52);
             this.groupBox12.Controls.Add(this.txtFanpageOther);
             this.groupBox12.Controls.Add(this.radFanpageOther);
             this.groupBox12.Controls.Add(this.label32);
@@ -2454,22 +2456,22 @@
             this.groupBox12.Controls.Add(this.btnFanpageGroupPost);
             this.groupBox12.Location = new System.Drawing.Point(3, 60);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(579, 129);
+            this.groupBox12.Size = new System.Drawing.Size(579, 154);
             this.groupBox12.TabIndex = 3;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Loan tin Page lên nhóm";
             // 
             // txtFanpageOther
             // 
-            this.txtFanpageOther.Location = new System.Drawing.Point(208, 75);
+            this.txtFanpageOther.Location = new System.Drawing.Point(293, 59);
             this.txtFanpageOther.Name = "txtFanpageOther";
-            this.txtFanpageOther.Size = new System.Drawing.Size(342, 20);
+            this.txtFanpageOther.Size = new System.Drawing.Size(174, 20);
             this.txtFanpageOther.TabIndex = 12;
             // 
             // radFanpageOther
             // 
             this.radFanpageOther.AutoSize = true;
-            this.radFanpageOther.Location = new System.Drawing.Point(43, 75);
+            this.radFanpageOther.Location = new System.Drawing.Point(128, 59);
             this.radFanpageOther.Name = "radFanpageOther";
             this.radFanpageOther.Size = new System.Drawing.Size(148, 17);
             this.radFanpageOther.TabIndex = 11;
@@ -2480,7 +2482,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(373, 106);
+            this.label32.Location = new System.Drawing.Point(368, 130);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(37, 13);
             this.label32.TabIndex = 10;
@@ -2488,7 +2490,7 @@
             // 
             // txtFanpageGroupPostDelay
             // 
-            this.txtFanpageGroupPostDelay.Location = new System.Drawing.Point(411, 103);
+            this.txtFanpageGroupPostDelay.Location = new System.Drawing.Point(406, 127);
             this.txtFanpageGroupPostDelay.Name = "txtFanpageGroupPostDelay";
             this.txtFanpageGroupPostDelay.Size = new System.Drawing.Size(51, 20);
             this.txtFanpageGroupPostDelay.TabIndex = 9;
@@ -2497,15 +2499,16 @@
             // 
             // txtFanpageURLText
             // 
-            this.txtFanpageURLText.Location = new System.Drawing.Point(374, 52);
+            this.txtFanpageURLText.Location = new System.Drawing.Point(128, 85);
+            this.txtFanpageURLText.Multiline = true;
             this.txtFanpageURLText.Name = "txtFanpageURLText";
-            this.txtFanpageURLText.Size = new System.Drawing.Size(176, 20);
+            this.txtFanpageURLText.Size = new System.Drawing.Size(445, 34);
             this.txtFanpageURLText.TabIndex = 6;
             // 
             // radFanpageURL
             // 
             this.radFanpageURL.AutoSize = true;
-            this.radFanpageURL.Location = new System.Drawing.Point(43, 55);
+            this.radFanpageURL.Location = new System.Drawing.Point(128, 39);
             this.radFanpageURL.Name = "radFanpageURL";
             this.radFanpageURL.Size = new System.Drawing.Size(301, 17);
             this.radFanpageURL.TabIndex = 5;
@@ -2516,7 +2519,7 @@
             // 
             this.radFanpageImage.AutoSize = true;
             this.radFanpageImage.Checked = true;
-            this.radFanpageImage.Location = new System.Drawing.Point(43, 36);
+            this.radFanpageImage.Location = new System.Drawing.Point(128, 19);
             this.radFanpageImage.Name = "radFanpageImage";
             this.radFanpageImage.Size = new System.Drawing.Size(289, 17);
             this.radFanpageImage.TabIndex = 4;
@@ -2527,16 +2530,16 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(9, 18);
+            this.label21.Location = new System.Drawing.Point(8, 21);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(107, 13);
+            this.label21.Size = new System.Drawing.Size(84, 13);
             this.label21.TabIndex = 3;
-            this.label21.Text = "Nội dung quảng cáo:";
+            this.label21.Text = "Link quảng cáo:";
             // 
             // btnFanpageGroupPost
             // 
             this.btnFanpageGroupPost.Enabled = false;
-            this.btnFanpageGroupPost.Location = new System.Drawing.Point(466, 101);
+            this.btnFanpageGroupPost.Location = new System.Drawing.Point(466, 125);
             this.btnFanpageGroupPost.Name = "btnFanpageGroupPost";
             this.btnFanpageGroupPost.Size = new System.Drawing.Size(107, 23);
             this.btnFanpageGroupPost.TabIndex = 1;
@@ -2855,6 +2858,15 @@
             this.lblVer.TabIndex = 0;
             this.lblVer.Text = "Version: 3.0.1";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(8, 88);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(93, 13);
+            this.label52.TabIndex = 13;
+            this.label52.Text = "Kèm nội dung QC:";
             // 
             // MainForm
             // 
@@ -3190,6 +3202,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn PM_List_link;
         private System.Windows.Forms.Button btnInteractionsClear;
         public System.Windows.Forms.CheckBox cbGraphSearchMutual;
+        private System.Windows.Forms.Label label52;
 
     }
 }

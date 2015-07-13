@@ -767,7 +767,7 @@ namespace KSTN_Facebook_Tool
                 return;
             }
 
-            SE.events = new Dictionary<string, string>();
+            SE.events.Clear();
             events_init();
         }
 
@@ -1107,7 +1107,48 @@ namespace KSTN_Facebook_Tool
 
         private void btnInteractionsImport_Click(object sender, EventArgs e)
         {
+            var fDialog = new System.Windows.Forms.OpenFileDialog();
+            fDialog.Title = "Open UID File";
+            fDialog.Filter = "UID Files (*.txt, *.csv) | *.txt; *.csv";
+            //fDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = fDialog.FileName;
+                txtInteractionsImport.Text = file;
 
+                int counter = 0;
+                string line;
+
+                // Read the file and display it line by line.
+                System.IO.StreamReader fileStr = new System.IO.StreamReader(file);
+                if (Path.GetExtension(file) == ".txt")
+                {
+                    while ((line = fileStr.ReadLine()) != null)
+                    {
+                        dgInteractions.Rows.Insert(0, line);
+                        counter++;
+                    }
+                }
+                if (Path.GetExtension(file) == ".csv")
+                {
+                    while ((line = fileStr.ReadLine()) != null)
+                    {
+                        string[] _str = line.Split(',');
+                        if (_str.Length > 1)
+                            dgInteractions.Rows.Insert(0, _str[1].Replace("\"", "").Replace("=", ""));
+                        counter++;
+                    }
+                }
+
+                fileStr.Close();
+
+                MessageBox.Show("Đọc thành công: " + counter + " Profile");
+            }
+            else
+            {
+                txtInteractionsImport.Text = "";
+            }
         }
 
         private void btnInteractionsPoke_Click(object sender, EventArgs e)
