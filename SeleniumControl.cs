@@ -985,7 +985,10 @@ namespace KSTN_Facebook_Tool
                     Program.mainForm.dgCommentBrowse.Rows.RemoveAt(0);
                     continue;
                 }
-
+                if (post_url.Contains("www.facebook"))
+                {
+                    post_url = post_url.Replace("www.facebook", "m.facebook").Replace("/permalink/", "?view=permalink&id=");
+                }
                 await Task.Factory.StartNew(() => Navigate(post_url));
 
                 int tries = 0;
@@ -1099,9 +1102,9 @@ namespace KSTN_Facebook_Tool
 
                 string post_xpath = "";
                 if (Program.mainForm.cbCommentOnlyMe.Checked)
-                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'fref=nf') and contains(@href, '" + user_id + "')]";
+                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'__tn__=C') and contains(@href, '" + user_id + "')]";
                 else
-                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'fref=nf')]";
+                    post_xpath = "//div[@id='m_group_stories_container']//a[contains(@href,'__tn__=C')]";
                 var post_match = driver.FindElementsByXPath(post_xpath);
                 if (post_match.Count > 0)
                 {
@@ -1130,7 +1133,7 @@ namespace KSTN_Facebook_Tool
                         await Task.Factory.StartNew(() => ClickElement(btnSubmit));
                         try
                         {
-                            Program.mainForm.dgComment.Rows.Insert(0, driver.Title, driver.Url);
+                            Program.mainForm.dgComment.Rows.Insert(0, driver.Title, driver.Url.Replace("m.facebook", "www.facebook"));
                         }
                         catch { }
 
@@ -2188,7 +2191,6 @@ namespace KSTN_Facebook_Tool
                     if (btn_post.Count == 0) continue;
                     await Task.Factory.StartNew(() => ClickElement(btn_post[0]));
 
-                    Program.mainForm.dgFanpageGroupResults.Rows.Insert(0, driver2.Title, post_target);
                     for (int i = 0; i < delay + 1; i++)
                     {
                         if (pause)
@@ -2201,6 +2203,14 @@ namespace KSTN_Facebook_Tool
                         }
                         await TaskEx.Delay(1000);
                     }
+
+                    string post_url = post_target;
+                    var group_wall_posts = await Task.Factory.StartNew(() => driver2.FindElementsByXPath("//a[contains(@href, '/permalink/')]"));
+                    if (group_wall_posts.Count > 0)
+                    {
+                        post_url = group_wall_posts[0].GetAttribute("href");
+                    }
+                    Program.mainForm.dgFanpageGroupResults.Rows.Insert(0, driver2.Title, post_url);
                 }
             }
             ready2 = true;

@@ -226,10 +226,12 @@
             this.groupBox21 = new System.Windows.Forms.GroupBox();
             this.cbFanpage = new System.Windows.Forms.ComboBox();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.btnFanpageGroupResultsExport = new System.Windows.Forms.Button();
             this.dgFanpageGroupResults = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.label52 = new System.Windows.Forms.Label();
             this.txtFanpageOther = new System.Windows.Forms.TextBox();
             this.radFanpageOther = new System.Windows.Forms.RadioButton();
             this.label32 = new System.Windows.Forms.Label();
@@ -267,7 +269,6 @@
             this.pictureBoxTimer = new System.Windows.Forms.PictureBox();
             this.imgStatus = new System.Windows.Forms.PictureBox();
             this.lblVer = new MiniTimer_Theme.MiniTimer_Label();
-            this.label52 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.TabControl1.SuspendLayout();
             this.tabPagePost.SuspendLayout();
@@ -1416,7 +1417,7 @@
             this.txtCommentDelay.Name = "txtCommentDelay";
             this.txtCommentDelay.Size = new System.Drawing.Size(27, 20);
             this.txtCommentDelay.TabIndex = 3;
-            this.txtCommentDelay.Text = "30";
+            this.txtCommentDelay.Text = "60";
             this.txtCommentDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // btnCommentScan
@@ -2408,6 +2409,7 @@
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.btnFanpageGroupResultsExport);
             this.groupBox13.Controls.Add(this.dgFanpageGroupResults);
             this.groupBox13.Location = new System.Drawing.Point(588, 6);
             this.groupBox13.Name = "groupBox13";
@@ -2415,6 +2417,17 @@
             this.groupBox13.TabIndex = 4;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Kết quả";
+            // 
+            // btnFanpageGroupResultsExport
+            // 
+            this.btnFanpageGroupResultsExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnFanpageGroupResultsExport.Location = new System.Drawing.Point(254, 346);
+            this.btnFanpageGroupResultsExport.Name = "btnFanpageGroupResultsExport";
+            this.btnFanpageGroupResultsExport.Size = new System.Drawing.Size(113, 20);
+            this.btnFanpageGroupResultsExport.TabIndex = 9;
+            this.btnFanpageGroupResultsExport.Text = "Xuất DS Bài đăng TXT";
+            this.btnFanpageGroupResultsExport.UseVisualStyleBackColor = true;
+            this.btnFanpageGroupResultsExport.Click += new System.EventHandler(this.btnFanpageGroupResultsExport_Click);
             // 
             // dgFanpageGroupResults
             // 
@@ -2427,7 +2440,7 @@
             this.dgFanpageGroupResults.Location = new System.Drawing.Point(6, 19);
             this.dgFanpageGroupResults.Name = "dgFanpageGroupResults";
             this.dgFanpageGroupResults.ReadOnly = true;
-            this.dgFanpageGroupResults.Size = new System.Drawing.Size(361, 345);
+            this.dgFanpageGroupResults.Size = new System.Drawing.Size(361, 324);
             this.dgFanpageGroupResults.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn3
@@ -2460,6 +2473,15 @@
             this.groupBox12.TabIndex = 3;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Loan tin Page lên nhóm";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(8, 88);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(93, 13);
+            this.label52.TabIndex = 13;
+            this.label52.Text = "Kèm nội dung QC:";
             // 
             // txtFanpageOther
             // 
@@ -2859,15 +2881,6 @@
             this.lblVer.Text = "Version: 3.0.1";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
             // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(8, 88);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(93, 13);
-            this.label52.TabIndex = 13;
-            this.label52.Text = "Kèm nội dung QC:";
-            // 
             // MainForm
             // 
             this.AcceptButton = this.btnLogin;
@@ -3203,6 +3216,7 @@
         private System.Windows.Forms.Button btnInteractionsClear;
         public System.Windows.Forms.CheckBox cbGraphSearchMutual;
         private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Button btnFanpageGroupResultsExport;
 
     }
 }

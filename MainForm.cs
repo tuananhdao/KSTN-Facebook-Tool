@@ -1580,5 +1580,29 @@ namespace KSTN_Facebook_Tool
         }
         #endregion
 
+        private void btnFanpageGroupResultsExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "TXT files (*.txt)|*.txt";
+            saveFile.FileName = "DS_bai_dang.txt";
+            saveFile.ShowDialog();
+
+            using (StreamWriter sw = new StreamWriter(saveFile.FileName, false))
+            {
+                if (dgFanpageGroupResults.Rows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in dgFanpageGroupResults.Rows)
+                    {
+                        sw.WriteLine(row.Cells[1].Value + "");
+                    }
+                }
+                else
+                {
+                    sw.WriteLine("No group found.");
+                }
+                sw.Close();
+            }
+        }
+
     }
 }
