@@ -459,8 +459,6 @@
             // cbGroupReload
             // 
             this.cbGroupReload.AutoSize = true;
-            this.cbGroupReload.Checked = true;
-            this.cbGroupReload.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbGroupReload.Location = new System.Drawing.Point(10, 184);
             this.cbGroupReload.Name = "cbGroupReload";
             this.cbGroupReload.Size = new System.Drawing.Size(152, 17);
@@ -2706,7 +2704,7 @@
             this.miniTimer_ThemeContainer1.SmartBounds = true;
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
-            this.miniTimer_ThemeContainer1.Text = "iPost™ 2015 | All-In-One FB Marketing ";
+            this.miniTimer_ThemeContainer1.Text = "iOneTour | Facebook Auto";
             // 
             // btnPauseAll
             // 
@@ -2784,7 +2782,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(229, 15);
             this.label8.TabIndex = 3;
-            this.label8.Text = "Góp ý/Báo lỗi: admin@ipostfb.com";
+            this.label8.Text = "Góp ý/Báo lỗi: kitsudo1412@gmail.com";
             // 
             // pbAvatar
             // 
@@ -2810,7 +2808,7 @@
             this.lblViewProfile.Size = new System.Drawing.Size(229, 15);
             this.lblViewProfile.TabIndex = 2;
             this.lblViewProfile.TabStop = true;
-            this.lblViewProfile.Text = "http://iPostFB.com";
+            this.lblViewProfile.Text = "http://ionetour.com";
             this.lblViewProfile.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblViewProfile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblViewProfile_LinkClicked);
             // 
@@ -2878,7 +2876,7 @@
             this.lblVer.Name = "lblVer";
             this.lblVer.Size = new System.Drawing.Size(89, 16);
             this.lblVer.TabIndex = 0;
-            this.lblVer.Text = "Version: 3.0.1";
+            this.lblVer.Text = "Version: 3.1.5";
             this.lblVer.Click += new System.EventHandler(this.lblVer_Click);
             // 
             // MainForm
@@ -2896,7 +2894,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(261, 65);
             this.Name = "MainForm";
-            this.Text = "iPost™ 2015 | All-In-One FB Marketing ";
+            this.Text = "iOneTour | Facebook Auto";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
@@ -2979,10 +2977,8 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TabControl TabControl1;
         private System.Windows.Forms.TabPage tabPagePost;
         private System.Windows.Forms.TabPage tabPageJoin;
         public System.Windows.Forms.Button btnLogin;
@@ -2991,7 +2987,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox4;
         public System.Windows.Forms.TextBox txtUser;
         public System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.GroupBox groupBox5;
@@ -3043,7 +3038,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         public System.Windows.Forms.TextBox txtJoinDelay;
-        private MiniTimer_Theme.MiniTimer_ThemeContainer miniTimer_ThemeContainer1;
         private MiniTimer_Theme.MiniTimer_Label lblVer;
         public System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.PictureBox imgStatus;
@@ -3217,6 +3211,10 @@
         public System.Windows.Forms.CheckBox cbGraphSearchMutual;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.Button btnFanpageGroupResultsExport;
+        private System.Windows.Forms.TabControl TabControl1;
+        public System.Windows.Forms.GroupBox groupBox1;
+        private MiniTimer_Theme.MiniTimer_ThemeContainer miniTimer_ThemeContainer1;
+        public System.Windows.Forms.GroupBox groupBox4;
 
     }
 }

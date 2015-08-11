@@ -157,7 +157,21 @@ namespace KSTN_Facebook_Tool
         {
             if (btnLogin.Text == "Đăng nhập")
             {
+                txtUser.Enabled = false;
+                txtPass.Enabled = false;
+
+                PictureBox loading = new PictureBox();
+                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadingForm));
+                loading.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+                loading.Size = new System.Drawing.Size(172, 107);
+                loading.Location = new Point(200, 50);
+                loading.BackColor = Color.Transparent;
+                loading.Name = "group_loading_gif";
+                dgGroups.Controls.Add(loading);
+                loading.BringToFront();
+
                 SE.FBLogin(txtUser.Text, txtPass.Text);
+
                 if (cbRemember.Checked)
                 {
                     Properties.Settings.Default.user = txtUser.Text;
