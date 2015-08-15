@@ -17,7 +17,7 @@ namespace KSTN_Facebook_Tool
 {
     public partial class License : Form
     {
-        private String CHAT_URL = "http://kstnk57.com/AUTO/chatlog.php";
+        private String CHAT_URL = "http://ipostfb.com/chatlog.php";
 
         public License()
         {
@@ -79,7 +79,7 @@ namespace KSTN_Facebook_Tool
 
         private async void btnKey_Click(object sender, EventArgs e)
         {
-            if (txtKey.Text == "" || txtKey.Text.Length != 39)
+            if (txtKey.Text == "")
             {
                 this.Close();
                 return;

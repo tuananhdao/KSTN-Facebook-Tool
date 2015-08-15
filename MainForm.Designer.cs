@@ -2704,7 +2704,7 @@
             this.miniTimer_ThemeContainer1.SmartBounds = true;
             this.miniTimer_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.miniTimer_ThemeContainer1.TabIndex = 3;
-            this.miniTimer_ThemeContainer1.Text = "iOneTour | Facebook Auto";
+            this.miniTimer_ThemeContainer1.Text = "iPost3.0 | Phần mềm Marketing Facebook";
             // 
             // btnPauseAll
             // 
@@ -2782,7 +2782,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(229, 15);
             this.label8.TabIndex = 3;
-            this.label8.Text = "Góp ý/Báo lỗi: kitsudo1412@gmail.com";
+            this.label8.Text = "Góp ý/Báo lỗi: admin@ipostfb.com";
             // 
             // pbAvatar
             // 
@@ -2808,7 +2808,7 @@
             this.lblViewProfile.Size = new System.Drawing.Size(229, 15);
             this.lblViewProfile.TabIndex = 2;
             this.lblViewProfile.TabStop = true;
-            this.lblViewProfile.Text = "http://ionetour.com";
+            this.lblViewProfile.Text = "http://ipostfb.com";
             this.lblViewProfile.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblViewProfile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblViewProfile_LinkClicked);
             // 
@@ -2894,7 +2894,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(261, 65);
             this.Name = "MainForm";
-            this.Text = "iOneTour | Facebook Auto";
+            this.Text = "iPost3.0 | Phần mềm Marketing Facebook";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.MainForm_Shown);

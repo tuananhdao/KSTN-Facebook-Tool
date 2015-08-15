@@ -1301,7 +1301,7 @@ namespace KSTN_Facebook_Tool
                 if (result == "trial?")
                 {
                     Program.loadingForm.RequestStop();
-                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 3 ngày ngay bây giờ? Nếu bạn muốn chuyển Key từ máy cũ, hãy chọn NO", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+                    if (MessageBox.Show("Bạn có muốn kích hoạt bản dùng thử trong 3 ngày ngay bây giờ? Nếu bạn đã mua bản quyền, hãy chọn NO", "Kích hoạt bản dùng thử", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
                     {
                         myRequest = (HttpWebRequest)WebRequest.Create(CHAT_URL + "?id=" + machine_id + "&trial=1");
                         myResponse = await myRequest.GetResponseAsync();
@@ -1320,7 +1320,7 @@ namespace KSTN_Facebook_Tool
                 if (result == "DENIED")
                 {
                     Program.loadingForm.RequestStop();
-                    MessageBox.Show("Vui lòng gia hạn bản quyền!\nGia hạn bản quyền bằng cách Copy lại MACHINE ID, email tới admin@ipostfb.com\nNhấn OK để xem MACHINE ID!");
+                    MessageBox.Show("Vui lòng gia hạn bản quyền!\nBản quyền của bạn đã hết hạn sử dụng!");
                     License licForm = new License();
                     licForm.ShowDialog();
                     Process.GetCurrentProcess().Kill();

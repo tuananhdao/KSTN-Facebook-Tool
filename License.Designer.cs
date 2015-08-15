@@ -59,11 +59,11 @@
             // 
             // btnKey
             // 
-            this.btnKey.Location = new System.Drawing.Point(280, 86);
+            this.btnKey.Location = new System.Drawing.Point(252, 86);
             this.btnKey.Name = "btnKey";
-            this.btnKey.Size = new System.Drawing.Size(96, 24);
+            this.btnKey.Size = new System.Drawing.Size(125, 24);
             this.btnKey.TabIndex = 11;
-            this.btnKey.Text = "Lấy bản quyền";
+            this.btnKey.Text = "Xác nhận bản quyền";
             this.btnKey.UseVisualStyleBackColor = true;
             this.btnKey.Click += new System.EventHandler(this.btnKey_Click);
             // 
@@ -79,9 +79,9 @@
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(11, 62);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(65, 13);
+            this.label19.Size = new System.Drawing.Size(31, 13);
             this.label19.TabIndex = 9;
-            this.label19.Text = "Nhập ID cũ:";
+            this.label19.Text = "KEY:";
             // 
             // txtLicense
             // 
@@ -96,9 +96,9 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(11, 37);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(65, 13);
+            this.label18.Size = new System.Drawing.Size(44, 13);
             this.label18.TabIndex = 7;
-            this.label18.Text = "Machine ID:";
+            this.label18.Text = "ID Máy:";
             // 
             // License
             // 

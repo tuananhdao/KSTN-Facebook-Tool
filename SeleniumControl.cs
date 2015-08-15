@@ -34,7 +34,7 @@ namespace KSTN_Facebook_Tool
         Dictionary<String, String> links = new Dictionary<string, string>();
         public SortedDictionary<string, string> pages = new SortedDictionary<string, string>();
         public SortedDictionary<string, string> events = new SortedDictionary<string, string>();
-        Thread t;
+        //Thread t;
         public bool ready = true;
         public bool ready2 = true;
         public bool pause = false;
@@ -480,8 +480,40 @@ namespace KSTN_Facebook_Tool
             Program.mainForm.dgGroups.Rows.Clear();
             await Task.Factory.StartNew(() => Navigate(links["fb_groups_2"]));
 
+            var td = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//div[@id='root']//table//tbody//tr//td"));
+            var e2 = td[0].FindElements(By.XPath("./div"));
+            if (e2.Count == 3)
+            {
+                var e = e2[1].FindElements(By.XPath(".//li//table//tbody//tr//td//a"));
+
+                foreach (IWebElement k in e)
+                {
+                    addGroup2Grid(k);
+                    await TaskEx.Delay(10);
+                }
+            }
+
             var see_more_btns = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//a[contains(@href, '?seemore')]"));
 
+            if (see_more_btns.Count > 0)
+            {
+                await Task.Factory.StartNew(() => ClickElement(see_more_btns[0]));
+
+                td = await Task.Factory.StartNew(() => driver.FindElementsByXPath("//div[@id='root']//table//tbody//tr//td"));
+                e2 = td[0].FindElements(By.XPath("./div"));
+                if (e2.Count == 3)
+                {
+                    var e = e2[1].FindElements(By.XPath(".//li//table//tbody//tr//td//a"));
+
+                    foreach (IWebElement k in e)
+                    {
+                        addGroup2Grid(k);
+                        await TaskEx.Delay(10);
+                    }
+                }
+            }
+            
+            /*
             if (see_more_btns.Count == 0)
             {
                 var divs = driver.FindElementsByXPath("//div[@id='root']//div");
@@ -515,7 +547,7 @@ namespace KSTN_Facebook_Tool
                     addGroup2Grid(k);
                     await TaskEx.Delay(10);
                 }
-            }
+            }*/
 
             //Program.loadingForm.RequestStop();
             //t.Abort();
@@ -1939,8 +1971,10 @@ namespace KSTN_Facebook_Tool
             {
                 foreach (IWebElement upcoming_event in upcoming_events)
                 {
-                    IWebElement upcoming_event_name = upcoming_event.FindElement(By.XPath("..//h4"));
-                    events.Add(upcoming_event_name.Text, upcoming_event.GetAttribute("href"));
+                    var upcoming_event_name = upcoming_event.FindElements(By.XPath("..//h4"));
+                    if (upcoming_event_name.Count == 0)
+                        continue;
+                    events.Add(upcoming_event_name[0].Text, upcoming_event.GetAttribute("href"));
                 }
             }
 
